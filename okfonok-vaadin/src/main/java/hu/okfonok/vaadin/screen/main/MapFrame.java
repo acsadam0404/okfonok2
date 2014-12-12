@@ -10,13 +10,11 @@ import com.vaadin.ui.VerticalLayout;
 
 public class MapFrame extends CustomComponent {
 	public MapFrame() {
-		VerticalLayout l = new VerticalLayout();
+		setWidth("400px");
+		setHeight("400px");
 		GoogleMap map = new GoogleMap(null, null, "hu");
 		map.addMarker(new GoogleMapMarker("sdf", new LatLon(12, 12), false));
-		map.setWidth("300px");
-		map.setHeight("300px");
-		l.addComponent(map);
-		l.addComponent(new Label("asdfdf"));
-		setCompositionRoot(l);
+		map.setSizeFull();
+		setCompositionRoot(map);
 	}
 }
