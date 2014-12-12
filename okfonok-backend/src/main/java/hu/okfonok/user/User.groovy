@@ -2,11 +2,12 @@ package hu.okfonok.user
 
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
-import hu.okfonok.ad.Advertisement;
+import hu.okfonok.ad.Advertisement
 import hu.okfonok.common.Address
 
 import javax.persistence.Embedded
 import javax.persistence.Entity
+import javax.persistence.OneToMany;
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
@@ -30,6 +31,9 @@ class User extends BaseEntity{
 	@Embedded
 	Address address
 	
+	@OneToMany
+	private Set<Advertisement> savedAds
+	
 	static User get(String username) {
 		repo.findByUsername(username)
 	}
@@ -46,15 +50,16 @@ class User extends BaseEntity{
 	
 	/* TODO nem unsave az angol neve az biztos */
 	void unsaveAdvertisement(Advertisement ad) {
-		//TODO
+		savedAds.remove(ad)
+		save()
 	}
 	
 	void saveAdvertisement(Advertisement ad) {
-		//TODO
+		savedAds.add(ad)
+		save()
 	}
 
 	boolean isAdvertisementSaved(Advertisement ad) {
-		//TODO
-		return false
+		savedAds.contains(ad)
 	}
 }

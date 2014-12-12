@@ -75,4 +75,8 @@ class Advertisement extends BaseEntity{
 	BigDecimal getAveragePrice() {
 		new BigDecimal("5500")
 	}
+
+	public void share() {
+		println "shared on facebook"
+	}
 }

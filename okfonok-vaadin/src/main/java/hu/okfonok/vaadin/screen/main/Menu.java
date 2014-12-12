@@ -2,6 +2,8 @@ package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.MainUI;
+import hu.okfonok.vaadin.screen.HelpCreatedEvent;
+import hu.okfonok.vaadin.screen.HelpFrame;
 import hu.okfonok.vaadin.screen.message.MessageView;
 
 import com.vaadin.ui.CustomComponent;
@@ -32,6 +34,14 @@ public class Menu extends CustomComponent {
 			public void menuSelected(MenuItem selectedItem) {
 				Dialog dialog = new Dialog(new AdvertisementCreationFrame());
 				dialog.setCloseEventClass(AdvertisementCreatedEvent.class);
+				dialog.showWindow();
+			}
+		});
+		menubar.addItem("Segítség", new Command() {
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				Dialog dialog = new Dialog(new HelpFrame());
+				dialog.setCloseEventClass(HelpCreatedEvent.class);
 				dialog.showWindow();
 			}
 		});

@@ -10,10 +10,11 @@ import hu.okfonok.vaadin.security.Authentication;
 import java.math.BigDecimal;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
-import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Table;
@@ -54,15 +55,35 @@ public class AdvertisementTableFrame extends CustomComponent {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				VerticalLayout l = new VerticalLayout();
-				User user = Authentication.getUser();
-				Advertisement ad = (Advertisement) ((BeanItem)source.getItem(itemId)).getBean();
+				final User user = Authentication.getUser();
+				final Advertisement ad = (Advertisement) ((BeanItem)source.getItem(itemId)).getBean();
 				if (user.isAdvertisementSaved(ad)) {
-					l.addComponent(new Button("Elmentve"));
+					l.addComponent(new Button("Elmentve", new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							user.unsaveAdvertisement(ad);
+							refresh();
+						}
+					}));
 				}
 				else {
-					l.addComponent(new Button("Elmentem"));
+					l.addComponent(new Button("Elmentem", new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							user.saveAdvertisement(ad);
+							refresh();
+						}
+					}));
 				}
-				l.addComponent(new Button("Megosztom"));
+				l.addComponent(new Button("Megosztom", new ClickListener() {
+					
+					@Override
+					public void buttonClick(ClickEvent event) {
+						ad.share();
+					}
+				}));
 				return l;
 			}
 		});

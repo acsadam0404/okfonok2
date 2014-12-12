@@ -41,7 +41,10 @@ class ValueSet extends BaseEntity {
 	}
 	
 	static ValueSet remuneration() {
-		return repo.findByName("remuneration")
+		repo.findByName("remuneration")
 	}
 	
+	static ValueSet helpCategory() {
+		repo.findByName("help_category")
+	}
 }
