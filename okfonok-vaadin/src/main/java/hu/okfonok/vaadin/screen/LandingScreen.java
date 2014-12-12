@@ -1,4 +1,6 @@
-package hu.okfonok.vaadin.screen.landing;
+package hu.okfonok.vaadin.screen;
+
+import hu.okfonok.vaadin.screen.landing.LoginFrame;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.CustomLayout;

@@ -1,4 +1,7 @@
-package hu.okfonok.vaadin;
+package hu.okfonok.vaadin.screen.main;
+
+import hu.okfonok.vaadin.MainUI;
+import hu.okfonok.vaadin.screen.message.MessageView;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
@@ -20,7 +23,7 @@ public class Menu extends CustomComponent {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				MainUI.getCurrent().getNavigator().navigateTo(OtherView.NAME);
+				MainUI.getCurrent().getNavigator().navigateTo(MessageView.NAME);
 			}
 		});
 		setCompositionRoot(menubar);
