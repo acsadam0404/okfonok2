@@ -15,12 +15,13 @@ import javax.validation.constraints.NotNull
 @Table(name = 'valueset')
 @EqualsAndHashCode(includes = ['name'])
 class ValueSet extends BaseEntity {
-	private static ValueSetRepo repo
-
-	ValueSet() {
-		if (ServiceLocator.loaded && !repo)  {
-			repo = ServiceLocator.getBean(ValueSetRepo)
+	private static ValueSetRepo valueSetRepo
+	
+	private static ValueSetRepo getRepo() {
+		if (ServiceLocator.loaded && !valueSetRepo)  {
+			valueSetRepo = ServiceLocator.getBean(ValueSetRepo)
 		}
+		valueSetRepo
 	}
 
 	@NotNull
@@ -34,8 +35,13 @@ class ValueSet extends BaseEntity {
 	String toString() {
 		return "ValueSet($name)"
 	}
-
-	static List<ValueSetEntry> getEntries(String name) {
-		repo.findByName(name).entries
+	
+	List<String> getEntryValues() {
+		entries.collect { it.value }
 	}
+	
+	static ValueSet remuneration() {
+		return repo.findByName("remuneration")
+	}
+	
 }

@@ -14,12 +14,13 @@ import javax.validation.constraints.NotNull
 @EqualsAndHashCode
 class ValueStore extends BaseEntity  {
 
-	private static ValueStoreRepo repo
+	private static ValueStoreRepo valueStoreRepo
 
-	ValueStore() {
-		if (ServiceLocator.loaded && !repo)  {
-			repo = ServiceLocator.getBean(ValueStoreRepo)
+	private static ValueStoreRepo getRepo() {
+		if (ServiceLocator.loaded && !valueStoreRepo)  {
+			valueStoreRepo = ServiceLocator.getBean(ValueStoreRepo)
 		}
+		valueStoreRepo
 	}
 
 	@Column

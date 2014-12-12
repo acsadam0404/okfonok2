@@ -10,6 +10,7 @@ import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
 import javax.persistence.Table
+import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -17,19 +18,20 @@ import javax.validation.constraints.Size
 @Table(name = 'advertisement')
 @EqualsAndHashCode
 class Advertisement extends BaseEntity{
-	private static AdvertisementRepo repo
+	private static AdvertisementRepo advertisementRepo
 
-	Advertisement() {
-		if (ServiceLocator.loaded && !repo)  {
-			repo = ServiceLocator.getBean(AdvertisementRepo)
+	private static AdvertisementRepo getRepo() {
+		if (ServiceLocator.loaded && !advertisementRepo)  {
+			advertisementRepo = ServiceLocator.getBean(AdvertisementRepo)
 		}
+		advertisementRepo
 	}
 
 	public static final String USER = "user"
 	public static final String DESCRIPTION = "description"
 	public static final String REMUNERATION = "remuneration"
 	public static final String CATEGORY = "category"
-	public static final String ADDRESS = "address"
+	public static final String ADDRESS = "address"	public static final String MAINCATEGORY = "mainCategory";
 
 	@ManyToOne
 	@NotNull
@@ -45,9 +47,18 @@ class Advertisement extends BaseEntity{
 	@ManyToOne
 	@NotNull
 	JobCategory category
-
+	
 	@Embedded
 	Address address = new Address()
+	
+	boolean homeJob
+	
+	@Min(1L)
+	int maxOffer
+	
+	JobCategory getMainCategory() {
+		category.mainCategory
+	}
 
 	static List<Advertisement> findByUsername(String username) {
 		repo.findByUser(User.get(username))
@@ -59,5 +70,9 @@ class Advertisement extends BaseEntity{
 
 	Advertisement save() {
 		repo.save(this)
+	}
+
+	BigDecimal getAveragePrice() {
+		new BigDecimal("5500")
 	}
 }

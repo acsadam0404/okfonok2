@@ -57,7 +57,7 @@ public class HomeView extends AbstractView {
 	private Component buildLeft() {
 		VerticalLayout left = new VerticalLayout();
 		left.setSizeUndefined();
-		DashboardLayout dl = new DashboardLayout(new HorizontalLayout(), root);
+		HorizontalLayout dl = new HorizontalLayout();
 		dl.setSizeUndefined();
 		dl.addComponent(new MapFrame());
 		dl.addComponent(new CalendarFrame());

@@ -30,7 +30,9 @@ public class Menu extends CustomComponent {
 		menubar.addItem("Hirdetés feladása", new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				new Dialog(new AdvertisementCreationFrame()).showWindow();
+				Dialog dialog = new Dialog(new AdvertisementCreationFrame());
+				dialog.setCloseEventClass(AdvertisementCreatedEvent.class);
+				dialog.showWindow();
 			}
 		});
 		setCompositionRoot(menubar);

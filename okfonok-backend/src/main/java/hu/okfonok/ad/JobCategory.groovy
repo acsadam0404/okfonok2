@@ -2,6 +2,7 @@ package hu.okfonok.ad
 
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
+import hu.okfonok.user.ServiceLocator
 
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -20,6 +21,15 @@ import javax.persistence.Table
 @EqualsAndHashCode(includes = 'name')
 class JobCategory extends BaseEntity{
 
+	private static JobCategoryRepo jobCategoryRepo
+
+	private static JobCategoryRepo getRepo() {
+		if (ServiceLocator.loaded && !jobCategoryRepo)  {
+			jobCategoryRepo = ServiceLocator.getBean(JobCategoryRepo)
+		}
+		jobCategoryRepo
+	}
+
 	boolean main
 
 	@OneToMany(mappedBy="mainCategory", fetch=FetchType.EAGER)
@@ -34,5 +44,9 @@ class JobCategory extends BaseEntity{
 	@Override
 	String toString() {
 		name
+	}
+
+	static List<JobCategory> findAll() {
+		repo.findAll()
 	}
 }
