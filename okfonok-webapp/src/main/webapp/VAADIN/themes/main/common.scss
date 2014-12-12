@@ -1,0 +1,105 @@
+@include keyframes(animate-in-scale-up) {
+  0% {
+    @include transform(scale(0));
+  }
+}
+
+@mixin common {
+
+  .valo-menu {
+    border-right: none;
+
+    .badgewrapper {
+      position: relative;
+      padding: 0 !important;
+    }
+  }
+
+  .valo-menu-item {
+    overflow: hidden;
+  }
+
+  .v-ui[width-range~="0-800px"] {
+    .valo-menu-title {
+      @include valo-gradient($color: $valo-menu-background-color);
+      border-bottom-color: first-color(valo-border($color: $valo-menu-background-color));
+    }
+    .valo-menu .v-menubar-user-menu {
+      color: inherit;
+    }
+  }
+
+  .v-ui[width-range~="801px-"] {
+    .valo-menu {
+      @include animation(valo-animate-in-slide-right 700ms 700ms backwards);
+    }
+
+    .valo-menu-title {
+      background: transparent;
+      @include box-shadow(none);
+      border-bottom: none;
+    }
+  }
+
+  .valo-menu-title {
+    line-height: 1.2;
+  }
+
+  .v-menubar-user-menu:after {
+    display: none;
+  }
+
+  .v-menubar-user-menu > .v-menubar-menuitem {
+    display: block;
+    padding: 0;
+    max-width: 90%;
+    margin: 0 auto;
+
+    .v-menubar-menuitem-caption:after {
+      margin-right: -1em;
+    }
+
+    img.v-icon {
+      @if is-dark-color($valo-menu-background-color) {
+        border: none;
+      }
+    }
+  }
+
+  .v-ui[width-range~="0-800px"] {
+    .v-menubar-user-menu > .v-menubar-menuitem {
+      max-width: none;
+      margin-right: .5em;
+
+      .v-menubar-menuitem-caption:after {
+        margin-right: 0;
+      }
+    }
+  }
+
+
+  .v-ios7 & .v-ui[width-range~="0-800px"],
+  .v-ios8 & .v-ui[width-range~="0-800px"] {
+    padding-top: 20px + $v-unit-size;
+
+    .v-loading-indicator {
+      top: 20px + $v-unit-size - 3px;
+      height: 3px;
+    }
+
+    .valo-menu-title {
+      height: 20px + $v-unit-size !important;
+      padding-top: 20px;
+    }
+    .valo-menu-toggle,
+    .user-menu {
+      margin-top: 20px;
+    }
+    .valo-menuitems {
+      top: 20px + $v-unit-size;
+    }
+    .view-content {
+      border-radius: 0;
+    }
+  }
+}

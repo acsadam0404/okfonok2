@@ -1,0 +1,6 @@
+// Import all the mixins for this theme
+@import "main";
+
+.main {
+  @include main;
+}
