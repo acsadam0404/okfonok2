@@ -1,5 +1,6 @@
 package hu.okfonok.vaadin.screen.main;
 
+import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.MainUI;
 import hu.okfonok.vaadin.screen.message.MessageView;
 
@@ -24,6 +25,12 @@ public class Menu extends CustomComponent {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
 				MainUI.getCurrent().getNavigator().navigateTo(MessageView.NAME);
+			}
+		});
+		menubar.addItem("Hirdetés feladása", new Command() {
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				new Dialog(new AdvertisementCreationFrame()).showWindow();
 			}
 		});
 		setCompositionRoot(menubar);

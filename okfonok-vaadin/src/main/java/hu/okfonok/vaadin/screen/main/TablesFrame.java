@@ -6,9 +6,10 @@ import com.vaadin.ui.TabSheet;
 
 public class TablesFrame extends CustomComponent {
 	public TablesFrame() {
+		setSizeFull();
 		TabSheet ts = new TabSheet();
-		ts.addComponent(new OfferTableFrame());
-
+		ts.addTab(new AdvertisementTableFrame(), "Hirdetések");
+		ts.addTab(new OfferTableFrame(), "Ajánlatok");
 		setCompositionRoot(ts);
 	}
 }

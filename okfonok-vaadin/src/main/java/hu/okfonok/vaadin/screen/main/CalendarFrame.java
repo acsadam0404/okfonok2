@@ -5,7 +5,21 @@ import com.vaadin.ui.CustomComponent;
 
 
 public class CalendarFrame extends CustomComponent {
+	private Calendar calendar;
+
+
 	public CalendarFrame() {
-		setCompositionRoot(new Calendar());
+		setWidth("400px");
+		setHeight("400px");
+		calendar = build();
+		setCompositionRoot(calendar);
+	}
+
+
+	private Calendar build() {
+		calendar = new Calendar();
+		calendar.setWidth("400px");
+		calendar.setHeight("400px");
+		return calendar;
 	}
 }

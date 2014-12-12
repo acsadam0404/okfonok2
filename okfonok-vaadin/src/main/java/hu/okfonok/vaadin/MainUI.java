@@ -14,6 +14,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 
 
 @Theme("main")
@@ -46,6 +47,16 @@ public class MainUI extends UI {
 		}
 	}
 
+
+	/*
+	 * egyszerre csak egy ablak lehet 
+	 */
+	@Override
+	public void addWindow(Window window) throws IllegalArgumentException, NullPointerException {
+		if (getWindows().isEmpty()) {
+			super.addWindow(window);
+		}
+	}
 
 
 	@Subscribe

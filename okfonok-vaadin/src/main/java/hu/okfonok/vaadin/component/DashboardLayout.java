@@ -1,12 +1,12 @@
 package hu.okfonok.vaadin.component;
 
-import java.util.Iterator;
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
@@ -15,16 +15,29 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class DashboardLayout extends CssLayout {
-	public DashboardLayout() {
-		addStyleName("dashboard-panels");
-		Responsive.makeResponsive(this);
+
+public class DashboardLayout extends CustomComponent {
+	private ComponentContainer root;
+	private ComponentContainer full;
+	private boolean maximized;
+
+
+	public DashboardLayout(ComponentContainer root) {
+		this(root, null);
 	}
-	
-	@Override
+
+
+	public DashboardLayout(ComponentContainer root, ComponentContainer full) {
+		this.root = root;
+		this.full = full;
+		setCompositionRoot(root);
+	}
+
+
 	public void addComponent(Component c) {
-		super.addComponent(createContentWrapper(c));
+		root.addComponent(createContentWrapper(c));
 	}
+
 
 	private Component createContentWrapper(final Component content) {
 		final CssLayout slot = new CssLayout();
@@ -49,15 +62,16 @@ public class DashboardLayout extends CssLayout {
 		tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
 		MenuItem max = tools.addItem("", FontAwesome.EXPAND, new Command() {
 
+
 			@Override
 			public void menuSelected(final MenuItem selectedItem) {
-				if (!slot.getStyleName().contains("max")) {
+				if (maximized) {
 					selectedItem.setIcon(FontAwesome.COMPRESS);
-					toggleMaximized(slot, true);
-				} else {
-					slot.removeStyleName("max");
+					toggleMaximized(slot);
+				}
+				else {
 					selectedItem.setIcon(FontAwesome.EXPAND);
-					toggleMaximized(slot, false);
+					toggleMaximized(slot);
 				}
 			}
 		});
@@ -86,25 +100,22 @@ public class DashboardLayout extends CssLayout {
 		return slot;
 	}
 
-	private void toggleMaximized(final Component panel, final boolean maximized) {
-		/* ha akarjuk hogy a többi is eltűnjön akkor itt azon a legfőbb komponensen kell végigiterálni aminek a tartalmát el akarjuk tüntetni,
-		 * ehhez meg kell adnunk konstruktorban egy ilyet vagy valami
-		 */
-//		for (Iterator<Component> it = iterator(); it.hasNext();) {
-//			it.next().setVisible(!maximized);
-//		}
-		setVisible(true);
 
-		for (Component c  : components) {
+	private void toggleMaximized(final Component panel) {
+		maximized = !maximized;
+		if (full != null) {
+			for (Component c : full) {
+				c.setVisible(!maximized);
+			}
+		}
+		for (Component c : root) {
 			c.setVisible(!maximized);
 		}
 
-		if (maximized) {
-			panel.setVisible(true);
-			panel.addStyleName("max");
-		} else {
-			panel.removeStyleName("max");
-		}
+		setVisible(true);
+		full.setVisible(true);
+		root.setVisible(true);
+		panel.setVisible(maximized);
 	}
 
 }
