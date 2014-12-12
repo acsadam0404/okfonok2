@@ -1,4 +1,4 @@
-package hu.okfonok.vaadin;
+package hu.okfonok.vaadin.screen.landing;
 
 import hu.okfonok.vaadin.security.Authentication;
 
@@ -19,13 +19,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 
-public class LoginScreen extends CustomComponent {
+public class LoginFrame extends CustomComponent {
 
-	private Authentication authentication;
-
-
-	public LoginScreen(Authentication authentication) {
-		this.authentication = authentication;
+	public LoginFrame() {
 		setSizeFull();
 
 		Component loginForm = buildLoginForm();
@@ -34,6 +30,7 @@ public class LoginScreen extends CustomComponent {
 		root.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 		setCompositionRoot(root);
 	}
+
 
 	private Component buildLoginForm() {
 		final VerticalLayout loginPanel = new VerticalLayout();
@@ -46,6 +43,7 @@ public class LoginScreen extends CustomComponent {
 		loginPanel.addComponent(new CheckBox("Remember me", true));
 		return loginPanel;
 	}
+
 
 	private Component buildFields() {
 		HorizontalLayout fields = new HorizontalLayout();
@@ -71,7 +69,7 @@ public class LoginScreen extends CustomComponent {
 		signin.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				authentication.login(username.getValue(), password.getValue());
+				Authentication.login(username.getValue(), password.getValue());
 			}
 		});
 		return fields;

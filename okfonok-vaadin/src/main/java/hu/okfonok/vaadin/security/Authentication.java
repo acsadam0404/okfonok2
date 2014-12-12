@@ -6,11 +6,12 @@ import hu.okfonok.vaadin.UIEventBus;
 import com.vaadin.server.VaadinSession;
 
 
-public class Authentication {
-	public Authentication() {}
+public final class Authentication {
+
+	private Authentication() {}
 
 
-	public void login(String username, String password) {
+	public static void login(String username, String password) {
 		User user = User.get(username);
 		if (user != null) {
 			if (password.equals(user.getPassword())) {
@@ -27,7 +28,7 @@ public class Authentication {
 	}
 
 
-	public boolean isAuthenticated() {
+	public static boolean isAuthenticated() {
 		return getUsernameFromSession() != null;
 	}
 

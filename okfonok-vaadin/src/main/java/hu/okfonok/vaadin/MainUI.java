@@ -1,5 +1,7 @@
 package hu.okfonok.vaadin;
 
+import hu.okfonok.vaadin.screen.landing.LandingScreen;
+import hu.okfonok.vaadin.screen.landing.LoginFrame;
 import hu.okfonok.vaadin.security.Authentication;
 import hu.okfonok.vaadin.security.LoginEvent;
 
@@ -27,7 +29,6 @@ public class MainUI extends UI {
 
 	private final HorizontalLayout main = new HorizontalLayout();
 	private final UIEventBus eventbus = new UIEventBus();
-	private Authentication authentication;
 
 	public MainUI() {
 		super();
@@ -39,13 +40,12 @@ public class MainUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		UIEventBus.register(this);
-		authentication = new Authentication();
 		init();
 	}
 
 
 	private void init() {
-		if (!authentication.isAuthenticated()) {
+		if (!Authentication.isAuthenticated()) {
 			setupLoginScreen();
 		}
 		else {
@@ -77,7 +77,7 @@ public class MainUI extends UI {
 
 
 	private void setupLoginScreen() {
-		setContent(new LoginScreen(authentication));
+		setContent(new LandingScreen());
 	}
 
 
