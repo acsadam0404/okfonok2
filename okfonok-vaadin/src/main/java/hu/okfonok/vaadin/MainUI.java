@@ -48,6 +48,7 @@ public class MainUI extends UI {
 		else {
 			setContent(new MainScreen());
 		}
+		setSizeFull();
 	}
 
 

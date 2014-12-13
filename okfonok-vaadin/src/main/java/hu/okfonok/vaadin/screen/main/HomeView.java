@@ -40,6 +40,7 @@ public class HomeView extends AbstractView {
 	private Component buildMainLayout() {
 		root = new HorizontalLayout();
 		root.setSizeFull();
+		root.setSpacing(true);
 		Component left = buildLeft();
 		Component right = buildRight();
 		root.addComponent(left);
@@ -59,8 +60,10 @@ public class HomeView extends AbstractView {
 
 	private Component buildLeft() {
 		VerticalLayout left = new VerticalLayout();
+		left.setSpacing(true);
 		left.setSizeUndefined();
 		HorizontalLayout dl = new HorizontalLayout();
+		dl.setSpacing(true);
 		dl.setSizeUndefined();
 		dl.addComponent(new MapFrame());
 		dl.addComponent(new CalendarFrame());

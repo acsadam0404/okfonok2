@@ -222,7 +222,7 @@
 					<draftCompile>false</draftCompile>
 					<compileReport>true</compileReport>
 					<style>OBF</style>
-					<strict>true</strict>
+					<strict>false</strict>
 					<runTarget>http://localhost:8080/</runTarget>
 				</configuration>
 				<executions>

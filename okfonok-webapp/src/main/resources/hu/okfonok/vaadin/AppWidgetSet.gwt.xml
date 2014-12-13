@@ -28,4 +28,6 @@
     <inherits name="org.vaadin.teemu.ratingstars.gwt.RatingStarsWidgetset" />
 
     <inherits name="by.kod.numberfield.NumberFieldWidgetSet" />
+
+    <inherits name="org.vaadin.virkki.carousel.CarouselWidgetSet" />
 </module>
