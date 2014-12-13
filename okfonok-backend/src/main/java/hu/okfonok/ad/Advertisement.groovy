@@ -16,7 +16,7 @@ import javax.validation.constraints.Size
 
 @Entity
 @Table(name = 'advertisement')
-@EqualsAndHashCode
+@EqualsAndHashCode(includes = ["user", "description", "dateCreated"])
 class Advertisement extends BaseEntity{
 	private static AdvertisementRepo advertisementRepo
 
@@ -47,15 +47,18 @@ class Advertisement extends BaseEntity{
 	@ManyToOne
 	@NotNull
 	JobCategory category
-	
+
+	@NotNull
+	Date dateCreated
+
 	@Embedded
 	Address address = new Address()
-	
+
 	boolean homeJob
-	
+
 	@Min(1L)
 	int maxOffer
-	
+
 	JobCategory getMainCategory() {
 		category.mainCategory
 	}
@@ -69,6 +72,7 @@ class Advertisement extends BaseEntity{
 	}
 
 	Advertisement save() {
+		dateCreated = new Date()
 		repo.save(this)
 	}
 

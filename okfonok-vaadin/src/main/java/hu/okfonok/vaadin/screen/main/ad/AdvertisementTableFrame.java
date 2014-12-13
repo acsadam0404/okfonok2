@@ -36,6 +36,10 @@ public class AdvertisementTableFrame extends CustomComponent {
 		root.setColumnHeader(Advertisement.CATEGORY, "Kategória");
 		root.setColumnHeader(Advertisement.DESCRIPTION, "Leírás");
 		root.setColumnHeader(Advertisement.REMUNERATION, "Díjazás");
+		root.addContainerProperty(ACTIONS, Component.class, null, "", null, Align.CENTER);
+		root.addContainerProperty(AVERAGE_PRICE, String.class, null, "Aktuális átlag díj", null, Align.CENTER);
+		root.addContainerProperty(DISTANCE, String.class, null, "Távolság", null, Align.CENTER);
+		root.addContainerProperty(IMAGE, String.class, null, "Kép", null, Align.CENTER);
 		addImageColumn();
 		addDistanceColumn();
 		addAveragePriceColumn();
@@ -49,7 +53,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 	}
 
 	private void addActionsColumn() {
-		root.addContainerProperty(ACTIONS, Component.class, null, "", null, Align.CENTER);
+		
 		root.addGeneratedColumn(ACTIONS, new ColumnGenerator() {
 
 			@Override
@@ -90,7 +94,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 	}
 
 	private void addAveragePriceColumn() {
-		root.addContainerProperty(AVERAGE_PRICE, String.class, null, "Aktuális átlag díj", null, Align.CENTER);
+		
 		root.addGeneratedColumn(AVERAGE_PRICE, new ColumnGenerator() {
 
 			@Override
@@ -102,7 +106,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 	}
 
 	private void addDistanceColumn() {
-		root.addContainerProperty(DISTANCE, String.class, null, "Távolság", null, Align.CENTER);
+	
 		root.addGeneratedColumn(DISTANCE, new ColumnGenerator() {
 
 			@Override
@@ -115,7 +119,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 	}
 
 	private void addImageColumn() {
-		root.addContainerProperty(IMAGE, String.class, null, "Kép", null, Align.CENTER);
+		
 		root.addGeneratedColumn(IMAGE, new ColumnGenerator() {
 
 			@Override

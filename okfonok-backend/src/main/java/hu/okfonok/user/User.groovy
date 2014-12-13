@@ -1,16 +1,20 @@
 package hu.okfonok.user
 
+import java.nio.ReadOnlyBufferException;
+
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.ad.Advertisement
 import hu.okfonok.common.Address
-import hu.okfonok.common.Settlement
 
 import javax.persistence.Embedded
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "user")
@@ -60,11 +64,14 @@ class User extends BaseEntity{
 	}
 
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<Advertisement> savedAds
 
 	@Embedded
 	private Profile profile
+
+	@OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
+	List<Rating> ratings
 
 	Profile getProfile() {
 		if (!profile) {
@@ -73,7 +80,7 @@ class User extends BaseEntity{
 		profile
 	}
 
-
+	@Transactional(readOnly = true)
 	static User get(String username) {
 		repo.findByUsername(username)
 	}
@@ -88,12 +95,13 @@ class User extends BaseEntity{
 	}
 
 
-	/* TODO nem unsave az angol neve az biztos */
+	@Transactional
 	void unsaveAdvertisement(Advertisement ad) {
 		savedAds.remove(ad)
 		save()
 	}
 
+	@Transactional
 	void saveAdvertisement(Advertisement ad) {
 		savedAds.add(ad)
 		save()
@@ -106,6 +114,7 @@ class User extends BaseEntity{
 	/**
 	 * elmenti a usert és elküldi a confirmation emailt
 	 */
+	@Transactional
 	User register() {
 		username = profile.email
 		registrationDate = new Date()

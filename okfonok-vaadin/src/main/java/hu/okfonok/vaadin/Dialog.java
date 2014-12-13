@@ -16,9 +16,13 @@ public class Dialog extends CustomComponent {
 	}
 
 	public Dialog(Component content) {
+		this();
+		setContent(content);
+	}
+
+
+	public Dialog() {
 		window = new Window();
-		window.setContent(content);
-		setCaption(content.getCaption());
 		window.setModal(true);
 		window.center();
 		window.setDraggable(false);
@@ -27,6 +31,13 @@ public class Dialog extends CustomComponent {
 		setSizeUndefined();
 		window.setSizeUndefined();
 	}
+
+
+	public void setContent(Component content) {
+		window.setContent(content);
+		setCaption(content.getCaption());
+	}
+
 
 	public void showWindow() {
 		UI.getCurrent().addWindow(window);
