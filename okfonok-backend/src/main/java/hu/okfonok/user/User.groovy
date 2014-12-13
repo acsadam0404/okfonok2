@@ -4,6 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.ad.Advertisement
 import hu.okfonok.common.Address
+import hu.okfonok.common.Settlement
 
 import javax.persistence.Embedded
 import javax.persistence.Entity
@@ -32,7 +33,7 @@ class User extends BaseEntity{
 	String password
 
 	@Embedded
-	Address address
+	Address address = new Address()
 
 	Date lastLogin
 
@@ -44,7 +45,7 @@ class User extends BaseEntity{
 	private Set<Advertisement> savedAds
 
 	@Embedded
-	Profile profile
+	Profile profile = new Profile()
 
 	static User get(String username) {
 		repo.findByUsername(username)
@@ -73,6 +74,13 @@ class User extends BaseEntity{
 
 	boolean isAdvertisementSaved(Advertisement ad) {
 		savedAds.contains(ad)
+	}
+
+	User register() {
+		username = profile.email
+		registrationDate = new Date()
+		save()
+		print 'sending confirmation mail' //TODO
 	}
 
 	// kell ide eventbus és logineventnél lastLogin-t beállítani

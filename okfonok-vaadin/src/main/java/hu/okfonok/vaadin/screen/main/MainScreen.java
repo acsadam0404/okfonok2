@@ -1,9 +1,7 @@
-package hu.okfonok.vaadin.screen;
+package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.vaadin.MainUI;
 import hu.okfonok.vaadin.Navigator;
-import hu.okfonok.vaadin.screen.main.HomeView;
-import hu.okfonok.vaadin.screen.main.Menu;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.VerticalLayout;

@@ -12,6 +12,16 @@ class Address implements Serializable {
 
 	String other
 
+	void setZipcode(Integer zipcode) {
+		if (zipcode) {
+			settlement = Settlement.findByZipcode(zipcode)
+		}
+	}
+
+	Integer getZipcode() {
+		settlement?.zipcode
+	}
+
 	@Formula("0")
 	private int dummyFieldForHibernateNotNullEmbedded
 

@@ -1,7 +1,7 @@
 package hu.okfonok.vaadin;
 
-import hu.okfonok.vaadin.screen.LandingScreen;
-import hu.okfonok.vaadin.screen.MainScreen;
+import hu.okfonok.vaadin.screen.landing.LandingScreen;
+import hu.okfonok.vaadin.screen.main.MainScreen;
 import hu.okfonok.vaadin.security.Authentication;
 import hu.okfonok.vaadin.security.LoginEvent;
 

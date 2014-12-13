@@ -20,9 +20,21 @@ class Settlement extends BaseEntity {
 		settlementRepo
 	}
 
-	Integer zip
+	private Integer zipcode
 
-	String settlement
+	private String settlement
+
+	Integer getZipcode() {
+		zipcode
+	}
+
+	String getSettlement() {
+		settlement
+	}
+
+	static Settlement findByZipcode(int zipcode) {
+		repo.findByZipcode(zipcode)
+	}
 
 	static List<Settlement> findAll() {
 		repo.findAll()
