@@ -7,7 +7,8 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
-public abstract class Dialog extends CustomComponent {
+
+public class Dialog extends CustomComponent {
 	private Window window;
 
 	public void setCaption(String caption) {

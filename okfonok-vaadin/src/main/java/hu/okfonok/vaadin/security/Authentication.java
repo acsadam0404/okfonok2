@@ -41,4 +41,14 @@ public final class Authentication {
 	public static User getUser() {
 		return User.get(getUsernameFromSession());
 	}
+
+
+	public static void logout() {
+		User user = getUser();
+		if (user != null) {
+			VaadinSession.getCurrent().setAttribute("username", null);
+			UIEventBus.post(new LogoutEvent(user.getUsername()));
+			System.out.println("no such user");
+		}
+	}
 }

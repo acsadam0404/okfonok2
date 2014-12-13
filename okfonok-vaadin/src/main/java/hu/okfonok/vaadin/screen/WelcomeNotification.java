@@ -18,9 +18,6 @@ public final class WelcomeNotification extends CustomComponent {
 			
 			Dialog dialog = new DialogWithCloseButton(new Label(text), new Button("Értettem, köszi!"));
 			dialog.showWindow();
-			
-			user.setFirstLogin(false);
-			user.save();
 		}
 	}
 	

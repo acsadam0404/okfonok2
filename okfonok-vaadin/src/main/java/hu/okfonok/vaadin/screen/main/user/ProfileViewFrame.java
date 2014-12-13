@@ -10,20 +10,17 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 
 public class ProfileViewFrame extends CustomComponent {
-	private OFFieldGroup<Profile> fg;
+	private OFFieldGroup<User> fg;
 
-	@PropertyId("name")
-	private Label nameField;
-	@PropertyId("phoneNumber")
-	private Label phoneNumberField;
-	@PropertyId("email")
-	private Label emailField;
-	@PropertyId("introduction")
-	private Label introductionField;
+	private TextField nameField;
+	private TextField phoneNumberField;
+	private TextField emailField;
+	private TextField introductionField;
 
 	private MessageBox messageBox;
 	private ProfileImageFrame profileImageFrame;
@@ -31,9 +28,10 @@ public class ProfileViewFrame extends CustomComponent {
 
 
 	public ProfileViewFrame(User user) {
-		fg = new OFFieldGroup<>(user.getProfile());
+		fg = new OFFieldGroup<>(user);
+		fg.setReadOnly(true);
 		messageBox = new MessageBox(user);
-		profileImageFrame = new ProfileImageFrame(user.getProfile());
+		profileImageFrame = new ProfileImageFrame(user);
 		scoreFrame = new ScoreFrame(user);
 		setCompositionRoot(build());
 	}
@@ -43,18 +41,24 @@ public class ProfileViewFrame extends CustomComponent {
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.addComponent(buildLeft());
 		hl.addComponent(buildRight());
-		fg.bindMemberFields(this);
+		fg.bind(nameField, "profile.name");
+		fg.bind(phoneNumberField, "profile.phoneNumber");
+		fg.bind(emailField, "profile.email");
+		fg.bind(introductionField, "profile.introduction");
+
 		return hl;
 	}
 
 
 	private Component buildLeft() {
 		VerticalLayout l = new VerticalLayout();
+		l.setMargin(true);
+		l.setSpacing(true);
 		FormLayout fl = new FormLayout();
-		nameField = new Label("Név");
-		phoneNumberField = new Label("Telefonszám");
-		emailField = new Label("E-mail cím");
-		introductionField = new Label("Bemutatkozás");
+		nameField = new TextField("Név");
+		phoneNumberField = new TextField("Telefonszám");
+		emailField = new TextField("E-mail cím");
+		introductionField = new TextField("Bemutatkozás");
 		fl.addComponent(nameField);
 		fl.addComponent(phoneNumberField);
 		fl.addComponent(emailField);

@@ -33,19 +33,46 @@ class User extends BaseEntity{
 	String password
 
 	@Embedded
-	Address address = new Address()
+	private Address address
+
+	Address getAddress() {
+		if (!address) {
+			address = new Address()
+		}
+		address
+	}
 
 	Date lastLogin
 
+	void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin
+		firstLogin = false
+	}
+
 	Date registrationDate
 
-	boolean firstLogin = true
+	/** readonly kívülről, setLastLogin állítja */
+	@NotNull
+	private boolean firstLogin = true
+
+	boolean isFirstLogin(){
+		firstLogin
+	}
+
 
 	@OneToMany
 	private Set<Advertisement> savedAds
 
 	@Embedded
-	Profile profile = new Profile()
+	private Profile profile
+
+	Profile getProfile() {
+		if (!profile) {
+			profile = new Profile()
+		}
+		profile
+	}
+
 
 	static User get(String username) {
 		repo.findByUsername(username)
@@ -76,12 +103,13 @@ class User extends BaseEntity{
 		savedAds.contains(ad)
 	}
 
+	/**
+	 * elmenti a usert és elküldi a confirmation emailt
+	 */
 	User register() {
 		username = profile.email
 		registrationDate = new Date()
 		save()
 		print 'sending confirmation mail' //TODO
 	}
-
-	// kell ide eventbus és logineventnél lastLogin-t beállítani
 }

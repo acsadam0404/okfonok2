@@ -7,7 +7,10 @@ import hu.okfonok.vaadin.screen.HelpCreatedEvent;
 import hu.okfonok.vaadin.screen.HelpFrame;
 import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreatedEvent;
 import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreationFrame;
+import hu.okfonok.vaadin.screen.main.user.ProfileImageFrame;
+import hu.okfonok.vaadin.screen.main.user.ProfileViewFrame;
 import hu.okfonok.vaadin.screen.message.MessageView;
+import hu.okfonok.vaadin.security.Authentication;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
@@ -44,6 +47,19 @@ public class Menu extends CustomComponent {
 			public void menuSelected(MenuItem selectedItem) {
 				Dialog dialog = new DialogWithCloseEvent(new HelpFrame(), HelpCreatedEvent.class);
 				dialog.showWindow();
+			}
+		});
+		menubar.addItem("Felhasználó megtekintése", new Command() {
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				Dialog dialog = new Dialog(new ProfileViewFrame(Authentication.getUser()));
+				dialog.showWindow();
+			}
+		});
+		menubar.addItem("Kijelentkezés", new Command() {
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				Authentication.logout();
 			}
 		});
 		setCompositionRoot(menubar);

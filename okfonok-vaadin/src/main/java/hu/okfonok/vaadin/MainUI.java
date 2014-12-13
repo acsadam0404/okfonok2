@@ -1,10 +1,13 @@
 package hu.okfonok.vaadin;
 
+import hu.okfonok.user.User;
 import hu.okfonok.vaadin.screen.landing.LandingScreen;
 import hu.okfonok.vaadin.screen.main.MainScreen;
 import hu.okfonok.vaadin.security.Authentication;
 import hu.okfonok.vaadin.security.LoginEvent;
+import hu.okfonok.vaadin.security.LogoutEvent;
 
+import java.util.Date;
 import java.util.Locale;
 
 import org.springframework.context.annotation.Scope;
@@ -61,6 +64,15 @@ public class MainUI extends UI {
 
 	@Subscribe
 	public void handleLoginEvent(LoginEvent loginEvent) {
+		init();
+		User user = Authentication.getUser();
+		user.setLastLogin(new Date());
+		user.save();
+	}
+
+
+	@Subscribe
+	public void handleLogoutEvent(LogoutEvent logoutEvent) {
 		init();
 	}
 
