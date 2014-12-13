@@ -25,6 +25,6 @@ public class MessageView extends AbstractView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		setCompositionRoot(new Label("message view"));
+		setCompositionRoot(new ConversationFrame());
 	}
 }

@@ -1,5 +1,7 @@
 package hu.okfonok.message
 
+import java.util.Collection;
+
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.ad.Advertisement
@@ -84,5 +86,9 @@ class Conversation extends BaseEntity {
 			repo.save(this)
 		}
 		conv
+	}
+
+	static Collection findAll() {
+		repo.findAll()
 	}
 }
