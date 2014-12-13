@@ -3,12 +3,15 @@ package hu.okfonok.ad;
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.common.Address
+import hu.okfonok.offer.Offer
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
 import javax.persistence.Embedded
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -58,13 +61,20 @@ class Advertisement extends BaseEntity{
 
 	@Min(1L)
 	int maxOffer
-
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "advertisement")
+	Set<Offer> offers
+	
 	JobCategory getMainCategory() {
 		category.mainCategory
 	}
 
 	static List<Advertisement> findByUsername(String username) {
-		repo.findByUser(User.get(username))
+		findByUser(User.get(username))
+	}
+	
+	static List<Advertisement> findByUser(User user) {
+		repo.findByUser(user)
 	}
 
 	static List<Advertisement> findAll() {

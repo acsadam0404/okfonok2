@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils
 @Embeddable
 //@EqualsAndHashCode //nem kell embeddablere
 class Profile {
+	public static final Object SHORTENEDNAME = "shortenedName";
+
 	String firstName
 
 	String lastName
@@ -24,6 +26,14 @@ class Profile {
 	String idCard
 
 	String addressCard
+	
+	String getShortenedName() {
+		String shortenedName = null
+		if (name) {
+			shortenedName = "${lastName[0]}. $firstName"
+		} 
+		shortenedName
+	}
 
 	/**
 	 * feladatot végez

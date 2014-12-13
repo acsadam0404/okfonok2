@@ -4,7 +4,9 @@ import hu.okfonok.ad.Advertisement;
 import hu.okfonok.common.Address;
 import hu.okfonok.common.Distance;
 import hu.okfonok.user.User;
+import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.math.BigDecimal;
@@ -39,7 +41,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 		root.addContainerProperty(ACTIONS, Component.class, null, "", null, Align.CENTER);
 		root.addContainerProperty(AVERAGE_PRICE, String.class, null, "Aktuális átlag díj", null, Align.CENTER);
 		root.addContainerProperty(DISTANCE, String.class, null, "Távolság", null, Align.CENTER);
-		root.addContainerProperty(IMAGE, String.class, null, "Kép", null, Align.CENTER);
+		root.addContainerProperty(IMAGE, Component.class, null, "Kép", null, Align.CENTER);
 		addImageColumn();
 		addDistanceColumn();
 		addAveragePriceColumn();
@@ -123,8 +125,15 @@ public class AdvertisementTableFrame extends CustomComponent {
 		root.addGeneratedColumn(IMAGE, new ColumnGenerator() {
 
 			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				return "kép helye";
+			public Object generateCell(final Table source, final Object itemId, Object columnId) {
+				return new Button("Megtekint", new ClickListener() {
+					
+					@Override
+					public void buttonClick(ClickEvent event) {
+						Advertisement ad = ((BeanItem<Advertisement>) source.getItem(itemId)).getBean();
+						new Dialog(new AdvertisementViewFrame(ad)).showWindow();;
+					}
+				});
 			}
 		});
 	}

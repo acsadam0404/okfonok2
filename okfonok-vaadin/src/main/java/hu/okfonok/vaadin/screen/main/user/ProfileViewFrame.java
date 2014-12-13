@@ -22,7 +22,6 @@ public class ProfileViewFrame extends CustomComponent {
 	private TextField emailField;
 	private TextField introductionField;
 
-	private MessageBox messageBox;
 	private ProfileImageFrame profileImageFrame;
 	private ScoreFrame scoreFrame;
 
@@ -30,7 +29,6 @@ public class ProfileViewFrame extends CustomComponent {
 	public ProfileViewFrame(User user) {
 		fg = new OFFieldGroup<>(user);
 		fg.setReadOnly(true);
-		messageBox = new MessageBox(user);
 		profileImageFrame = new ProfileImageFrame(user);
 		scoreFrame = new ScoreFrame(user);
 		setCompositionRoot(build());
@@ -64,7 +62,6 @@ public class ProfileViewFrame extends CustomComponent {
 		fl.addComponent(emailField);
 		l.addComponent(fl);
 		l.addComponent(introductionField);
-		l.addComponent(messageBox);
 		return l;
 	}
 
