@@ -70,6 +70,17 @@ class User extends BaseEntity{
 
 	@OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
 	Set<Rating> ratings
+	
+	double getRating() {
+		double rating = 0
+		if (ratings) {
+			ratings.each {
+				rating += it.value	
+			}
+			rating = rating / ratings.size()
+		} 
+		(double) Math.round(rating)
+	}
 
 	Profile getProfile() {
 		if (!profile) {

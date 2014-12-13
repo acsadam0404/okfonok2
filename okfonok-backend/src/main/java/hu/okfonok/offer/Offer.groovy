@@ -15,6 +15,9 @@ import javax.validation.constraints.NotNull
 @Table(name = "offer")
 @EqualsAndHashCode(includes = ["amount", "advertisement", "user"])
 class Offer extends BaseEntity{
+	public static final String AMOUNT = "amount"
+	public static final String USER = "user"
+	public static final String ADVERTISEMENT = "advertisement"
 
 	private static OfferRepo offerRepo
 

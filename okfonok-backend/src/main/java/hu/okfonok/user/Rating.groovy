@@ -6,6 +6,8 @@ import hu.okfonok.BaseEntity
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
 import javax.persistence.Table
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
 import org.springframework.transaction.annotation.Transactional
@@ -35,6 +37,8 @@ class Rating extends BaseEntity{
 	User ratedUser
 
 	@NotNull
+	@Min(1L)
+	@Max(10L)
 	Double value
 
 	@Override

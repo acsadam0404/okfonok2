@@ -25,6 +25,7 @@ public class SelfRatingDialog extends Dialog {
 	private User user;
 	private VerticalLayout root;
 	private Stars stars;
+	private boolean noSkills;
 
 	private Button saveButton = new Button("Most elég lesz ennyi", new ClickListener() {
 
@@ -40,23 +41,40 @@ public class SelfRatingDialog extends Dialog {
 		@Override
 		public void buttonClick(ClickEvent event) {
 			stars.saveRatings();
-			root.replaceComponent(stars, stars = new Stars(user));
+			try {
+				root.replaceComponent(stars, stars = new Stars(user));
+			} catch (NoSkillException e) {
+				noSkills = true;
+				closeWindow();
+			}
 		}
 	});
 
 
 	public SelfRatingDialog() {
-		user = Authentication.getUser();
-		setCompositionRoot(build());
+		try {
+			user = Authentication.getUser();
+			stars = new Stars(user);
+			setCompositionRoot(build());
+			setContent(this);
+		} catch (NoSkillException e) {
+			noSkills = true;
+		}
+	}
+	
+	@Override
+	public void showWindow() {
+		if (!noSkills) {
+			super.showWindow();
+		}
 	}
 
 
-	private Component build() {
+	private Component build()  {
 		root = new VerticalLayout();
 		root.setMargin(true);
 		root.setSpacing(true);
 		root.addComponent(new Label("Skálázd tudásod és jártasságod!"));
-		stars = new Stars(user);
 		root.addComponent(stars);
 		HorizontalLayout buttons = new HorizontalLayout();
 		buttons.addComponent(saveButton);
@@ -75,17 +93,17 @@ public class SelfRatingDialog extends Dialog {
 
 		public static final int SHOWED_SKILLS = 4;
 
-		public Stars(User user) {
+		public Stars(User user) throws NoSkillException {
 			this.user = user;
 			List<Skill> allSkills = Rating.findSkillsNotRated(user);
 			if (allSkills.isEmpty()) {
-				closeWindow();
+				throw new NoSkillException();
 			}
 			if (allSkills.size() > SHOWED_SKILLS) {
 				skills = allSkills.subList(0, SHOWED_SKILLS);
-				closeAfterSave = true;
 			}
 			else {
+				closeAfterSave = true;
 				skills = allSkills;
 			}
 			setCompositionRoot(build());
@@ -113,12 +131,17 @@ public class SelfRatingDialog extends Dialog {
 			starsLayout = new VerticalLayout();
 			for (Skill skill : skills) {
 				RatingStars rs = new RatingStars();
+				rs.setMaxValue(10);
 				rs.setData(skill);
 				rs.setCaption(skill.getQuestion());
 				starsLayout.addComponent(rs);
 			}
 			return starsLayout;
 		}
+	}
+
+	private static class NoSkillException extends Exception {
+
 	}
 
 }

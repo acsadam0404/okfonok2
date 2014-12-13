@@ -35,6 +35,8 @@ class Advertisement extends BaseEntity{
 	public static final String REMUNERATION = "remuneration"
 	public static final String CATEGORY = "category"
 	public static final String ADDRESS = "address"	public static final String MAINCATEGORY = "mainCategory";
+	public static final String AVERAGEPRICE = "averagePrice";
+	public static final String OFFERSNUMBER = "offersNumber";
 
 	@ManyToOne
 	@NotNull
@@ -61,10 +63,10 @@ class Advertisement extends BaseEntity{
 
 	@Min(1L)
 	int maxOffer
-	
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "advertisement")
 	Set<Offer> offers
-	
+
 	JobCategory getMainCategory() {
 		category.mainCategory
 	}
@@ -72,7 +74,7 @@ class Advertisement extends BaseEntity{
 	static List<Advertisement> findByUsername(String username) {
 		findByUser(User.get(username))
 	}
-	
+
 	static List<Advertisement> findByUser(User user) {
 		repo.findByUser(user)
 	}
@@ -87,7 +89,16 @@ class Advertisement extends BaseEntity{
 	}
 
 	BigDecimal getAveragePrice() {
-		new BigDecimal("5500")
+		BigDecimal sum = BigDecimal.ZERO
+		if (offers) {
+			offers.each { sum += it.amount }
+			sum = sum.divide(new BigDecimal(offers.size()))
+		}
+		sum
+	}
+
+	int getOffersNumber() {
+		offers.size()
 	}
 
 	public void share() {

@@ -12,6 +12,7 @@ import hu.okfonok.vaadin.security.Authentication;
 import java.math.BigDecimal;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
@@ -46,7 +47,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 		addDistanceColumn();
 		addAveragePriceColumn();
 		addActionsColumn();
-		
+
 		root.setContainerDataSource(new BeanItemContainer<Advertisement>(Advertisement.class));
 		root.setVisibleColumns(IMAGE, Advertisement.MAINCATEGORY, Advertisement.CATEGORY, Advertisement.DESCRIPTION, Advertisement.REMUNERATION, AVERAGE_PRICE, DISTANCE, ACTIONS);
 		root.setSizeFull();
@@ -55,83 +56,95 @@ public class AdvertisementTableFrame extends CustomComponent {
 	}
 
 	private void addActionsColumn() {
-		
+
 		root.addGeneratedColumn(ACTIONS, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				VerticalLayout l = new VerticalLayout();
 				final User user = Authentication.getUser();
-				final Advertisement ad = (Advertisement) ((BeanItem)source.getItem(itemId)).getBean();
-				if (user.isAdvertisementSaved(ad)) {
-					l.addComponent(new Button("Elmentve", new ClickListener() {
-						
-						@Override
-						public void buttonClick(ClickEvent event) {
-							user.unsaveAdvertisement(ad);
-							refresh();
-						}
-					}));
-				}
-				else {
-					l.addComponent(new Button("Elmentem", new ClickListener() {
-						
-						@Override
-						public void buttonClick(ClickEvent event) {
-							user.saveAdvertisement(ad);
-							refresh();
-						}
-					}));
-				}
-				l.addComponent(new Button("Megosztom", new ClickListener() {
-					
-					@Override
-					public void buttonClick(ClickEvent event) {
-						ad.share();
+				BeanItem<Advertisement> item = (BeanItem) source.getItem(itemId);
+				if (item != null) {
+					final Advertisement ad = item.getBean();
+					if (user.isAdvertisementSaved(ad)) {
+						l.addComponent(new Button("Elmentve", new ClickListener() {
+
+							@Override
+							public void buttonClick(ClickEvent event) {
+								user.unsaveAdvertisement(ad);
+								refresh();
+							}
+						}));
 					}
-				}));
+					else {
+						l.addComponent(new Button("Elmentem", new ClickListener() {
+
+							@Override
+							public void buttonClick(ClickEvent event) {
+								user.saveAdvertisement(ad);
+								refresh();
+							}
+						}));
+					}
+					l.addComponent(new Button("Megosztom", new ClickListener() {
+
+						@Override
+						public void buttonClick(ClickEvent event) {
+							ad.share();
+						}
+					}));
+				}
 				return l;
 			}
 		});
 	}
 
 	private void addAveragePriceColumn() {
-		
+
 		root.addGeneratedColumn(AVERAGE_PRICE, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
-				Advertisement ad = (Advertisement) ((BeanItem)source.getItem(itemId)).getBean();
-				return ad.getAveragePrice() + " Ft";
+				BeanItem<Advertisement> item = (BeanItem) source.getItem(itemId);
+				if (item != null) {
+					Advertisement ad = item.getBean();
+					return ad.getAveragePrice() + " Ft";
+				}
+				return null;
 			}
 		});
 	}
 
 	private void addDistanceColumn() {
-	
+
 		root.addGeneratedColumn(DISTANCE, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
-				Address addressInRow = (Address) source.getItem(itemId).getItemProperty(Advertisement.ADDRESS).getValue();
-				BigDecimal distance = Distance.between(Authentication.getUser().getAddress(), addressInRow);
-				return distance + " km"; 
+				Item item = source.getItem(itemId);
+				if (item != null) {
+					Address addressInRow = (Address) item.getItemProperty(Advertisement.ADDRESS).getValue();
+					BigDecimal distance = Distance.between(Authentication.getUser().getAddress(), addressInRow);
+					return distance + " km";
+				}
+				return null;
 			}
 		});
 	}
 
 	private void addImageColumn() {
-		
+
 		root.addGeneratedColumn(IMAGE, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(final Table source, final Object itemId, Object columnId) {
 				return new Button("Megtekint", new ClickListener() {
-					
+
 					@Override
 					public void buttonClick(ClickEvent event) {
 						Advertisement ad = ((BeanItem<Advertisement>) source.getItem(itemId)).getBean();
-						new Dialog(new AdvertisementViewFrame(ad)).showWindow();;
+						new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+						;
 					}
 				});
 			}
