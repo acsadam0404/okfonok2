@@ -1,7 +1,5 @@
 package hu.okfonok.user
 
-import java.nio.ReadOnlyBufferException;
-
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.ad.Advertisement
@@ -14,7 +12,7 @@ import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional
 
 @Entity
 @Table(name = "user")
@@ -71,7 +69,7 @@ class User extends BaseEntity{
 	private Profile profile
 
 	@OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
-	List<Rating> ratings
+	Set<Rating> ratings
 
 	Profile getProfile() {
 		if (!profile) {
