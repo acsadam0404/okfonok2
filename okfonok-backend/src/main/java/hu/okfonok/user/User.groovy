@@ -18,6 +18,7 @@ class User extends BaseEntity{
 	private static UserRepo userRepo
 
 	private static UserRepo getRepo() {
+		
 		if (ServiceLocator.loaded && !userRepo)  {
 			userRepo = ServiceLocator.getBean(UserRepo)
 		}
@@ -26,10 +27,18 @@ class User extends BaseEntity{
 
 	@NotNull
 	String username
+	
 	@NotNull
 	String password
+	
 	@Embedded
 	Address address
+	
+	Date lastLogin
+	
+	Date registrationDate
+	
+	boolean firstLogin = true
 	
 	@OneToMany
 	private Set<Advertisement> savedAds
@@ -62,4 +71,6 @@ class User extends BaseEntity{
 	boolean isAdvertisementSaved(Advertisement ad) {
 		savedAds.contains(ad)
 	}
+	
+	// kell ide eventbus és logineventnél lastLogin-t beállítani
 }

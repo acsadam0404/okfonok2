@@ -1,6 +1,7 @@
 package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.vaadin.Dialog;
+import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.MainUI;
 import hu.okfonok.vaadin.screen.HelpCreatedEvent;
 import hu.okfonok.vaadin.screen.HelpFrame;
@@ -32,16 +33,14 @@ public class Menu extends CustomComponent {
 		menubar.addItem("Hirdetés feladása", new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				Dialog dialog = new Dialog(new AdvertisementCreationFrame());
-				dialog.setCloseEventClass(AdvertisementCreatedEvent.class);
+				Dialog dialog = new DialogWithCloseEvent(new AdvertisementCreationFrame(), AdvertisementCreatedEvent.class);
 				dialog.showWindow();
 			}
 		});
 		menubar.addItem("Segítség", new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				Dialog dialog = new Dialog(new HelpFrame());
-				dialog.setCloseEventClass(HelpCreatedEvent.class);
+				Dialog dialog = new DialogWithCloseEvent(new HelpFrame(), HelpCreatedEvent.class);
 				dialog.showWindow();
 			}
 		});

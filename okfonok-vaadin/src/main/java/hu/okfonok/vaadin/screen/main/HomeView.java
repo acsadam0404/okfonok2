@@ -2,6 +2,7 @@ package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.vaadin.AbstractView;
 import hu.okfonok.vaadin.component.DashboardLayout;
+import hu.okfonok.vaadin.screen.WelcomeNotification;
 
 import org.springframework.context.annotation.Scope;
 
@@ -30,6 +31,7 @@ public class HomeView extends AbstractView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		WelcomeNotification.showOnFirstLogin();
 		setCompositionRoot(buildMainLayout());
 	}
 
