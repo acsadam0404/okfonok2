@@ -1,4 +1,4 @@
-package hu.okfonok.vaadin.screen.main;
+package hu.okfonok.vaadin.screen.main.ad;
 
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.JobCategory;

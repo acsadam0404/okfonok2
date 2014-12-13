@@ -24,4 +24,8 @@
     
 
     <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
+
+    <inherits name="org.vaadin.teemu.ratingstars.gwt.RatingStarsWidgetset" />
+
+    <inherits name="by.kod.numberfield.NumberFieldWidgetSet" />
 </module>

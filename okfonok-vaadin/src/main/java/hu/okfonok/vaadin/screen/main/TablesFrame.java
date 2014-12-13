@@ -1,5 +1,7 @@
 package hu.okfonok.vaadin.screen.main;
 
+import hu.okfonok.vaadin.screen.main.ad.AdvertisementTableFrame;
+
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.TabSheet;
 
