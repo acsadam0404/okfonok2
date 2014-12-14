@@ -159,25 +159,13 @@ public class AdvertisementCreationFrame extends CustomComponent {
 			@Override
 			public void eventClick(EventClick event) {
 				PreferredIntervalEvent interval = (PreferredIntervalEvent)event.getCalendarEvent();
-				
+				fg.getBean().getPreferredIntervals().remove(interval.getDateInterval());
 			}
 		});
 		
 		calendar.setHandler((DateClickHandler)null);
 		
 		return calendar;
-		
-	}
-	
-	private static class PreferredIntervalEvent extends BasicEvent {
-		
-		private DateInterval interval;
-
-		public PreferredIntervalEvent(DateInterval interval) {
-			this.interval = interval;
-			setStart(interval.getStart());
-			setEnd(interval.getEnd());
-		}
 		
 	}
 }

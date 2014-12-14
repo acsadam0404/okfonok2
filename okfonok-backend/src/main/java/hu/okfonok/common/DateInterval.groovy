@@ -5,9 +5,6 @@ import hu.okfonok.BaseEntity;
 import javax.persistence.Entity
 import javax.persistence.Table
 
-/* TODO ezt nem entitásként kéne ábrázolni */
-@Entity
-@Table(name = "dateinterval")
 class DateInterval extends BaseEntity{
 	private Date start;
 	private Date end;

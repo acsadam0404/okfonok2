@@ -7,6 +7,7 @@ import hu.okfonok.common.DateInterval
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.ManyToOne
@@ -44,7 +45,7 @@ class Offer extends BaseEntity{
 	@NotNull
 	User user
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	Set<DateInterval> intervals = [] as Set
 
 	public Offer() {

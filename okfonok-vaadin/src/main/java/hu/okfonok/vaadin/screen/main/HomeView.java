@@ -1,8 +1,11 @@
 package hu.okfonok.vaadin.screen.main;
 
+import hu.okfonok.user.User;
 import hu.okfonok.vaadin.AbstractView;
 import hu.okfonok.vaadin.component.DashboardLayout;
 import hu.okfonok.vaadin.screen.WelcomeNotification;
+import hu.okfonok.vaadin.screen.main.user.ProfileImageFrame;
+import hu.okfonok.vaadin.screen.main.user.UserDataFrame;
 import hu.okfonok.vaadin.security.Authentication;
 
 import org.springframework.context.annotation.Scope;
@@ -53,7 +56,9 @@ public class HomeView extends AbstractView {
 	private Component buildRight() {
 		VerticalLayout right = new VerticalLayout();
 		right.setWidth("300px");
-		right.addComponent(new UserDataFrame(Authentication.getUser()));
+		User user = Authentication.getUser();
+		right.addComponent(new ProfileImageFrame(user));
+		right.addComponent(new UserDataFrame(user));
 		return right;
 	}
 

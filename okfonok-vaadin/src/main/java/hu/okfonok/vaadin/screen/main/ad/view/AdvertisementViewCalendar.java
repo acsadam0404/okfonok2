@@ -1,7 +1,10 @@
 package hu.okfonok.vaadin.screen.main.ad.view;
 
 import hu.okfonok.ad.Advertisement;
+import hu.okfonok.common.DateInterval;
+import hu.okfonok.vaadin.screen.main.ad.PreferredIntervalEvent;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,11 @@ class AdvertisementViewCalendar extends CustomComponent implements CalendarEvent
 
 	@Override
 	public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
-		return null;
+		List<CalendarEvent> events = new ArrayList<>();
+		for (DateInterval di : ad.getPreferredIntervals()) {
+			PreferredIntervalEvent pie = new PreferredIntervalEvent(di);
+			events.add(pie);
+		}
+		return events;
 	}
 }

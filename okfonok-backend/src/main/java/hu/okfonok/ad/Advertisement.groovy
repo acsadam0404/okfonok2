@@ -8,6 +8,7 @@ import hu.okfonok.offer.Offer
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -69,7 +70,7 @@ class Advertisement extends BaseEntity{
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "advertisement")
 	Set<Offer> offers
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	Set<DateInterval> preferredIntervals = [] as Set
 	
 	JobCategory getMainCategory() {

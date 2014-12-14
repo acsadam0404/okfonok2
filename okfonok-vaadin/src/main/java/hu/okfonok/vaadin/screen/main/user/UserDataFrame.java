@@ -1,18 +1,21 @@
-package hu.okfonok.vaadin.screen.main;
+package hu.okfonok.vaadin.screen.main.user;
 
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.OFFieldGroup;
-import hu.okfonok.vaadin.screen.main.user.ProfileImageFrame;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 
 public class UserDataFrame extends CustomComponent {
@@ -55,13 +58,37 @@ public class UserDataFrame extends CustomComponent {
 
 	private Component build() {
 		introductionField = new TextArea("Magamról");
+		introductionField.setNullRepresentation("");
+		
 		emailField = new TextField();
+		emailField.setIcon(FontAwesome.ANCHOR);
+		emailField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		emailField.setNullRepresentation("");
+		emailField.setInputPrompt("E-mail cím");
+		
 		phoneNumberField = new TextField();
+		phoneNumberField.setIcon(FontAwesome.ANCHOR);
+		phoneNumberField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		phoneNumberField.setNullRepresentation("");
+		phoneNumberField.setInputPrompt("Telefonszám");
+		
 		idCardField = new TextField();
+		idCardField.setNullRepresentation("");
+		idCardField.setIcon(FontAwesome.ANCHOR);
+		idCardField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		
 		addressCardField = new TextField();
+		addressCardField.setNullRepresentation("");
+		addressCardField.setIcon(FontAwesome.ANCHOR);
+		addressCardField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		
+		
+		Label onlyOnConnectionLabel = new Label("Csak létrejött kapcsolat esetén kerül továbbításra");
+		Label legalizationLabel = new Label("Hitelesítéshez szükséges adatok");
 		VerticalLayout l = new VerticalLayout();
-		ProfileImageFrame profileImageFrame = new ProfileImageFrame(fg.getBean());
-		l.addComponents(emailField, phoneNumberField, idCardField, addressCardField, profileImageFrame, introductionField, editButton);
+		l.setSpacing(true);
+		l.setMargin(true);
+		l.addComponents(emailField, phoneNumberField, onlyOnConnectionLabel, legalizationLabel, idCardField, addressCardField, introductionField, editButton);
 
 		fg.bind(emailField, "profile.email");
 		fg.bind(introductionField, "profile.introduction");
@@ -69,7 +96,9 @@ public class UserDataFrame extends CustomComponent {
 		fg.bind(idCardField, "profile.idCard");
 		fg.bind(addressCardField, "profile.addressCard");
 
-		return l;
+		Panel panel = new Panel(l);
+		panel.setCaption("Alapadatok");
+		return panel;
 	}
 
 }
