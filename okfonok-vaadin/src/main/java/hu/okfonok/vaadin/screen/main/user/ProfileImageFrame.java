@@ -20,7 +20,7 @@ public class ProfileImageFrame extends CustomComponent {
 
 	private Component build() {
 		VerticalLayout l = new VerticalLayout();
-		l.addComponent(buildSkillCircle());
+		l.addComponent(new SkillCircle(user));
 		l.addComponent(new Label(user.getProfile().getName()));
 		l.addComponent(new Label("/" + user.getRatings().size()));
 		RatingStars stars = new RatingStars();
@@ -28,10 +28,5 @@ public class ProfileImageFrame extends CustomComponent {
 		stars.setReadOnly(true);
 		l.addComponent(stars);
 		return l;
-	}
-
-	private Component buildSkillCircle() {
-		// TODO Auto-generated method stub
-		return new Label("");
 	}
 }

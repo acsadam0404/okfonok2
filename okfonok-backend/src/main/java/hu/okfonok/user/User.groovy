@@ -130,4 +130,29 @@ class User extends BaseEntity{
 		save()
 		print 'sending confirmation mail' //TODO
 	}
+
+	/**
+	 * Visszaadja az értékelések átlagát adott skillhez. Nem számolja bele az önértékeléseket.
+	 * @param skill
+	 * @return
+	 */
+	Double getAverageRatingForSkill(Skill skill) {
+		def outerRatings = ratings.findAll { !it.ownRating && it.skill == skill }
+		def values = outerRatings.collect { it.value }
+		def averageRatings = 0.0
+		if (values) {
+			averageRatings = values.sum() / values.size()
+		}
+		averageRatings
+	}
+
+	Double getOwnRatingForSkill(Skill skill) {
+		double value = 0.0
+		// TODO olyan invariánst kell bevezetni a ratingok hozzáadásánál, ami nem engedi meg ownrating egy skillhez való többszörös felvevését
+		def rating = ratings.find { it.ownRating && it.skill == skill }
+		if (rating) {
+			value = rating.value
+		}
+		value
+	}
 }

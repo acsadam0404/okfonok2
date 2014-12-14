@@ -25,6 +25,17 @@ class Rating extends BaseEntity{
 		ratingRepo
 	}
 
+	Rating() {
+		
+	}
+	
+	Rating(Skill skill, User raterUser, User ratedUser, Double value) {
+		this.value = value;
+		this.ratedUser = ratedUser;
+		this.raterUser = raterUser;
+		this.skill = skill;
+	}
+	
 	@ManyToOne
 	@NotNull
 	Skill skill
@@ -36,6 +47,10 @@ class Rating extends BaseEntity{
 	@ManyToOne
 	User ratedUser
 
+	boolean isOwnRating() {
+		return raterUser == ratedUser	
+	}
+	
 	@NotNull
 	@Min(1L)
 	@Max(10L)

@@ -66,6 +66,7 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 		l.addComponent(table);
 		offers = new OfferTableFrame();
 		l.addComponent(offers);
+		offers.setVisible(false);
 		refresh();
 		setCompositionRoot(l);
 	}
@@ -78,7 +79,7 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 	}
 
 	private Table buildTable() {
-		Table table = new Table();
+		final Table table = new Table();
 		table.setSizeFull();
 		
 		table.setColumnHeader(Advertisement.MAINCATEGORY, "Főkategória");
@@ -109,7 +110,13 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 			public void valueChange(ValueChangeEvent event) {
 				Advertisement ad = (Advertisement) event.getProperty().getValue();
 				if (ad != null) {
+					table.setPageLength(1);
 					offers.refresh(ad);
+					offers.setVisible(true);
+				}
+				else {
+					table.setPageLength(10);
+					offers.setVisible(false);
 				}
 			}
 		});

@@ -20,6 +20,15 @@ class Skill extends BaseEntity{
 		}
 		skillRepo
 	}
+	
+	Skill() {
+		
+	}
+	
+	Skill(String name, String question) {
+		this.name = name
+		this.question = question
+	}
 
 
 	@NotNull
