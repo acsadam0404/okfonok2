@@ -4,6 +4,7 @@ import hu.okfonok.ad.Advertisement;
 import hu.okfonok.offer.Offer;
 import hu.okfonok.user.Profile;
 import hu.okfonok.vaadin.OFFieldGroup;
+import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.screen.main.user.MessageBox;
 import hu.okfonok.vaadin.security.Authentication;
 
@@ -42,7 +43,9 @@ public class AdvertisementViewFrame extends CustomComponent {
 		@Override
 		public void buttonClick(ClickEvent event) {
 			BigDecimal amount = new BigDecimal(offerField.getValue());
-			new Offer(Authentication.getUser(), fg.getBean(), amount).save();
+			Offer offer = new Offer(Authentication.getUser(), fg.getBean(), amount);
+			offer.save();
+			UIEventBus.post(new OfferCreatedEvent(offer));
 		}
 	});
 
@@ -78,12 +81,12 @@ public class AdvertisementViewFrame extends CustomComponent {
 		TextArea descriptionField = new TextArea("Hirdetés szövege");
 		descriptionField.setSizeFull();
 		TextField remunerationField = new TextField("Díjazás");
-		TextField maximumPriceField = new TextField("Maximum díj");
+		TextField maxOfferField = new TextField("Maximum díj");
 		fl.addComponent(nameField);
 		fl.addComponent(mainCategoryField);
 		fl.addComponent(categoryField);
 		fl.addComponent(remunerationField);
-		fl.addComponent(maximumPriceField);
+		fl.addComponent(maxOfferField);
 		fl.addComponent(saveButton);
 		l.addComponent(offerField);
 		fl.addComponent(offerButton);
@@ -95,9 +98,8 @@ public class AdvertisementViewFrame extends CustomComponent {
 		fg.bind(categoryField, Advertisement.CATEGORY);
 		fg.bind(descriptionField, Advertisement.DESCRIPTION);
 		fg.bind(remunerationField, Advertisement.REMUNERATION);
-
+		fg.bind(maxOfferField, "maxOffer");
 		fg.setReadOnly(true);
-		// TODO maxpricefield
 
 		return l;
 	}

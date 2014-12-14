@@ -1,15 +1,20 @@
 package hu.okfonok.offer
 
 import groovy.transform.EqualsAndHashCode
-import hu.okfonok.BaseEntity;
+import hu.okfonok.BaseEntity
 import hu.okfonok.ad.Advertisement
+import hu.okfonok.common.DateInterval
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
+
+import org.w3c.dom.events.UIEvent;
 
 @Entity
 @Table(name = "offer")
@@ -17,7 +22,7 @@ import javax.validation.constraints.NotNull
 class Offer extends BaseEntity{
 	public static final String AMOUNT = "amount"
 	public static final String USER = "user"
-	public static final String ADVERTISEMENT = "advertisement"
+	public static final String ADVERTISEMENT = "advertisement"	public static final Object INTERVALS = "intervals";
 
 	private static OfferRepo offerRepo
 
@@ -38,6 +43,9 @@ class Offer extends BaseEntity{
 	@ManyToOne
 	@NotNull
 	User user
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	Set<DateInterval> intervals = [] as Set
 
 	public Offer() {
 	}
@@ -52,5 +60,6 @@ class Offer extends BaseEntity{
 		advertisement.offers << this
 		repo.save(this)
 		advertisement.save()
+		
 	}
 }

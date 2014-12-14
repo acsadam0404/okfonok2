@@ -65,7 +65,7 @@ public class HomeView extends AbstractView {
 		HorizontalLayout dl = new HorizontalLayout();
 		dl.setSpacing(true);
 		dl.setSizeUndefined();
-		dl.addComponent(new MapFrame());
+		dl.addComponent(new MapFrame(Authentication.getUser()));
 		dl.addComponent(new CalendarFrame());
 		left.addComponent(dl);
 		left.addComponent(new TablesFrame());

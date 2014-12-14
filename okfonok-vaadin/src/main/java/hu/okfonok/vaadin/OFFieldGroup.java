@@ -21,6 +21,7 @@ public class OFFieldGroup<T> extends BeanFieldGroup<T> {
 
 	public OFFieldGroup(T bean) {
 		this((Class<T>) bean.getClass());
+		setBuffered(false);
 		setItemDataSource(bean);
 	}
 

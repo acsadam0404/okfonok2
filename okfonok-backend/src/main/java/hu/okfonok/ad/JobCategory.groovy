@@ -1,5 +1,7 @@
 package hu.okfonok.ad
 
+import java.util.Collection;
+
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.user.ServiceLocator
@@ -48,5 +50,13 @@ class JobCategory extends BaseEntity{
 
 	static List<JobCategory> findAll() {
 		repo.findAll()
+	}
+	
+	static List<JobCategory> findAllMain() {
+		repo.findAllMain()
+	}
+
+	static List<JobCategory> findAllSub() {
+		repo.findAllSub() 
 	}
 }

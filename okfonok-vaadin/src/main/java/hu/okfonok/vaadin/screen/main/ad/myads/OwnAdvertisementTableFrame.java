@@ -3,6 +3,7 @@ package hu.okfonok.vaadin.screen.main.ad.myads;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreatedEvent;
+import hu.okfonok.vaadin.screen.main.ad.view.OfferCreatedEvent;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.util.List;
@@ -126,6 +127,11 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 
 	@Subscribe
 	public void handleAdvertisementCreatedEvent(AdvertisementCreatedEvent event) {
+		refresh();
+	}
+	
+	@Subscribe
+	public void handleOfferCreatedEvent(OfferCreatedEvent event) {
 		refresh();
 	}
 }

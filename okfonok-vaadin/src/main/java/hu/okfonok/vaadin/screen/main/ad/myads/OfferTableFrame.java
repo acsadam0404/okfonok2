@@ -4,11 +4,14 @@ import hu.okfonok.ad.Advertisement;
 import hu.okfonok.offer.Offer;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-
+import com.vaadin.ui.VerticalLayout;
 
 public class OfferTableFrame extends CustomComponent {
 	private static final String IMAGE = "image";
@@ -21,30 +24,77 @@ public class OfferTableFrame extends CustomComponent {
 
 	private Table buildTable() {
 		Table table = new Table();
+		table.setSizeFull();
 		BeanItemContainer<Offer> container = new BeanItemContainer<Offer>(Offer.class);
-		
+
 		container.addNestedContainerProperty("user.profile.shortenedName");
 		container.addNestedContainerProperty("user.rating");
+		container.addNestedContainerProperty("user.profile.introduction");
 		table.addContainerProperty(IMAGE, Component.class, null);
 		table.addGeneratedColumn(IMAGE, new ColumnGenerator() {
-			
+
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				return null;
 			}
 		});
-		
-		table.setContainerDataSource(container);		
-		
+		table.addContainerProperty("actions", Component.class, null);
+		table.addGeneratedColumn("actions", new ColumnGenerator() {
+
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				VerticalLayout l = new VerticalLayout();
+				l.addComponent(new Button("Elfogadom", new ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+
+					}
+				}));
+				l.addComponent(new Button("Üzenetet küldök", new ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+
+					}
+				}));
+				return l;
+			}
+		});
+		table.addGeneratedColumn(Offer.INTERVALS, new ColumnGenerator() {
+
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				VerticalLayout l = new VerticalLayout();
+				l.addComponent(new Button("Naptár", new ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+
+					}
+				}));
+				return l;
+			}
+		});
+
+		table.setContainerDataSource(container);
+
 		table.setColumnHeader("user.profile.shortenedName", "Név");
 		table.setColumnHeader("user.rating", "Értékelés");
+		table.setColumnHeader("user.profile.introduction", "Bemutatkozás");
+		table.setColumnHeader(Offer.INTERVALS, "Naptár");
+		table.setColumnHeader(Offer.AMOUNT, "Ajánlat");
+		table.setColumnHeader("actions", "");
 		table.setColumnHeader(IMAGE, "Kép");
-		table.setVisibleColumns(IMAGE, "user.profile.shortenedName", "user.rating");
+		table.setVisibleColumns(IMAGE, "user.profile.shortenedName", "user.rating", "user.profile.introduction", Offer.AMOUNT, "actions");
 		return table;
 	}
 
 	public void refresh(Advertisement ad) {
-		BeanItemContainer container = (BeanItemContainer)table.getContainerDataSource();
+		BeanItemContainer container = (BeanItemContainer) table.getContainerDataSource();
 		container.removeAllItems();
 		container.addAll(ad.getOffers());
 	}

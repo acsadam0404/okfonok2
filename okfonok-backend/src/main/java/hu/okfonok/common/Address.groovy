@@ -11,6 +11,15 @@ class Address implements Serializable {
 	Settlement settlement
 
 	String other
+	
+	Address() {
+		
+	}
+	
+	Address(Settlement settlement, String other) {
+		this.settlement = settlement
+		this.other = other
+	}
 
 	void setZipcode(Integer zipcode) {
 		if (zipcode) {
@@ -22,11 +31,12 @@ class Address implements Serializable {
 		settlement?.zipcode
 	}
 
+	//TODO kell ez?
 	@Formula("0")
 	private int dummyFieldForHibernateNotNullEmbedded
 
 	@Override
 	String toString() {
-		settlement + " " + other
+		settlement.toString() + " " + other
 	}
 }

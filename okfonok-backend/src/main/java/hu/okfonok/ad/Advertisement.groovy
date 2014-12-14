@@ -3,6 +3,7 @@ package hu.okfonok.ad;
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.common.Address
+import hu.okfonok.common.DateInterval
 import hu.okfonok.offer.Offer
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
@@ -62,11 +63,15 @@ class Advertisement extends BaseEntity{
 	boolean homeJob
 
 	@Min(1L)
-	int maxOffer
+	@NotNull
+	Integer maxOffer
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "advertisement")
 	Set<Offer> offers
 
+	@OneToMany(fetch = FetchType.EAGER)
+	Set<DateInterval> preferredIntervals = [] as Set
+	
 	JobCategory getMainCategory() {
 		category.mainCategory
 	}

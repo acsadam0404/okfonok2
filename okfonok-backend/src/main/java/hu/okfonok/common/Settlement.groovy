@@ -19,6 +19,15 @@ class Settlement extends BaseEntity {
 		}
 		settlementRepo
 	}
+	
+	Settlement() {
+		
+	}
+	
+	Settlement(int zipcode, String settlement) {
+		this.zipcode = zipcode
+		this.settlement = settlement
+	}
 
 	private Integer zipcode
 
@@ -32,6 +41,11 @@ class Settlement extends BaseEntity {
 		settlement
 	}
 
+	@Override
+	String toString() {
+		zipcode + " - " + settlement
+	}
+	
 	static Settlement findByZipcode(int zipcode) {
 		repo.findByZipcode(zipcode)
 	}
