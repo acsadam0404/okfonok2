@@ -27,6 +27,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -35,7 +36,6 @@ import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.RangeSelectEvent;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.RangeSelectHandler;
-import com.vaadin.ui.components.calendar.event.BasicEvent;
 
 public class AdvertisementCreationFrame extends CustomComponent {
 	private OFFieldGroup<Advertisement> fg;
@@ -141,8 +141,20 @@ public class AdvertisementCreationFrame extends CustomComponent {
 	
 	
 	private Component buildRight() {
-		final Calendar calendar = new Calendar();
+		TabSheet ts = new TabSheet();
+		Component calendar = buildCalendar();
 		calendar.setWidth("600px");
+		calendar.setHeight("600px");
+		ts.addTab(calendar, "Naptár");
+		CarouselFrame carouselFrame = new CarouselFrame();
+		carouselFrame.setWidth("600px");
+		carouselFrame.setHeight("600px");
+		ts.addTab(carouselFrame, "Képek");
+		return ts;
+	}
+
+	private Component buildCalendar() {
+		final Calendar calendar = new Calendar();
 		calendar.setWeeklyCaptionFormat("MMM dd");
 		calendar.setHandler(new RangeSelectHandler() {
 			
@@ -166,6 +178,5 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		calendar.setHandler((DateClickHandler)null);
 		
 		return calendar;
-		
 	}
 }
