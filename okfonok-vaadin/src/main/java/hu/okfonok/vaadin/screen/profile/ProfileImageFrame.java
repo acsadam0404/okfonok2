@@ -1,7 +1,9 @@
-package hu.okfonok.vaadin.screen.main.user;
+package hu.okfonok.vaadin.screen.profile;
 
 import hu.okfonok.Config;
+import hu.okfonok.ImageResizer;
 import hu.okfonok.user.User;
+import hu.okfonok.vaadin.MimeType;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.io.IOException;
@@ -29,22 +31,32 @@ public class ProfileImageFrame extends CustomComponent {
 	 * ezen van rajta az upload gomb és a profilkép
 	 */
 	private VerticalLayout imageHolder;
-	private MultiFileUpload upload = new MultiFileUpload(new UploadFinishedHandler() {
 
-		@Override
-		public void handleFile(InputStream input, String fileName, String mimeType, long length) {
-			try {
-				if (!Files.exists(profileRoot)) {
-					Files.createDirectories(profileRoot);
+
+	private class ProfileImageUpload extends MultiFileUpload {
+		private ProfileImageUpload() {
+			super(new UploadFinishedHandler() {
+
+				@Override
+				public void handleFile(InputStream input, String fileName, String mimeType, long length) {
+					try {
+						Files.deleteIfExists(profileRoot);
+						if (!Files.exists(profileRoot.getParent())) {
+							Files.createDirectories(profileRoot.getParent());
+						}
+						Files.copy(input, profileRoot);
+						new ImageResizer(profileRoot, 200, 200).resizeAndSave();
+						refresh();
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-				Files.copy(input, profileRoot);
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}, new UploadStateWindow());
+			}, new UploadStateWindow());
 
+			setAcceptedMimeTypes(MimeType.getImageTypes());
+		}
+	}
 
 
 	public ProfileImageFrame(User user) {
@@ -77,7 +89,7 @@ public class ProfileImageFrame extends CustomComponent {
 		}
 		Image profileImage = new Image(profileRoot.toFile().getName(), new FileResource(profileRoot.toFile()));
 		imageHolder.addComponent(profileImage);
-		imageHolder.addComponent(upload);
+		imageHolder.addComponent(new ProfileImageUpload());
 	}
 
 

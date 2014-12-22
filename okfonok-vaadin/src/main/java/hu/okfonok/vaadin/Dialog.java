@@ -6,6 +6,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Layout.SpacingHandler;
 
 
 public class Dialog extends CustomComponent {
@@ -36,6 +37,9 @@ public class Dialog extends CustomComponent {
 	public void setContent(Component content) {
 		window.setContent(content);
 		setCaption(content.getCaption());
+		if (content instanceof SpacingHandler) {
+			((SpacingHandler) content).setSpacing(true);
+		}
 	}
 
 

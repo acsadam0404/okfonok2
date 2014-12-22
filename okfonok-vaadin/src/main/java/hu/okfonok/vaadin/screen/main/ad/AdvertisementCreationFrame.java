@@ -146,7 +146,7 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		calendar.setWidth("600px");
 		calendar.setHeight("600px");
 		ts.addTab(calendar, "Naptár");
-		CarouselFrame carouselFrame = new CarouselFrame(fg.getBean());
+		CarouselWithUploadFrame carouselFrame = new CarouselWithUploadFrame(fg.getBean());
 		carouselFrame.setWidth("600px");
 		carouselFrame.setHeight("600px");
 		ts.addTab(carouselFrame, "Képek");

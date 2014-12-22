@@ -23,7 +23,7 @@ abstract class BaseEntity implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	boolean equals(Object obj) {
 		if (obj.is(this)) {
 			return true
 		}
@@ -32,17 +32,21 @@ abstract class BaseEntity implements Serializable {
 		}
 		return false
 	}
-	
+
 	@Override
-	public int hashCode() {
+	int hashCode() {
 		if (id != 0) {
 			return (int) id
 		}
 		return super.hashCode()
 	}
-	
+
 	@Override
 	String toString() {
-		return getClass().getSimpleName() + "(" + id + ")";
+		getClass().getSimpleName() + "(" + id + ")";
+	}
+
+	boolean isPersistent() {
+		getId() != 0
 	}
 }

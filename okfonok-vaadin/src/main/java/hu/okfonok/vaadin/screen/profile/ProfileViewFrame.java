@@ -1,4 +1,4 @@
-package hu.okfonok.vaadin.screen.main.user;
+package hu.okfonok.vaadin.screen.profile;
 
 import hu.okfonok.user.Profile;
 import hu.okfonok.user.User;

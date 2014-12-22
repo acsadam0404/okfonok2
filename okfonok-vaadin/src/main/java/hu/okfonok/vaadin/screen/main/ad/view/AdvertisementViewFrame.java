@@ -1,11 +1,13 @@
 package hu.okfonok.vaadin.screen.main.ad.view;
 
+import hu.okfonok.Config;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.offer.Offer;
 import hu.okfonok.user.Profile;
 import hu.okfonok.vaadin.OFFieldGroup;
 import hu.okfonok.vaadin.UIEventBus;
-import hu.okfonok.vaadin.screen.main.user.MessageBox;
+import hu.okfonok.vaadin.component.DirectoryCarousel;
+import hu.okfonok.vaadin.screen.profile.MessageBox;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.math.BigDecimal;
@@ -27,25 +29,12 @@ import com.vaadin.ui.VerticalLayout;
 public class AdvertisementViewFrame extends CustomComponent {
 	private OFFieldGroup<Advertisement> fg;
 	
-	private NumberField offerField = new NumberField("Ajánlatom");
-	
 	private Button saveButton = new Button("Elmentem", new ClickListener() {
 		
 		@Override
 		public void buttonClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-		}
-	});
-	
-	private Button offerButton = new Button("Ajánlatom", new ClickListener() {
-		
-		@Override
-		public void buttonClick(ClickEvent event) {
-			BigDecimal amount = new BigDecimal(offerField.getValue());
-			Offer offer = new Offer(Authentication.getUser(), fg.getBean(), amount);
-			offer.save();
-			UIEventBus.post(new OfferCreatedEvent(offer));
 		}
 	});
 
@@ -61,7 +50,7 @@ public class AdvertisementViewFrame extends CustomComponent {
 		l.setHeight("600px");
 		
 		l.addTab(buildData(), "Összefoglaló");
-		l.addTab(new AdvertisementViewImages(fg.getBean()), "Képek");
+		l.addTab(new DirectoryCarousel(Config.getAdRoot(Authentication.getUser(), fg.getBean().getUuid())), "Képek");
 		l.addTab(new AdvertisementViewMap(fg.getBean()), "Térkép");
 		l.addTab(new AdvertisementViewCalendar(fg.getBean()), "Naptár");
 		l.addTab(new MessageBox(fg.getBean()), "Üzenetek");
@@ -88,8 +77,6 @@ public class AdvertisementViewFrame extends CustomComponent {
 		fl.addComponent(remunerationField);
 		fl.addComponent(maxOfferField);
 		fl.addComponent(saveButton);
-		l.addComponent(offerField);
-		fl.addComponent(offerButton);
 		l.addComponent(fl);
 		l.addComponent(descriptionField);
 

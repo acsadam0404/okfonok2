@@ -144,7 +144,6 @@ public class AdvertisementTableFrame extends CustomComponent {
 					public void buttonClick(ClickEvent event) {
 						Advertisement ad = ((BeanItem<Advertisement>) source.getItem(itemId)).getBean();
 						new Dialog(new AdvertisementViewFrame(ad)).showWindow();
-						;
 					}
 				});
 			}
