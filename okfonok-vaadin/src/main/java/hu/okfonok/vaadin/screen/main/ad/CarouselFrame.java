@@ -1,12 +1,13 @@
 package hu.okfonok.vaadin.screen.main.ad;
 
 import hu.okfonok.Config;
+import hu.okfonok.ad.Advertisement;
+import hu.okfonok.vaadin.security.Authentication;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.vaadin.virkki.carousel.HorizontalCarousel;
 import org.vaadin.virkki.carousel.client.widget.gwt.ArrowKeysMode;
@@ -16,7 +17,6 @@ import com.vaadin.server.FileResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.MultiFileUpload;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
@@ -28,10 +28,12 @@ public class CarouselFrame extends CustomComponent implements UploadFinishedHand
 	private MultiFileUpload upload;
 	private Path imagePath;
 
-	public CarouselFrame() {
+
+	public CarouselFrame(Advertisement ad) {
+		assert ad != null;
 		carousel = buildCarousel();
 		upload = buildUpload();
-		imagePath = Config.getRoot().resolve("tmpads");
+		imagePath = Config.getAdRoot(Authentication.getUser(), ad.getUuid());
 
 		VerticalLayout l = new VerticalLayout();
 		l.setSizeFull();

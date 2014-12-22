@@ -1,5 +1,7 @@
 package hu.okfonok;
 
+import hu.okfonok.user.User;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,7 +27,45 @@ public class Config implements ApplicationContextAware {
 	}
 
 
-	public static Path getRoot() {
+	/**
+	 * Ez az egész alkalmazás rootja, ide csak a többi directory jön.
+	 * Közvetlenül nem hivatkozunk rá.
+	 * 
+	 * @return
+	 */
+	private static Path getRoot() {
 		return Paths.get(instance.root);
+	}
+
+
+	/**
+	 * ide jönnek a user specifikus fájlok
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static Path getUserRoot(User user) {
+		return getRoot().resolve("users").resolve(user.getUsername());
+	}
+
+
+	/**
+	 * @return Az alkalmazás általános fájljainak rootja.
+	 */
+	public static Path getAppRoot() {
+		return getRoot().resolve("app");
+	}
+
+
+	/**
+	 * @param user
+	 *            a felhasználó aki létrehozza a hirdetést
+	 * @param uuid
+	 *            a hirdetés uuid-je
+	 * @return Az aktuális hirdetéshez kapcsolódó root.
+	 */
+	public static Path getAdRoot(User user, String uuid) {
+		/* jelenlegi megoldás: myroot/users/$username/ads/$uuid */
+		return getUserRoot(user).resolve("ads").resolve(uuid);
 	}
 }

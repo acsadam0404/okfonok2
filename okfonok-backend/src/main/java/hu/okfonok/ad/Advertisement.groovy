@@ -8,7 +8,7 @@ import hu.okfonok.offer.Offer
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
-import javax.persistence.ElementCollection;
+import javax.persistence.ElementCollection
 import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -40,6 +40,14 @@ class Advertisement extends BaseEntity{
 	public static final String AVERAGEPRICE = "averagePrice";
 	public static final String OFFERSNUMBER = "offersNumber";
 
+	/**
+	 * Létrehoz egy hirdetést és beállítja az uuid-ját. 
+	 * Az uuid beállítása már a létrehozás pillanatában megtörténik, a még nem mentett entitásnál is létezik.
+	 */
+	Advertisement() {
+		uuid = UUID.randomUUID().toString()
+	}
+
 	@ManyToOne
 	@NotNull
 	User user
@@ -50,6 +58,9 @@ class Advertisement extends BaseEntity{
 
 	@NotNull
 	String remuneration
+
+	@NotNull
+	String uuid
 
 	@ManyToOne
 	@NotNull
@@ -72,7 +83,7 @@ class Advertisement extends BaseEntity{
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	Set<DateInterval> preferredIntervals = [] as Set
-	
+
 	JobCategory getMainCategory() {
 		category.mainCategory
 	}

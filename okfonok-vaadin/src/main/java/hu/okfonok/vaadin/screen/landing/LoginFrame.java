@@ -40,30 +40,31 @@ public class LoginFrame extends CustomComponent {
 		loginPanel.addStyleName("login-panel");
 
 		loginPanel.addComponent(buildFields());
-		loginPanel.addComponent(new CheckBox("Remember me", true));
 		return loginPanel;
 	}
 
 
 	private Component buildFields() {
-		HorizontalLayout fields = new HorizontalLayout();
+		VerticalLayout fields = new VerticalLayout();
 		fields.setSpacing(true);
 		fields.addStyleName("fields");
 
-		final TextField username = new TextField("Username");
+		final TextField username = new TextField("Felhasználónév");
 		username.setIcon(FontAwesome.USER);
 		username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-		final PasswordField password = new PasswordField("Password");
+		final PasswordField password = new PasswordField("Jelszó");
 		password.setIcon(FontAwesome.LOCK);
 		password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-		final Button signin = new Button("Sign In");
+		CheckBox rememberMe = new CheckBox("Jegyezz meg", true);
+
+		final Button signin = new Button("Bejelentkezés");
 		signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		signin.setClickShortcut(KeyCode.ENTER);
 		signin.focus();
 
-		fields.addComponents(username, password, signin);
+		fields.addComponents(username, password, rememberMe, signin);
 		fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
 		signin.addClickListener(new ClickListener() {

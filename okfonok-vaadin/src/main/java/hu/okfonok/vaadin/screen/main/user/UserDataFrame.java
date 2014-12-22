@@ -1,7 +1,14 @@
 package hu.okfonok.vaadin.screen.main.user;
 
+import hu.okfonok.Config;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.OFFieldGroup;
+import hu.okfonok.vaadin.security.Authentication;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.server.FontAwesome;
@@ -10,12 +17,16 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import com.wcs.wcslib.vaadin.widget.multifileupload.ui.MultiFileUpload;
+import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
+import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadStateWindow;
 
 
 public class UserDataFrame extends CustomComponent {
@@ -26,6 +37,39 @@ public class UserDataFrame extends CustomComponent {
 	private TextField phoneNumberField;
 	private TextField idCardField;
 	private TextField addressCardField;
+
+	private MultiFileUpload uploadAddressCard = new MultiFileUpload(new UploadFinishedHandler() {
+		@Override
+		public void handleFile(InputStream input, String fileName, String mimeType, long length) {
+			Path userRoot = Config.getUserRoot(Authentication.getUser());
+			try {
+				if (!Files.exists(userRoot)) {
+					Files.createDirectories(userRoot);
+				}
+				Files.copy(input, userRoot.resolve("addresscard"));
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}, new UploadStateWindow());
+
+	private MultiFileUpload uploadIdCard = new MultiFileUpload(new UploadFinishedHandler() {
+
+		@Override
+		public void handleFile(InputStream input, String fileName, String mimeType, long length) {
+			Path userRoot = Config.getUserRoot(Authentication.getUser());
+			try {
+				if (!Files.exists(userRoot)) {
+					Files.createDirectories(userRoot);
+				}
+				Files.copy(input, userRoot.resolve("idcard"));
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}, new UploadStateWindow());
 
 	private Button editButton = new Button("Szerkesztés", new ClickListener() {
 
@@ -61,26 +105,34 @@ public class UserDataFrame extends CustomComponent {
 		introductionField.setNullRepresentation("");
 		
 		emailField = new TextField();
-		emailField.setIcon(FontAwesome.ANCHOR);
+		emailField.setIcon(FontAwesome.ENVELOPE);
 		emailField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		emailField.setNullRepresentation("");
 		emailField.setInputPrompt("E-mail cím");
 		
 		phoneNumberField = new TextField();
-		phoneNumberField.setIcon(FontAwesome.ANCHOR);
+		phoneNumberField.setIcon(FontAwesome.PHONE);
 		phoneNumberField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		phoneNumberField.setNullRepresentation("");
 		phoneNumberField.setInputPrompt("Telefonszám");
 		
+		HorizontalLayout idl = new HorizontalLayout();
+		idl.setSpacing(true);
 		idCardField = new TextField();
 		idCardField.setNullRepresentation("");
-		idCardField.setIcon(FontAwesome.ANCHOR);
+		idCardField.setIcon(FontAwesome.USER);
 		idCardField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		idl.addComponent(idCardField);
+		idl.addComponent(uploadIdCard);
 		
+		HorizontalLayout addressl = new HorizontalLayout();
+		addressl.setSpacing(true);
 		addressCardField = new TextField();
 		addressCardField.setNullRepresentation("");
-		addressCardField.setIcon(FontAwesome.ANCHOR);
+		addressCardField.setIcon(FontAwesome.HOME);
 		addressCardField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		addressl.addComponent(addressCardField);
+		addressl.addComponent(uploadAddressCard);
 		
 		
 		Label onlyOnConnectionLabel = new Label("Csak létrejött kapcsolat esetén kerül továbbításra");
@@ -88,7 +140,7 @@ public class UserDataFrame extends CustomComponent {
 		VerticalLayout l = new VerticalLayout();
 		l.setSpacing(true);
 		l.setMargin(true);
-		l.addComponents(emailField, phoneNumberField, onlyOnConnectionLabel, legalizationLabel, idCardField, addressCardField, introductionField, editButton);
+		l.addComponents(emailField, phoneNumberField, onlyOnConnectionLabel, legalizationLabel, idl, addressl, introductionField, editButton);
 
 		fg.bind(emailField, "profile.email");
 		fg.bind(introductionField, "profile.introduction");

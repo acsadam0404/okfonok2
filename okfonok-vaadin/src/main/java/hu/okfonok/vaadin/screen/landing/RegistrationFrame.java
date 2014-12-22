@@ -1,7 +1,13 @@
 package hu.okfonok.vaadin.screen.landing;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import hu.okfonok.Config;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.OFFieldGroup;
+import hu.okfonok.vaadin.security.Authentication;
 import by.kod.numberfield.NumberField;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
