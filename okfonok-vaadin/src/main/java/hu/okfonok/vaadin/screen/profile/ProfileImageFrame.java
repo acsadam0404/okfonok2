@@ -11,8 +11,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.vaadin.teemu.ratingstars.RatingStars;
-
 import com.vaadin.server.FileResource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -33,6 +31,8 @@ public class ProfileImageFrame extends CustomComponent {
 	private VerticalLayout imageHolder;
 
 
+	/*TODO külön kellene az upload, mert ezt a classt használja a megtekintés is 
+	 */
 	private class ProfileImageUpload extends MultiFileUpload {
 		private ProfileImageUpload() {
 			super(new UploadFinishedHandler() {
@@ -45,7 +45,7 @@ public class ProfileImageFrame extends CustomComponent {
 							Files.createDirectories(profileRoot.getParent());
 						}
 						Files.copy(input, profileRoot);
-						new ImageResizer(profileRoot, 200, 200).resizeAndSave();
+						new ImageResizer(profileRoot, 100, 100).resizeAndSave();
 						refresh();
 					}
 					catch (IOException e) {
@@ -67,23 +67,20 @@ public class ProfileImageFrame extends CustomComponent {
 
 
 	private Component build() {
+		//TODO ezt úgy kéne megcsinálni, hogy a skillkör közeépre menjen az imageholder
 		VerticalLayout l = new VerticalLayout();
 		l.addComponent(new SkillCircle(user));
 		l.addComponent(new Label(user.getProfile().getName()));
 		l.addComponent(new Label("/" + user.getRatings().size()));
 		imageHolder = new VerticalLayout();
 		l.addComponent(imageHolder);
-		RatingStars stars = new RatingStars();
-		stars.setValue(user.getRating());
-		stars.setReadOnly(true);
-		l.addComponent(stars);
+		l.addComponent(new Rating(user));
 		return l;
 	}
 
 
 	private void refresh() {
 		imageHolder.removeAllComponents();
-		/* itt mindig van kép, hiszen amikor létrehozzuk a usert adunk egy default képet neki */
 		if (!Files.exists(profileRoot)) {
 			createDefaultProfileImage();
 		}

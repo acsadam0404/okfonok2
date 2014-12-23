@@ -17,6 +17,7 @@ class Profile {
 
 	String lastName
 
+	@NotNull
 	String email
 
 	String phoneNumber
@@ -26,12 +27,12 @@ class Profile {
 	String idCard
 
 	String addressCard
-	
+
 	String getShortenedName() {
 		String shortenedName = null
-		if (name) {
+		if (getName()) {
 			shortenedName = "${lastName[0]}. $firstName"
-		} 
+		}
 		shortenedName
 	}
 
@@ -68,6 +69,6 @@ class Profile {
 
 	@Override
 	String toString() {
-		name
+		getName()
 	}
 }

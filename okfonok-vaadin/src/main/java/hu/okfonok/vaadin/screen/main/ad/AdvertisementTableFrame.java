@@ -215,6 +215,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 		BeanItemContainer<Advertisement> container = (BeanItemContainer) root.getContainerDataSource();
 		container.removeAllItems();
 		container.addAll(Advertisement.findAll());
+		//TODO sajátunkat nem szabad itt látni
 	}
 
 

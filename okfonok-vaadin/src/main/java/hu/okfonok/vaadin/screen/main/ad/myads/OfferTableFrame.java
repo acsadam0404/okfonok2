@@ -3,7 +3,9 @@ package hu.okfonok.vaadin.screen.main.ad.myads;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.offer.Offer;
 import hu.okfonok.offer.events.AcceptOfferEvent;
+import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.screen.profile.ProfileViewFrame;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
@@ -40,7 +42,14 @@ public class OfferTableFrame extends CustomComponent {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
-				return null;
+				final Offer offer = (Offer) itemId;
+				return new Button("KÉP", new Button.ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						new Dialog(new ProfileViewFrame(offer.getUser())).showWindow();
+					}
+				});
 			}
 		});
 		table.addContainerProperty("actions", Component.class, null);
@@ -96,13 +105,13 @@ public class OfferTableFrame extends CustomComponent {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
+				final Offer offer = (Offer) itemId;
 				VerticalLayout l = new VerticalLayout();
 				l.addComponent(new Button("Naptár", new ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
-						// TODO Auto-generated method stub
-
+						new Dialog(new OfferCalendar(offer)).showWindow();
 					}
 				}));
 				return l;
@@ -118,7 +127,7 @@ public class OfferTableFrame extends CustomComponent {
 		table.setColumnHeader(Offer.AMOUNT, "Ajánlat");
 		table.setColumnHeader("actions", "");
 		table.setColumnHeader(IMAGE, "Kép");
-		table.setVisibleColumns(IMAGE, "user.profile.shortenedName", "user.rating", "user.profile.introduction", Offer.AMOUNT, "actions");
+		table.setVisibleColumns(IMAGE, "user.profile.shortenedName", "user.rating", "user.profile.introduction", Offer.AMOUNT, Offer.INTERVALS, "actions");
 		return table;
 	}
 
@@ -130,7 +139,9 @@ public class OfferTableFrame extends CustomComponent {
 
 
 	public void refresh() {
-		refresh(ad);
+		if (ad != null) {
+			refresh(ad);
+		}
 	}
 
 
