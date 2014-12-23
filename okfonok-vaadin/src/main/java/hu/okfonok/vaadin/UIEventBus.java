@@ -4,6 +4,11 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.SubscriberExceptionContext;
 import com.google.gwt.thirdparty.guava.common.eventbus.SubscriberExceptionHandler;
 
+
+/**
+ * TODO kellene valami jó megoldás hogy bus réteegben is lehessen használni ui vagy session scope eventbust.
+ * 
+ */
 public class UIEventBus implements SubscriberExceptionHandler {
 
 	private final EventBus eventBus = new EventBus(this);

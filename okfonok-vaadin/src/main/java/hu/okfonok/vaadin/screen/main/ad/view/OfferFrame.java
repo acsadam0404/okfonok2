@@ -19,9 +19,9 @@ import com.vaadin.ui.VerticalLayout;
 
 public class OfferFrame extends CustomComponent {
 	private Advertisement ad;
-	private NumberField offerField = new NumberField("Ajánlatom");
+	private NumberField offerField = new NumberField(null);
 
-	private Button offerButton = new Button("Ajánlatom", new ClickListener() {
+	private Button offerButton = new Button("Ajánlatot teszek", new ClickListener() {
 
 		@Override
 		public void buttonClick(ClickEvent event) {
@@ -39,8 +39,11 @@ public class OfferFrame extends CustomComponent {
 		VerticalLayout l = new VerticalLayout();
 		l.setSizeFull();
 		l.setSpacing(true);
-		l.addComponent(new AdvertisementViewCalendar(ad));
+		AdvertisementViewCalendar calendar = new AdvertisementViewCalendar(ad);
+		l.addComponent(calendar);
 		HorizontalLayout offerLayout = new HorizontalLayout();
+		offerLayout.setSpacing(true);
+		offerLayout.setMargin(true);
 		offerLayout.addComponent(offerField);
 		offerLayout.addComponent(offerButton);
 		l.addComponent(offerLayout);

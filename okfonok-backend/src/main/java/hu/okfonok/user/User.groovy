@@ -70,15 +70,13 @@ class User extends BaseEntity{
 
 	@OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
 	Set<Rating> ratings
-	
+
 	double getRating() {
 		double rating = 0
 		if (ratings) {
-			ratings.each {
-				rating += it.value	
-			}
+			ratings.each { rating += it.value	 }
 			rating = rating / ratings.size()
-		} 
+		}
 		(double) Math.round(rating)
 	}
 
@@ -103,6 +101,12 @@ class User extends BaseEntity{
 		username
 	}
 
+	/**
+	 * @return unmodifiable collection, mert hiába adnánk ehhez hozzá bármit, nem perzisztálódna csak ha az egész usert mentjük
+	 */
+	Collection<Advertisement> getSavedAds() {
+		Collections.unmodifiableCollection(savedAds)
+	}
 
 	@Transactional
 	void unsaveAdvertisement(Advertisement ad) {

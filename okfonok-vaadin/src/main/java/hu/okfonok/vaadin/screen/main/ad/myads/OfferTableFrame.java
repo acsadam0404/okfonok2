@@ -93,6 +93,7 @@ public class OfferTableFrame extends CustomComponent {
 		return table;
 	}
 
+
 	public void refresh(Advertisement ad) {
 		BeanItemContainer container = (BeanItemContainer) table.getContainerDataSource();
 		container.removeAllItems();

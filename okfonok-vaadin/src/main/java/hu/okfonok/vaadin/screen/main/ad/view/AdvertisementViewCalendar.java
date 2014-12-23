@@ -18,6 +18,7 @@ class AdvertisementViewCalendar extends CustomComponent implements CalendarEvent
 	private Calendar calendar;
 	private Advertisement ad;
 
+
 	public AdvertisementViewCalendar(Advertisement ad) {
 		this.ad = ad;
 		calendar = build();

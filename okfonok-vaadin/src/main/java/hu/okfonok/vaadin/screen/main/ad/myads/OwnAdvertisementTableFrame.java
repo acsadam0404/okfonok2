@@ -30,6 +30,7 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 
 		private Advertisement ad;
 
+
 		public ModifyButton(Advertisement ad) {
 			super("Módosítom");
 			this.ad = ad;
@@ -45,6 +46,7 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 	private static class ShareButton extends Button implements ClickListener {
 
 		private Advertisement ad;
+
 
 		public ShareButton(Advertisement ad) {
 			super("Megosztom");

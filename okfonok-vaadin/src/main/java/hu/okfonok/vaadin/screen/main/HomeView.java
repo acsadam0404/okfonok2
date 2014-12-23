@@ -3,6 +3,7 @@ package hu.okfonok.vaadin.screen.main;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.AbstractView;
 import hu.okfonok.vaadin.screen.WelcomeNotification;
+import hu.okfonok.vaadin.screen.main.calendar.CalendarFrame;
 import hu.okfonok.vaadin.screen.profile.ProfileImageFrame;
 import hu.okfonok.vaadin.screen.profile.UserDataFrame;
 import hu.okfonok.vaadin.security.Authentication;

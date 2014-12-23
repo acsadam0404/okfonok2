@@ -63,6 +63,7 @@
         amount decimal(19,2) not null,
         advertisement_id bigint not null,
         user_id bigint not null,
+        accepted integer not null,
         primary key (id)
     );
 

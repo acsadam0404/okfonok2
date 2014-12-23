@@ -33,7 +33,7 @@ class Offer extends BaseEntity{
 		}
 		offerRepo
 	}
-	
+
 	@NotNull
 	BigDecimal amount
 
@@ -44,9 +44,12 @@ class Offer extends BaseEntity{
 	@ManyToOne
 	@NotNull
 	User user
-	
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	Set<DateInterval> intervals = [] as Set
+
+	@NotNull
+	boolean accepted
 
 	public Offer() {
 	}
@@ -61,6 +64,5 @@ class Offer extends BaseEntity{
 		advertisement.offers << this
 		repo.save(this)
 		advertisement.save()
-		
 	}
 }

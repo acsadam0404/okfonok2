@@ -1,6 +1,7 @@
 package hu.okfonok.vaadin.screen.main.ad;
 
 import hu.okfonok.ad.Advertisement;
+import hu.okfonok.ad.events.AdvertisementSaveEvent;
 import hu.okfonok.common.Address;
 import hu.okfonok.common.Distance;
 import hu.okfonok.user.User;
@@ -72,7 +73,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 							@Override
 							public void buttonClick(ClickEvent event) {
 								user.unsaveAdvertisement(ad);
-								refresh();
+								UIEventBus.post(new AdvertisementSaveEvent(false));
 							}
 						}));
 					}
@@ -82,7 +83,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 							@Override
 							public void buttonClick(ClickEvent event) {
 								user.saveAdvertisement(ad);
-								refresh();
+								UIEventBus.post(new AdvertisementSaveEvent(true));
 							}
 						}));
 					}
@@ -97,6 +98,12 @@ public class AdvertisementTableFrame extends CustomComponent {
 				return l;
 			}
 		});
+	}
+
+
+	@Subscribe
+	public void handleAdvertisementSaveEvent(AdvertisementSaveEvent event) {
+		refresh();
 	}
 
 	private void addAveragePriceColumn() {

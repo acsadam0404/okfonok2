@@ -8,13 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.vaadin.virkki.carousel.HorizontalCarousel;
-import org.vaadin.virkki.carousel.VerticalCarousel;
 import org.vaadin.virkki.carousel.client.widget.gwt.ArrowKeysMode;
 import org.vaadin.virkki.carousel.client.widget.gwt.CarouselLoadMode;
 
 import com.vaadin.server.FileResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 
@@ -51,19 +51,24 @@ public class DirectoryCarousel extends HorizontalCarousel {
 
 
 	public void refresh() {
-		removeAllComponents();
-		try {
-
-			for (Path path : Files.newDirectoryStream(root, imageFilter)) {
-				Image image = new Image(path.toFile().getName(), new FileResource(path.toFile()));
-				VerticalLayout layout = new VerticalLayout(image);
-				layout.setSizeFull();
-				layout.setComponentAlignment(image, Alignment.MIDDLE_CENTER);
-				addComponent(layout);
-			}
+		if (!Files.exists(root)) {
+			addComponent(new Label("Nincs megjeleníthető kép"));
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+		else {
+			removeAllComponents();
+			try {
+
+				for (Path path : Files.newDirectoryStream(root, imageFilter)) {
+					Image image = new Image(path.toFile().getName(), new FileResource(path.toFile()));
+					VerticalLayout layout = new VerticalLayout(image);
+					layout.setSizeFull();
+					layout.setComponentAlignment(image, Alignment.MIDDLE_CENTER);
+					addComponent(layout);
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

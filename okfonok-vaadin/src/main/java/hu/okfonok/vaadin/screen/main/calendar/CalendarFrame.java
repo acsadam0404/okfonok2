@@ -1,4 +1,6 @@
-package hu.okfonok.vaadin.screen.main;
+package hu.okfonok.vaadin.screen.main.calendar;
+
+import hu.okfonok.vaadin.component.calendar.EventProvidersCollection;
 
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.CustomComponent;
@@ -10,7 +12,7 @@ public class CalendarFrame extends CustomComponent {
 
 
 	public CalendarFrame() {
-		setWidth("400px");
+		setWidth("500px");
 		setHeight("250px");
 		calendar = build();
 		Panel panel = new Panel(calendar);
@@ -22,8 +24,10 @@ public class CalendarFrame extends CustomComponent {
 	private Calendar build() {
 		calendar = new Calendar();
 		calendar.setWeeklyCaptionFormat("MM.dd");
-		calendar.setWidth("400px");
-		calendar.setHeight("250px");
+		calendar.setEventProvider(new EventProvidersCollection(new AcceptedOfferEventProvider(), new SavedAdvertisementEventProvider()));
+		calendar.setWidth("480px");
+		calendar.setHeight("600px");
 		return calendar;
 	}
+
 }

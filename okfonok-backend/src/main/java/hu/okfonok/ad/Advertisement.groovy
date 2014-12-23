@@ -1,5 +1,7 @@
 package hu.okfonok.ad;
 
+import java.util.Date;
+
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.common.Address
@@ -88,18 +90,6 @@ class Advertisement extends BaseEntity{
 		category.mainCategory
 	}
 
-	static List<Advertisement> findByUsername(String username) {
-		findByUser(User.get(username))
-	}
-
-	static List<Advertisement> findByUser(User user) {
-		repo.findByUser(user)
-	}
-
-	static List<Advertisement> findAll() {
-		repo.findAll()
-	}
-
 	Advertisement save() {
 		dateCreated = new Date()
 		repo.save(this)
@@ -114,11 +104,36 @@ class Advertisement extends BaseEntity{
 		sum
 	}
 
+	Advertisement getAcceptedOffer() {
+		offers.find { it.accepted }
+	}
+
+	Collection<Advertisement> getRejectedOffers() {
+		offers.findAll { !it.accepted }
+	}
+
 	int getOffersNumber() {
 		offers.size()
 	}
 
 	public void share() {
 		println "shared on facebook"
+	}
+
+	static List<Offer> findAcceptedOffers(User user, Date startDate, Date endDate) {
+		def offers = repo.findByUser(user).collectAll{ it.acceptedOffer }
+		//TODO startDate, endDate -től függjön
+	}
+
+	static List<Advertisement> findByUsername(String username) {
+		findByUser(User.get(username))
+	}
+
+	static List<Advertisement> findByUser(User user) {
+		repo.findByUser(user)
+	}
+
+	static List<Advertisement> findAll() {
+		repo.findAll()
 	}
 }

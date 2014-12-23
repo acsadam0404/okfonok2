@@ -2,6 +2,7 @@ package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.common.GeocodingService;
+import hu.okfonok.offer.Offer;
 import hu.okfonok.user.ServiceLocator;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.Dialog;
@@ -68,6 +69,7 @@ public class MapFrame extends CustomComponent {
 		private static GeocodingService geocodingService = ServiceLocator.getBean(GeocodingService.class);
 		private Advertisement ad;
 		
+
 		public AdvertisementMarker(Advertisement ad) {
 			super(ad.getCategory().getName(), toLatLon(geocodingService.toLatLng(ad.getAddress())), false);
 			this.ad = ad;
