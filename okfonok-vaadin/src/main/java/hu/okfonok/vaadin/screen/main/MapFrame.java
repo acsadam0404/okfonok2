@@ -1,13 +1,13 @@
 package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.ad.Advertisement;
+import hu.okfonok.ad.events.AdvertisementCreatedEvent;
 import hu.okfonok.common.GeocodingService;
 import hu.okfonok.offer.Offer;
 import hu.okfonok.user.ServiceLocator;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.UIEventBus;
-import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreatedEvent;
 import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 
 import java.util.HashSet;

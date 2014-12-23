@@ -13,6 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 
 public class AdvertisementViewMap extends CustomComponent {
 	public AdvertisementViewMap(Advertisement ad) {
+		setSizeFull();
 		VerticalLayout l = new VerticalLayout();
 		l.setSizeFull();
 		l.setMargin(true);

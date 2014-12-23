@@ -1,7 +1,11 @@
 package hu.okfonok.vaadin.screen.main.calendar;
 
 import hu.okfonok.ad.Advertisement;
+import hu.okfonok.ad.events.AdvertisementSaveEvent;
 import hu.okfonok.common.DateInterval;
+import hu.okfonok.vaadin.Dialog;
+import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.util.ArrayList;
@@ -9,19 +13,24 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.vaadin.ui.components.calendar.event.BasicEvent;
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
+import com.vaadin.ui.components.calendar.event.BasicEventProvider;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
-import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 
 
 /**
  * Felhasználó elmenthet hirdetéseket és azok megjelennek a naptárában.
  * Egy hirdetéshez több intervallum lehetséges, ezeket külön eventekként megjelenítjük.
  */
-public class SavedAdvertisementEventProvider implements CalendarEventProvider {
-	public static class Event extends BasicEvent {
-		private Advertisement ad;
+public class SavedAdvertisementEventProvider extends BasicEventProvider {
 
+	public SavedAdvertisementEventProvider() {
+		UIEventBus.register(this);
+	}
+
+
+	public static class Event extends MainCalendarEvent {
+		private Advertisement ad;
 
 		public Event(Advertisement ad, Date start, Date end) {
 			this.ad = ad;
@@ -29,6 +38,13 @@ public class SavedAdvertisementEventProvider implements CalendarEventProvider {
 			setEnd(end);
 			setStyleName("saved-ad");
 		}
+
+
+		@Override
+		void onClick() {
+			new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+		}
+
 	}
 
 
@@ -42,6 +58,12 @@ public class SavedAdvertisementEventProvider implements CalendarEventProvider {
 			}
 		}
 		return events;
+	}
+
+
+	@Subscribe
+	public void handleAdvertisementSaveEvent(AdvertisementSaveEvent event) {
+		fireEventSetChange();
 	}
 
 }

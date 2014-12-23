@@ -2,6 +2,7 @@ package hu.okfonok.vaadin.screen.main.ad;
 
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.JobCategory;
+import hu.okfonok.ad.events.AdvertisementCreatedEvent;
 import hu.okfonok.common.DateInterval;
 import hu.okfonok.common.Settlement;
 import hu.okfonok.common.ValueSet;
@@ -18,6 +19,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -37,6 +39,13 @@ import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClickHandl
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.RangeSelectEvent;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.RangeSelectHandler;
 
+
+/*
+ * TODO ebből legyen egy wizard 3 lépéssel.
+ * az első nézzen ki úgy mint a AdvertisementViewFrame összefoglalója
+ * a második legyen a naptár
+ * a harmadik legyen a képfeltöltés.
+ */
 public class AdvertisementCreationFrame extends CustomComponent {
 	private OFFieldGroup<Advertisement> fg;
 
@@ -56,8 +65,15 @@ public class AdvertisementCreationFrame extends CustomComponent {
 	private CheckBox homeJobField;
 
 	private ComboBox mainCategoryField;
-	
-	private Button createButton = new Button("Feladás", new ClickListener() {
+
+
+	private class CreateButton extends Button implements ClickListener {
+		public CreateButton() {
+			addClickListener(this);
+			setCaption("Feladás");
+			setIcon(FontAwesome.SAVE);
+		}
+
 
 		@Override
 		public void buttonClick(ClickEvent event) {
@@ -67,11 +83,13 @@ public class AdvertisementCreationFrame extends CustomComponent {
 					fg.getBean().save();
 					UIEventBus.post(new AdvertisementCreatedEvent());
 				}
-			} catch (CommitException e) {
+			}
+			catch (CommitException e) {
 				e.printStackTrace();
 			}
 		}
-	});
+	}
+
 
 	public AdvertisementCreationFrame() {
 		setCaption("Hirdetés feladása");
@@ -81,15 +99,17 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		setCompositionRoot(build());
 	}
 
+
 	private Component build() {
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setMargin(true);
 		hl.setSpacing(true);
 		hl.addComponent(buildLeft());
 		hl.addComponent(buildRight());
-		
+
 		return hl;
 	}
+
 
 	private Component buildLeft() {
 		VerticalLayout root = new VerticalLayout();
@@ -101,10 +121,10 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		mainCategoryField = new ComboBox("Főkategória", JobCategory.findAllMain());
 		categoryField = new ComboBox("Kategória", JobCategory.findAllSub());
 		mainCategoryField.addValueChangeListener(new ValueChangeListener() {
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				JobCategory mc = (JobCategory)event.getProperty().getValue();
+				JobCategory mc = (JobCategory) event.getProperty().getValue();
 				List<JobCategory> categories = null;
 				if (mc != null) {
 					categories = mc.getSubCategories();
@@ -134,12 +154,12 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		c3.setSpacing(true);
 		root.addComponent(c3);
 		root.addComponent(homeJobField);
-		root.addComponent(createButton);
+		root.addComponent(new CreateButton());
 		fg.bindMemberFields(this);
 		return root;
 	}
-	
-	
+
+
 	private Component buildRight() {
 		TabSheet ts = new TabSheet();
 		Component calendar = buildCalendar();
@@ -153,30 +173,31 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		return ts;
 	}
 
+
 	private Component buildCalendar() {
 		final Calendar calendar = new Calendar();
 		calendar.setWeeklyCaptionFormat("MMM dd");
 		calendar.setHandler(new RangeSelectHandler() {
-			
+
 			@Override
 			public void rangeSelect(RangeSelectEvent event) {
-				DateInterval interval = new DateInterval(event.getStart(),event.getEnd());
+				DateInterval interval = new DateInterval(event.getStart(), event.getEnd());
 				fg.getBean().getPreferredIntervals().add(interval);
 				calendar.addEvent(new PreferredIntervalEvent(interval));
 			}
 		});
-		
+
 		calendar.setHandler(new EventClickHandler() {
-			
+
 			@Override
 			public void eventClick(EventClick event) {
-				PreferredIntervalEvent interval = (PreferredIntervalEvent)event.getCalendarEvent();
+				PreferredIntervalEvent interval = (PreferredIntervalEvent) event.getCalendarEvent();
 				fg.getBean().getPreferredIntervals().remove(interval.getDateInterval());
 			}
 		});
-		
-		calendar.setHandler((DateClickHandler)null);
-		
+
+		calendar.setHandler((DateClickHandler) null);
+
 		return calendar;
 	}
 }

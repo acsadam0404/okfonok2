@@ -65,4 +65,32 @@ class Offer extends BaseEntity{
 		repo.save(this)
 		advertisement.save()
 	}
+
+	/**
+	 * Ha még nincs más elfogadott ajánlat, akkor ezt elfogadja
+	 */
+	void accept() {
+		if (!advertisement.acceptedOffer) {
+			accepted = true
+			save()
+			/* TODO publish AcceptOfferEvent */
+		}
+		else {
+			throw new RuntimeException("Another offer is accepted. It shouldn't be possible to call this method.")
+		}
+	}
+
+	/**
+	 * Az accept ellentéte. Ha már elfogadott az ajánlat akkor visszavonja az elfogadást.
+	 */
+	void reject() {
+		if (advertisement.acceptedOffer) {
+			accepted = false
+			save()
+			/* TODO publish AcceptOfferEvent */
+		}
+		else {
+			throw new RuntimeException("A non-accepted offer is rejected. It shouldn't be possible to call this method.")
+		}
+	}
 }

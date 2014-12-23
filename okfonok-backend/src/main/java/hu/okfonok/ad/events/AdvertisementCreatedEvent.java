@@ -1,4 +1,4 @@
-package hu.okfonok.vaadin.screen.main.ad;
+package hu.okfonok.ad.events;
 
 public class AdvertisementCreatedEvent {
 

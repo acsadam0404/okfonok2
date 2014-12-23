@@ -1,7 +1,5 @@
 package hu.okfonok.ad;
 
-import java.util.Date;
-
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
 import hu.okfonok.common.Address
@@ -9,6 +7,8 @@ import hu.okfonok.common.DateInterval
 import hu.okfonok.offer.Offer
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
+
+import java.math.RoundingMode
 
 import javax.persistence.ElementCollection
 import javax.persistence.Embedded
@@ -99,16 +99,22 @@ class Advertisement extends BaseEntity{
 		BigDecimal sum = BigDecimal.ZERO
 		if (offers) {
 			offers.each { sum += it.amount }
-			sum = sum.divide(new BigDecimal(offers.size()))
+			/* 0 precision, mert most csak forint van és nem érdekelnek a törtek  */
+			/* rounding szükséges mert végtelen törteknél ArithhmeticException jönne */
+			sum = sum.divide(new BigDecimal(offers.size()), 0, RoundingMode.HALF_UP)
 		}
 		sum
 	}
 
-	Advertisement getAcceptedOffer() {
+	Offer getAcceptedOffer() {
 		offers.find { it.accepted }
 	}
 
-	Collection<Advertisement> getRejectedOffers() {
+	boolean hasAcceptedOffer() {
+		acceptedOffer != null
+	}
+
+	Collection<Offer> getRejectedOffers() {
 		offers.findAll { !it.accepted }
 	}
 
@@ -121,7 +127,8 @@ class Advertisement extends BaseEntity{
 	}
 
 	static List<Offer> findAcceptedOffers(User user, Date startDate, Date endDate) {
-		def offers = repo.findByUser(user).collectAll{ it.acceptedOffer }
+		def ads = findByUser(user).findAll{ it.acceptedOffer }
+		ads.collect { it.acceptedOffer}
 		//TODO startDate, endDate -től függjön
 	}
 

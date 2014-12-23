@@ -25,6 +25,7 @@ public class CalendarFrame extends CustomComponent {
 		calendar = new Calendar();
 		calendar.setWeeklyCaptionFormat("MM.dd");
 		calendar.setEventProvider(new EventProvidersCollection(new AcceptedOfferEventProvider(), new SavedAdvertisementEventProvider()));
+
 		calendar.setWidth("480px");
 		calendar.setHeight("600px");
 		return calendar;

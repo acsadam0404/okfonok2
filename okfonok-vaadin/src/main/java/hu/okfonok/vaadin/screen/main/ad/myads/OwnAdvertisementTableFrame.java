@@ -1,8 +1,10 @@
 package hu.okfonok.vaadin.screen.main.ad.myads;
 
 import hu.okfonok.ad.Advertisement;
+import hu.okfonok.ad.events.AdvertisementCreatedEvent;
+import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.UIEventBus;
-import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreatedEvent;
+import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 import hu.okfonok.vaadin.screen.main.ad.view.OfferCreatedEvent;
 import hu.okfonok.vaadin.security.Authentication;
 
@@ -39,7 +41,7 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 
 		@Override
 		public void buttonClick(ClickEvent event) {
-
+			new Dialog(new AdvertisementModifyFrame(ad)).showWindow();
 		}
 	}
 
@@ -83,21 +85,16 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 	private Table buildTable() {
 		final Table table = new Table();
 		table.setSizeFull();
-		
-		table.setColumnHeader(Advertisement.MAINCATEGORY, "Főkategória");
-		table.setColumnHeader(Advertisement.CATEGORY, "Kategória");
-		table.setColumnHeader(Advertisement.DESCRIPTION, "Leírás");
-		table.setColumnHeader(Advertisement.REMUNERATION, "Díjazás");
-		table.setColumnHeader(Advertisement.AVERAGEPRICE, "Aktuális átlag díj");
-		table.setColumnHeader(Advertisement.OFFERSNUMBER, "Ajánlatok száma");
+
 		
 		table.addContainerProperty(ACTIONS, Component.class, null);
 		table.addGeneratedColumn(ACTIONS, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(final Table source, final Object itemId, final Object columnId) {
-				Advertisement ad = (Advertisement) ((BeanItem) source.getItem(itemId)).getBean();
+				Advertisement ad = (Advertisement) itemId;
 				VerticalLayout l = new VerticalLayout();
+				l.setSpacing(true);
 				l.addComponent(new ModifyButton(ad));
 				l.addComponent(new ShareButton(ad));
 				return l;
@@ -117,12 +114,23 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 					offers.setVisible(true);
 				}
 				else {
-					table.setPageLength(10);
 					offers.setVisible(false);
+					//TODO nem elég ennyi, valamiért nem lesz full size megint a table */
+					table.setPageLength(15);
 				}
 			}
 		});
 		
+		table.setColumnHeader(Advertisement.MAINCATEGORY, "Főkategória");
+		table.setColumnHeader(Advertisement.CATEGORY, "Kategória");
+		table.setColumnHeader(Advertisement.DESCRIPTION, "Leírás");
+		table.setColumnHeader(Advertisement.REMUNERATION, "Díjazás");
+		table.setColumnHeader(Advertisement.AVERAGEPRICE, "Aktuális átlag díj");
+		table.setColumnHeader(Advertisement.OFFERSNUMBER, "Ajánlatok száma");
+		table.setColumnHeader(ACTIONS, "");
+
+		table.setColumnExpandRatio(Advertisement.DESCRIPTION, 1f);
+
 		table.setVisibleColumns(Advertisement.MAINCATEGORY,
 				Advertisement.CATEGORY,
 				Advertisement.DESCRIPTION,

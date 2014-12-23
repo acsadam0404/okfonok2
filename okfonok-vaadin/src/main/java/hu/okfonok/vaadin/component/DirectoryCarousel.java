@@ -16,6 +16,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 
 /**
@@ -51,11 +52,17 @@ public class DirectoryCarousel extends HorizontalCarousel {
 
 
 	public void refresh() {
+		removeAllComponents();
 		if (!Files.exists(root)) {
-			addComponent(new Label("Nincs megjeleníthető kép"));
+			Label label = new Label("Nincs megjeleníthető kép");
+			label.setSizeUndefined();
+			label.setStyleName(ValoTheme.LABEL_HUGE);
+			VerticalLayout layout = new VerticalLayout(label);
+			layout.setSizeFull();
+			layout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+			addComponent(layout);
 		}
 		else {
-			removeAllComponents();
 			try {
 
 				for (Path path : Files.newDirectoryStream(root, imageFilter)) {

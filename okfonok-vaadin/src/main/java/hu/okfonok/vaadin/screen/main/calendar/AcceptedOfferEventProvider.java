@@ -3,24 +3,27 @@ package hu.okfonok.vaadin.screen.main.calendar;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.common.DateInterval;
 import hu.okfonok.offer.Offer;
+import hu.okfonok.offer.events.AcceptOfferEvent;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.ui.components.calendar.event.BasicEvent;
+import com.vaadin.ui.components.calendar.event.BasicEventProvider;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
-import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
+
 
 /**
  * Egy hirdetéshez egy elfogadott ajánlat létezik.
  * Egy eflogadott ajánlatban több intervallum lehet.
  * Számunkra nem érdekes, hogy melyiket beszélik meg az intervallumok közül, mindet megjelenítjük.
  */
-public class AcceptedOfferEventProvider implements CalendarEventProvider {
+public class AcceptedOfferEventProvider extends BasicEventProvider {
 
-	public static class Event extends BasicEvent {
+	public static class Event extends MainCalendarEvent {
 		private Offer offer;
 
 
@@ -30,10 +33,17 @@ public class AcceptedOfferEventProvider implements CalendarEventProvider {
 			setEnd(end);
 			setStyleName("accepted-offer");
 		}
+
+
+		@Override
+		void onClick() {
+			//TODO
+			System.out.println("itt valamit kéne csinálni :)");
+		}
+
 	}
 
 
-	
 	@Override
 	public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
 		List<CalendarEvent> events = new ArrayList<>();
@@ -45,6 +55,12 @@ public class AcceptedOfferEventProvider implements CalendarEventProvider {
 			}
 		}
 		return events;
+	}
+
+
+	@Subscribe
+	public void handleAcceptOfferEvent(AcceptOfferEvent event) {
+		fireEventSetChange();
 	}
 
 }

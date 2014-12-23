@@ -1,12 +1,12 @@
 package hu.okfonok.vaadin.screen.main;
 
+import hu.okfonok.ad.events.AdvertisementCreatedEvent;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.MainUI;
 import hu.okfonok.vaadin.screen.HelpCreatedEvent;
 import hu.okfonok.vaadin.screen.HelpFrame;
 import hu.okfonok.vaadin.screen.SelfRatingDialog;
-import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreatedEvent;
 import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreationFrame;
 import hu.okfonok.vaadin.screen.message.MessageView;
 import hu.okfonok.vaadin.screen.profile.ProfileView;

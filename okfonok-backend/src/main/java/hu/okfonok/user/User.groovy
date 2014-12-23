@@ -110,12 +110,14 @@ class User extends BaseEntity{
 
 	@Transactional
 	void unsaveAdvertisement(Advertisement ad) {
+		//TODO AdvertisementSaveEvent publish
 		savedAds.remove(ad)
 		save()
 	}
 
 	@Transactional
 	void saveAdvertisement(Advertisement ad) {
+		//TODO AdvertisementSaveEvent publish
 		savedAds.add(ad)
 		save()
 	}
