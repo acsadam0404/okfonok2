@@ -1,5 +1,6 @@
 @import "../valo/valo";
 @import "common";
+@import "landing";
 
 // Main layout padding
 $view-padding: round($v-unit-size / 1.5) !default;
@@ -7,7 +8,10 @@ $view-padding: round($v-unit-size / 1.5) !default;
 // Slight adjustment to menu background-color
 $valo-menu-background-color: #414B56;
 
+$valo-background-color: #414B56;
+
 @mixin main {
   @include valo;
   @include common;
+  @include landing;
 }

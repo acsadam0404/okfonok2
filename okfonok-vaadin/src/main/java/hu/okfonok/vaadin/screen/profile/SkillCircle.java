@@ -4,7 +4,6 @@ import hu.okfonok.user.Skill;
 import hu.okfonok.user.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.vaadin.addon.charts.Chart;
@@ -43,6 +42,8 @@ public class SkillCircle extends CustomComponent {
 
 	public Component getChart(Data data) {
 		chart = new Chart(ChartType.LINE);
+		chart.setWidth("300px");
+		chart.setHeight("300px");
 
 		Configuration conf = chart.getConfiguration();
 		conf.getChart().setPolar(true);

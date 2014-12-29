@@ -1,20 +1,16 @@
 package hu.okfonok.vaadin.screen.landing;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import hu.okfonok.Config;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.OFFieldGroup;
-import hu.okfonok.vaadin.security.Authentication;
 import by.kod.numberfield.NumberField;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -75,16 +71,24 @@ public class RegistrationFrame extends CustomComponent {
 
 		nameField = new TextField();
 		nameField.setInputPrompt("Teljes Név");
+		nameField.setIcon(FontAwesome.DRUPAL);
+		nameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		nameField.setNullRepresentation("");
 		emailField = new TextField();
 		emailField.setInputPrompt("E-mail cím");
+		emailField.setIcon(FontAwesome.ENVELOPE);
+		emailField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		emailField.setNullRepresentation("");
 		passwordField = new PasswordField();
 		passwordField.setInputPrompt("Jelszó");
 		passwordField.setNullRepresentation("");
+		passwordField.setIcon(FontAwesome.KEY);
+		passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		zipcodeField = new NumberField();
 		zipcodeField.setInputPrompt("Irányítószám");
 		zipcodeField.setNullRepresentation("");
+		zipcodeField.setIcon(FontAwesome.ARROW_CIRCLE_LEFT);
+		zipcodeField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
 		readTermsField = new CheckBox("Elolvastam és elfogadom az Adatkezelést és a Felhasználási feltételeket");
 

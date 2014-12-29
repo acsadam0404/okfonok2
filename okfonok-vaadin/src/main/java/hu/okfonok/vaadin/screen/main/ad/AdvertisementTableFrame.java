@@ -217,11 +217,13 @@ public class AdvertisementTableFrame extends CustomComponent {
 	}
 
 
+	/**
+	 * csak azok jelenhetnek meg itt amiket nem a bejelentkezett user hozott létre
+	 */
 	private void refresh() {
 		BeanItemContainer<Advertisement> container = (BeanItemContainer) table.getContainerDataSource();
 		container.removeAllItems();
-		container.addAll(Advertisement.findAll());
-		//TODO sajátunkat nem szabad itt látni
+		container.addAll(Advertisement.findByUserExcluded(Authentication.getUser()));
 	}
 
 

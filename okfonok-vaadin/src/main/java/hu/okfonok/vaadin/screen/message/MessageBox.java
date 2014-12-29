@@ -3,6 +3,7 @@ package hu.okfonok.vaadin.screen.message;
 import hu.okfonok.message.Conversation;
 import hu.okfonok.message.Message;
 import hu.okfonok.message.events.MessageSentEvent;
+import hu.okfonok.user.User;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.security.Authentication;
 
@@ -22,9 +23,6 @@ public class MessageBox extends CustomComponent {
 
 	private TextArea messageField;
 
-	/**
-	 * ez lehet null is ha még nincs üzenet küldve
-	 */
 	private Conversation conversation;
 
 	/**
@@ -44,10 +42,9 @@ public class MessageBox extends CustomComponent {
 				@Override
 				public void buttonClick(ClickEvent event) {
 					String text = messageField.getValue();
-					Conversation conv = Conversation.sendMessage(Authentication.getUser(), conversation.getUser2(), conversation.getAdvertisement(), text);
-					MessageBox.this.conversation = conv;
+					conversation = Conversation.sendMessage(Authentication.getUser(), conversation.getOtherUser(Authentication.getUser()), conversation.getAdvertisement(), text);
 					/* TODO ez is bus rétegbe való */
-					UIEventBus.post(new MessageSentEvent(conv));
+					UIEventBus.post(new MessageSentEvent(conversation));
 				}
 			});
 		}
@@ -59,16 +56,14 @@ public class MessageBox extends CustomComponent {
 	}
 
 
-	/**
-	 * @param conversation
-	 *            lehet null is
-	 */
 	public MessageBox(Conversation conversation) {
+		assert conversation != null;
 		setSizeFull();
 		UIEventBus.register(this);
 		this.conversation = conversation;
 
 		messages.setSpacing(true);
+		messages.setWidth("100%");
 		VerticalLayout l = new VerticalLayout();
 		l.setSizeFull();
 		l.setMargin(true);

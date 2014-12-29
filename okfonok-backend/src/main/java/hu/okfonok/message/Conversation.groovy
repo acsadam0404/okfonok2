@@ -1,5 +1,6 @@
 package hu.okfonok.message
 
+import java.nio.ReadOnlyBufferException;
 import java.util.Collection;
 
 import groovy.transform.EqualsAndHashCode
@@ -15,7 +16,10 @@ import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
+ * TODO findall ne hozzon olyat amihez nem tartozik message
  * Beszélgetés két ember között egy hirdetésről. A beszélgetés üzenetekből áll. 
  * 
  * Létrehozásáról a sendMessage gondoskodik, nem szabad példányosítani (nem tudom letiltani mert JPA-nak kell az üres public konstruktor)
@@ -29,6 +33,7 @@ class Conversation extends BaseEntity {
 	public static final String USER2 = "user2"
 	public static final String ADVERTISEMENT = "advertisement"
 	public static final String DATUM = "datum"
+	public static final String MESSAGECOUNT = "messageCount"
 
 	private static ConversationRepo conversationRepo
 
@@ -66,6 +71,10 @@ class Conversation extends BaseEntity {
 		advertisement
 	}
 
+	int getMessageCount() {
+		messages.size()
+	}
+
 	@NotNull
 	@ManyToOne
 	private User user1
@@ -82,15 +91,19 @@ class Conversation extends BaseEntity {
 		user2
 	}
 
+	@Transactional
 	Conversation save() {
-		repo.save(this)
+		Conversation conv = repo.save(this)
+		messages.each { it.save() }
+		conv
 	}
 
+	@Transactional
 	static Conversation sendMessage(User sender, User recipient, Advertisement ad, String text) {
 		Conversation conv = findOrCreate(sender, recipient, ad)
-		def msg = new Message(conv, text, sender, recipient)
-		conv.messages.add(msg)
+		Message msg = new Message(conv, text, sender, recipient)
 		msg.save()
+		conv.messages.add(msg)
 		conv.save()
 	}
 
@@ -102,6 +115,7 @@ class Conversation extends BaseEntity {
 	 * @param text
 	 * @return
 	 */
+	@Transactional
 	static Conversation findOrCreate(User sender, User recipient, Advertisement ad) {
 		Conversation conv = repo.findByUser1AndUser2AndAdvertisement(sender, recipient, ad)
 		if (!conv) {
@@ -114,6 +128,7 @@ class Conversation extends BaseEntity {
 		conv
 	}
 
+	@Transactional(readOnly = true)
 	static Set<Conversation> findAll() {
 		repo.findAll()
 	}
@@ -124,12 +139,22 @@ class Conversation extends BaseEntity {
 	 * @param user
 	 * @return üres set ha nincs ilyen
 	 */
+	@Transactional(readOnly = true)
 	static Set<Conversation> find(User user) {
 		repo.findByUser1OrUser2(user, user)
 	}
 
 
+	@Transactional(readOnly= true)
 	static Set<Conversation> find(User user, Advertisement ad) {
 		repo.findByUser1OrUser2AndAdvertisement(user, user, ad)
+	}
+
+
+	User getOtherUser(User user) {
+		if (user1 == user) {
+			return user2
+		}
+		return user1
 	}
 }

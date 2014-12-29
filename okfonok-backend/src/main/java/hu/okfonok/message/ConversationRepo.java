@@ -1,9 +1,9 @@
 package hu.okfonok.message;
 
-import java.util.List;
-
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.user.User;
+
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

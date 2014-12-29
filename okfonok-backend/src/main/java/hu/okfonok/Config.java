@@ -19,6 +19,8 @@ public class Config implements ApplicationContextAware {
 
 	@Value("${root}")
 	private String root;
+	@Value("${supportEmail}")
+	private String supportEmail;
 
 
 	@Override
@@ -67,5 +69,10 @@ public class Config implements ApplicationContextAware {
 	public static Path getAdRoot(User user, String uuid) {
 		/* jelenlegi megoldás: myroot/users/$username/ads/$uuid */
 		return getUserRoot(user).resolve("ads").resolve(uuid);
+	}
+
+
+	public static String getSupportEmail() {
+		return instance.supportEmail;
 	}
 }

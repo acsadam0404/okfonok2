@@ -1,0 +1,9 @@
+@mixin landing {
+	.step-regisztralj {
+		background-image: url('img/landing/regisztralj.png');
+	}
+	
+	.step {
+		background-repeat: no-repeat;
+	}
+}

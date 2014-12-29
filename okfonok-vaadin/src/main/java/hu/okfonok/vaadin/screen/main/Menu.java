@@ -1,7 +1,7 @@
 package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.ad.events.AdvertisementCreatedEvent;
-import hu.okfonok.technical.ExportH2DBService;
+import hu.okfonok.service.technical.ExportH2DBService;
 import hu.okfonok.user.ServiceLocator;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.DialogWithCloseEvent;

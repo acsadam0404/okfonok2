@@ -9,6 +9,7 @@ import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
 import java.math.RoundingMode
+import java.util.Collection;
 
 import javax.persistence.ElementCollection
 import javax.persistence.Embedded
@@ -38,9 +39,10 @@ class Advertisement extends BaseEntity{
 	public static final String DESCRIPTION = "description"
 	public static final String REMUNERATION = "remuneration"
 	public static final String CATEGORY = "category"
-	public static final String ADDRESS = "address"	public static final String MAINCATEGORY = "mainCategory";
-	public static final String AVERAGEPRICE = "averagePrice";
-	public static final String OFFERSNUMBER = "offersNumber";
+	public static final String ADDRESS = "address"	public static final String MAINCATEGORY = "mainCategory"
+	public static final String AVERAGEPRICE = "averagePrice"
+	public static final String OFFERSNUMBER = "offersNumber"
+	public static final String MESSAGECOUNT = "messageCount"
 
 	/**
 	 * Létrehoz egy hirdetést és beállítja az uuid-ját. 
@@ -142,5 +144,9 @@ class Advertisement extends BaseEntity{
 
 	static List<Advertisement> findAll() {
 		repo.findAll()
+	}
+
+	static List<Advertisement> findByUserExcluded(User user) {
+		repo.findByUserNot(user)
 	}
 }

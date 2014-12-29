@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * TODO legyen immutable
  * @author aacs
@@ -67,7 +69,7 @@ class Message extends BaseEntity{
 	@ManyToOne
 	User recipient
 
-
+	@Transactional
 	Message save() {
 		repo.save(this)
 	}

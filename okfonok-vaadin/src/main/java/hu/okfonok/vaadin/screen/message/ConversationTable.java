@@ -2,9 +2,11 @@ package hu.okfonok.vaadin.screen.message;
 
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.message.Conversation;
+import hu.okfonok.message.events.MessageSentEvent;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.security.Authentication;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
@@ -24,6 +26,8 @@ import com.vaadin.ui.VerticalLayout;
 public class ConversationTable extends CustomComponent {
 	private static final String AD_DESCRIPTION = Conversation.ADVERTISEMENT + "." + Advertisement.DESCRIPTION;
 	private static final String ACTIONS = "actions";
+	//TODO töröl
+	private static final String MESSAGECOUNT = "messagecount";
 	private Table table;
 
 
@@ -53,6 +57,7 @@ public class ConversationTable extends CustomComponent {
 						Conversation conv = (Conversation) itemId;
 						MessageBox messageBox = new MessageBox(conv);
 						Dialog dialog = new Dialog(messageBox);
+						dialog.setCaption("Üzenet küldése");
 						dialog.setHeight("60%");
 						dialog.setWidth("60%");
 						dialog.showWindow();
@@ -67,17 +72,30 @@ public class ConversationTable extends CustomComponent {
 		BeanItemContainer<Conversation> container = new BeanItemContainer<>(Conversation.class);
 		container.addNestedContainerProperty(AD_DESCRIPTION);
 		table.setContainerDataSource(container);
-
-		table.setVisibleColumns(ACTIONS, Conversation.USER1, Conversation.USER2, AD_DESCRIPTION, Conversation.DATUM);
+		table.setVisibleColumns(ACTIONS, Conversation.USER1, Conversation.USER2, Conversation.MESSAGECOUNT, AD_DESCRIPTION, Conversation.DATUM);
 		table.setColumnHeader(Conversation.USER1, "Feladó");
 		//TODO itt csak az egyik félt kell megmutatni, mert másik nyílván a bejelentkezett user
 		table.setColumnHeader(Conversation.USER2, "Feladó2");
 		table.setColumnHeader(AD_DESCRIPTION, "Feladat");
+		table.setColumnHeader(Conversation.MESSAGECOUNT, "Üzenetek");
 		table.setColumnHeader(Conversation.DATUM, "Dátum");
 		table.setColumnHeader(ACTIONS, "");
+		table.setColumnExpandRatio(AD_DESCRIPTION, 1f);
 		return table;
 	}
 
+
+	/**
+	 * ha közünk van az eventhez akkor frissítsük
+	 * 
+	 * @param event
+	 */
+	@Subscribe
+	public void handleMessageSentEvent(MessageSentEvent event) {
+		if (event.getConversation().getUser1().equals(Authentication.getUser()) || event.getConversation().getUser2().equals(Authentication.getUser())) {
+			refresh();
+		}
+	}
 
 	public void refresh() {
 		BeanItemContainer container = (BeanItemContainer) table.getContainerDataSource();

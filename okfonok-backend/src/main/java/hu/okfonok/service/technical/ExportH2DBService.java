@@ -1,4 +1,4 @@
-package hu.okfonok.technical;
+package hu.okfonok.service.technical;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

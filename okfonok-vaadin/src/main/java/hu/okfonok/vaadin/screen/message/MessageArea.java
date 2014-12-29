@@ -11,6 +11,8 @@ public class MessageArea extends CustomComponent {
 		TextArea textArea = new TextArea(null, msg.getText());
 		textArea.setReadOnly(true);
 		textArea.addStyleName(dir.getStyleName());
+		setCaption(msg.getSender().getProfile().getShortenedName());
+		setSizeUndefined();
 		setCompositionRoot(textArea);
 	}
 

@@ -12,7 +12,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -26,6 +25,7 @@ public class LoginFrame extends CustomComponent {
 
 		Component loginForm = buildLoginForm();
 		VerticalLayout root = new VerticalLayout();
+		root.setMargin(true);
 		root.addComponent(loginForm);
 		root.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 		setCompositionRoot(root);
@@ -43,7 +43,6 @@ public class LoginFrame extends CustomComponent {
 		return loginPanel;
 	}
 
-
 	private Component buildFields() {
 		VerticalLayout fields = new VerticalLayout();
 		fields.setSpacing(true);
@@ -52,6 +51,7 @@ public class LoginFrame extends CustomComponent {
 		final TextField username = new TextField("Felhasználónév");
 		username.setIcon(FontAwesome.USER);
 		username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		username.focus();
 
 		final PasswordField password = new PasswordField("Jelszó");
 		password.setIcon(FontAwesome.LOCK);
@@ -62,7 +62,6 @@ public class LoginFrame extends CustomComponent {
 		final Button signin = new Button("Bejelentkezés");
 		signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		signin.setClickShortcut(KeyCode.ENTER);
-		signin.focus();
 
 		fields.addComponents(username, password, rememberMe, signin);
 		fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);

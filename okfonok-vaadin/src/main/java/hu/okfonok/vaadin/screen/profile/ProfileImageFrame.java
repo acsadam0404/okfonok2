@@ -69,12 +69,12 @@ public class ProfileImageFrame extends CustomComponent {
 	private Component build() {
 		//TODO ezt úgy kéne megcsinálni, hogy a skillkör közeépre menjen az imageholder
 		VerticalLayout l = new VerticalLayout();
-		l.addComponent(new SkillCircle(user));
-		l.addComponent(new Label(user.getProfile().getName()));
 		l.addComponent(new Label("/" + user.getRatings().size()));
 		imageHolder = new VerticalLayout();
 		l.addComponent(imageHolder);
 		l.addComponent(new Rating(user));
+		SkillCircle skillCircle = new SkillCircle(user);
+		l.addComponent(skillCircle);
 		return l;
 	}
 
@@ -84,7 +84,7 @@ public class ProfileImageFrame extends CustomComponent {
 		if (!Files.exists(profileRoot)) {
 			createDefaultProfileImage();
 		}
-		Image profileImage = new Image(profileRoot.toFile().getName(), new FileResource(profileRoot.toFile()));
+		Image profileImage = new Image(null, new FileResource(profileRoot.toFile()));
 		imageHolder.addComponent(profileImage);
 		imageHolder.addComponent(new ProfileImageUpload());
 	}

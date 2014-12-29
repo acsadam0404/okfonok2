@@ -14,6 +14,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
@@ -54,6 +55,7 @@ public class HelpFrame extends CustomComponent {
 
 	private Component build() {
 		VerticalLayout root = new VerticalLayout();
+		root.setWidth("500px");
 		root.setMargin(true);
 		root.setSpacing(true);
 		root.addComponent(new Label("Bármilyen kérdést, észrevételt örömmel fogadunk!"));
@@ -69,6 +71,10 @@ public class HelpFrame extends CustomComponent {
 		root.addComponent(messageField);
 		root.addComponent(categoryField);
 		root.addComponent(sendButton);
+
+		for (Component f : root) {
+			f.setSizeFull();
+		}
 		fg.bindMemberFields(this);
 		return root;
 	}
