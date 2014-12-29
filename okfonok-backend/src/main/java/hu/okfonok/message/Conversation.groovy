@@ -23,8 +23,13 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 @Table(name = "conversation")
-@EqualsAndHashCode(includes = ["advertisement", "otherUser"])
+@EqualsAndHashCode(includes = ["advertisement", "user1", 'user2'])
 class Conversation extends BaseEntity {
+	public static final String USER1 = "user1"
+	public static final String USER2 = "user2"
+	public static final String ADVERTISEMENT = "advertisement"
+	public static final String DATUM = "datum"
+
 	private static ConversationRepo conversationRepo
 
 	private static ConversationRepo getRepo() {
@@ -35,10 +40,23 @@ class Conversation extends BaseEntity {
 	}
 
 	@OneToMany(mappedBy = "conversation", fetch = FetchType.EAGER)
-	private List<Message> messages
+	private List<Message> messages = []
 
 	List<Message> getMessages() {
+		if (!messages) {
+			messages = []
+		}
 		messages
+	}
+
+
+	/**
+	 * visszaadja az utolsó üzenet dátumát
+	 */
+	Date getDatum() {
+		/* dates nem lehet üres, mivel akkor nem lenne Conversation sem, így ez sose ad vissza nullt */
+		def dates = messages.collect { it.dateCreated }
+		return dates.max()
 	}
 
 	@ManyToOne
@@ -64,8 +82,16 @@ class Conversation extends BaseEntity {
 		user2
 	}
 
-	static void sendMessage(User sender, User recipient, Advertisement ad, String text) {
-		findOrCreate(sender, recipient, ad)
+	Conversation save() {
+		repo.save(this)
+	}
+
+	static Conversation sendMessage(User sender, User recipient, Advertisement ad, String text) {
+		Conversation conv = findOrCreate(sender, recipient, ad)
+		def msg = new Message(conv, text, sender, recipient)
+		conv.messages.add(msg)
+		msg.save()
+		conv.save()
 	}
 
 	/**
@@ -76,19 +102,34 @@ class Conversation extends BaseEntity {
 	 * @param text
 	 * @return
 	 */
-	private static Conversation findOrCreate(User sender, User recipient, Advertisement ad) {
+	static Conversation findOrCreate(User sender, User recipient, Advertisement ad) {
 		Conversation conv = repo.findByUser1AndUser2AndAdvertisement(sender, recipient, ad)
 		if (!conv) {
 			conv = repo.findByUser1AndUser2AndAdvertisement(recipient, sender, ad)
 		}
 		if (!conv) {
 			conv = new Conversation(user1: sender, user2: recipient, advertisement: ad)
-			repo.save(this)
+			repo.save(conv)
 		}
 		conv
 	}
 
-	static Collection findAll() {
+	static Set<Conversation> findAll() {
 		repo.findAll()
+	}
+
+
+	/**
+	 * 
+	 * @param user
+	 * @return üres set ha nincs ilyen
+	 */
+	static Set<Conversation> find(User user) {
+		repo.findByUser1OrUser2(user, user)
+	}
+
+
+	static Set<Conversation> find(User user, Advertisement ad) {
+		repo.findByUser1OrUser2AndAdvertisement(user, user, ad)
 	}
 }

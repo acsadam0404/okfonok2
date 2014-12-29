@@ -1,11 +1,14 @@
 package hu.okfonok.vaadin.screen.main.ad.myads;
 
 import hu.okfonok.ad.Advertisement;
+import hu.okfonok.message.Conversation;
 import hu.okfonok.offer.Offer;
 import hu.okfonok.offer.events.AcceptOfferEvent;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.screen.message.MessageBox;
 import hu.okfonok.vaadin.screen.profile.ProfileViewFrame;
+import hu.okfonok.vaadin.security.Authentication;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
@@ -94,8 +97,11 @@ public class OfferTableFrame extends CustomComponent {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
-						// TODO Auto-generated method stub
-
+						Dialog dialog = new Dialog(new MessageBox(Conversation.findOrCreate(Authentication.getUser(), offer.getUser(), ad)));
+						dialog.setWidth("60%");
+						dialog.setHeight("60%");
+						dialog.setCaption("Üzenet küldése");
+						dialog.showWindow();
 					}
 				}));
 				return l;

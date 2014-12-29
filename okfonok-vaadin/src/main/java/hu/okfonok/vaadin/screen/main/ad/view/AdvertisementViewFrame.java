@@ -4,11 +4,13 @@ import hu.okfonok.Config;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.JobCategory;
 import hu.okfonok.ad.events.AdvertisementSaveEvent;
+import hu.okfonok.message.Conversation;
 import hu.okfonok.user.Profile;
 import hu.okfonok.vaadin.OFFieldGroup;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.component.DirectoryCarousel;
-import hu.okfonok.vaadin.screen.profile.MessageBox;
+import hu.okfonok.vaadin.screen.message.ConversationTable;
+import hu.okfonok.vaadin.screen.message.MessageBox;
 import hu.okfonok.vaadin.security.Authentication;
 
 import com.vaadin.server.FontAwesome;
@@ -107,7 +109,7 @@ public class AdvertisementViewFrame extends CustomComponent {
 		tabsheet.addTab(new DirectoryCarousel(Config.getAdRoot(Authentication.getUser(), fg.getBean().getUuid())), "Képek", FontAwesome.PICTURE_O);
 		tabsheet.addTab(new AdvertisementViewMap(fg.getBean()), "Térkép", FontAwesome.MAP_MARKER);
 		tabsheet.addTab(new AdvertisementViewCalendar(fg.getBean()), "Naptár", FontAwesome.CALENDAR);
-		tabsheet.addTab(new MessageBox(fg.getBean()), "Üzenetek", FontAwesome.COMMENT);
+		tabsheet.addTab(new MessageBox(Conversation.findOrCreate(Authentication.getUser(), fg.getBean().getUser(), fg.getBean())), "Üzenetek", FontAwesome.COMMENT);
 		tabsheet.addTab(new OfferFrame(fg.getBean()), "Ajánlat", FontAwesome.GAVEL);
 
 		return tabsheet;

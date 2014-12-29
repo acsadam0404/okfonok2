@@ -10,13 +10,14 @@ import com.vaadin.ui.Button.ClickListener;
 public class DialogWithCloseButton extends Dialog {
 
 	public DialogWithCloseButton(Component content, Button closeButton) {
-		super(build(content, closeButton));
+		super();
 		closeButton.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				closeWindow();
 			}
 		});
+		setContent(build(content, closeButton));
 	}
 
 	private static Component build(Component content, Button closeButton) {

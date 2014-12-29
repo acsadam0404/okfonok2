@@ -1,6 +1,8 @@
 package hu.okfonok.vaadin.screen.main;
 
 import hu.okfonok.ad.events.AdvertisementCreatedEvent;
+import hu.okfonok.technical.ExportH2DBService;
+import hu.okfonok.user.ServiceLocator;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.MainUI;
@@ -22,6 +24,14 @@ import com.vaadin.ui.MenuBar.MenuItem;
 public class Menu extends CustomComponent {
 	public Menu() {
 		MenuBar menubar = new MenuBar();
+		menubar.addItem("export sql", new Command() {
+
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				ServiceLocator.getBean(ExportH2DBService.class).export("/home/aacs/temp/sqldump");
+			}
+
+		});
 		menubar.addItem("Home", new Command() {
 
 			@Override

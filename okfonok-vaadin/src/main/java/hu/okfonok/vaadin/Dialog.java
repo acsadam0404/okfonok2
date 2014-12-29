@@ -9,12 +9,12 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.SpacingHandler;
 
 
-public class Dialog extends CustomComponent {
-	private Window window;
-
+public class Dialog extends Window {
+	//TODO törlés
 	public void setCaption(String caption) {
-		window.setCaption(caption);
+		super.setCaption(caption);
 	}
+
 
 	public Dialog(Component content) {
 		this();
@@ -23,31 +23,31 @@ public class Dialog extends CustomComponent {
 
 
 	public Dialog() {
-		window = new Window();
-		window.setModal(true);
-		window.center();
-		window.setDraggable(false);
-		window.setResizable(false);
-		window.setCloseShortcut(KeyCode.X, ModifierKey.ALT, ModifierKey.CTRL);
+		setModal(true);
+		center();
+		setDraggable(false);
+		setResizable(false);
+		setCloseShortcut(KeyCode.X, ModifierKey.ALT, ModifierKey.CTRL);
 		setSizeUndefined();
-		window.setSizeUndefined();
 	}
 
 
 	public void setContent(Component content) {
-		window.setContent(content);
-		setCaption(content.getCaption());
-		if (content instanceof SpacingHandler) {
-			((SpacingHandler) content).setSpacing(true);
+		super.setContent(content);
+		if (content != null) {
+			setCaption(content.getCaption());
+			if (content instanceof SpacingHandler) {
+				((SpacingHandler) content).setSpacing(true);
+			}
 		}
 	}
 
 
 	public void showWindow() {
-		UI.getCurrent().addWindow(window);
+		UI.getCurrent().addWindow(this);
 	}
 
 	public void closeWindow() {
-		UI.getCurrent().removeWindow(window);
+		UI.getCurrent().removeWindow(this);
 	}
 }

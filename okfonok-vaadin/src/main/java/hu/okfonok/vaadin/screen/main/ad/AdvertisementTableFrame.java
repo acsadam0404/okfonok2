@@ -34,40 +34,44 @@ public class AdvertisementTableFrame extends CustomComponent {
 	private static final String DISTANCE = "distance";
 	private static final String IMAGE = "image";
 	private static final String AVERAGE_PRICE = "averagePrice";
-	private Table root; //TODO átnevezni table-re
+	private Table table;
 
 
 	public AdvertisementTableFrame() {
 		UIEventBus.register(this);
 
-		//TODO refactor build metódusba 
-		root = new Table();
-		root.setColumnHeader(Advertisement.MAINCATEGORY, "Főkategória");
-		root.setColumnHeader(Advertisement.CATEGORY, "Kategória");
-		root.setColumnHeader(Advertisement.DESCRIPTION, "Leírás");
-		root.setColumnHeader(Advertisement.REMUNERATION, "Díjazás");
-		root.addContainerProperty(ACTIONS, Component.class, null, "", null, Align.CENTER);
-		root.addContainerProperty(AVERAGE_PRICE, String.class, null, "Aktuális átlag díj", null, Align.CENTER);
-		root.addContainerProperty(DISTANCE, String.class, null, "Távolság", null, Align.CENTER);
-		root.addContainerProperty(IMAGE, Component.class, null, "Kép", null, Align.CENTER);
+		buildTable();
+		refresh();
+		setCompositionRoot(table);
+	}
 
-		root.setColumnExpandRatio(Advertisement.DESCRIPTION, 1f);
+
+	private void buildTable() {
+		table = new Table();
+		table.setColumnHeader(Advertisement.MAINCATEGORY, "Főkategória");
+		table.setColumnHeader(Advertisement.CATEGORY, "Kategória");
+		table.setColumnHeader(Advertisement.DESCRIPTION, "Leírás");
+		table.setColumnHeader(Advertisement.REMUNERATION, "Díjazás");
+		table.addContainerProperty(ACTIONS, Component.class, null, "", null, Align.CENTER);
+		table.addContainerProperty(AVERAGE_PRICE, String.class, null, "Aktuális átlag díj", null, Align.CENTER);
+		table.addContainerProperty(DISTANCE, String.class, null, "Távolság", null, Align.CENTER);
+		table.addContainerProperty(IMAGE, Component.class, null, "Kép", null, Align.CENTER);
+
+		table.setColumnExpandRatio(Advertisement.DESCRIPTION, 1f);
 		addImageColumn();
 		addDistanceColumn();
 		addAveragePriceColumn();
 		addActionsColumn();
 
-		root.setContainerDataSource(new BeanItemContainer<Advertisement>(Advertisement.class));
-		root.setVisibleColumns(IMAGE, Advertisement.MAINCATEGORY, Advertisement.CATEGORY, Advertisement.DESCRIPTION, Advertisement.REMUNERATION, AVERAGE_PRICE, DISTANCE, ACTIONS);
-		root.setSizeFull();
-		refresh();
-		setCompositionRoot(root);
+		table.setContainerDataSource(new BeanItemContainer<Advertisement>(Advertisement.class));
+		table.setVisibleColumns(IMAGE, Advertisement.MAINCATEGORY, Advertisement.CATEGORY, Advertisement.DESCRIPTION, Advertisement.REMUNERATION, AVERAGE_PRICE, DISTANCE, ACTIONS);
+		table.setSizeFull();
 	}
 
 
 	private void addActionsColumn() {
 
-		root.addGeneratedColumn(ACTIONS, new ColumnGenerator() {
+		table.addGeneratedColumn(ACTIONS, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -158,7 +162,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 	private void addAveragePriceColumn() {
 
-		root.addGeneratedColumn(AVERAGE_PRICE, new ColumnGenerator() {
+		table.addGeneratedColumn(AVERAGE_PRICE, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -175,7 +179,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 	private void addDistanceColumn() {
 
-		root.addGeneratedColumn(DISTANCE, new ColumnGenerator() {
+		table.addGeneratedColumn(DISTANCE, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -193,7 +197,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 	private void addImageColumn() {
 
-		root.addGeneratedColumn(IMAGE, new ColumnGenerator() {
+		table.addGeneratedColumn(IMAGE, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(final Table source, final Object itemId, Object columnId) {
@@ -202,8 +206,10 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
-						Advertisement ad = ((BeanItem<Advertisement>) source.getItem(itemId)).getBean();
-						new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+						Advertisement ad = (Advertisement) itemId;
+						if (ad != null) {
+							new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+						}
 					}
 				});
 			}
@@ -212,7 +218,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 
 	private void refresh() {
-		BeanItemContainer<Advertisement> container = (BeanItemContainer) root.getContainerDataSource();
+		BeanItemContainer<Advertisement> container = (BeanItemContainer) table.getContainerDataSource();
 		container.removeAllItems();
 		container.addAll(Advertisement.findAll());
 		//TODO sajátunkat nem szabad itt látni

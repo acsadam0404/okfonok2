@@ -55,8 +55,7 @@ public class SelfRatingDialog extends Dialog {
 		try {
 			user = Authentication.getUser();
 			stars = new Stars(user);
-			setCompositionRoot(build());
-			setContent(this);
+			setContent(build());
 		} catch (NoSkillException e) {
 			noSkills = true;
 		}
