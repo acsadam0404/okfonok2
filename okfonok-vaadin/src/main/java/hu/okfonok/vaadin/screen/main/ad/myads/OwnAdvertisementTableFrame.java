@@ -2,10 +2,10 @@ package hu.okfonok.vaadin.screen.main.ad.myads;
 
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.events.AdvertisementCreatedEvent;
+import hu.okfonok.offer.events.OfferCreatedEvent;
 import hu.okfonok.vaadin.Dialog;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
-import hu.okfonok.vaadin.screen.main.ad.view.OfferCreatedEvent;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.util.List;

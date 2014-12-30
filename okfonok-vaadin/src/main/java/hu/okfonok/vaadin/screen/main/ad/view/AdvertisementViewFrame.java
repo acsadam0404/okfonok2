@@ -6,24 +6,25 @@ import hu.okfonok.ad.JobCategory;
 import hu.okfonok.ad.events.AdvertisementSaveEvent;
 import hu.okfonok.message.Conversation;
 import hu.okfonok.user.Profile;
+import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.OFFieldGroup;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.component.DirectoryCarousel;
-import hu.okfonok.vaadin.screen.message.ConversationTable;
 import hu.okfonok.vaadin.screen.message.MessageBox;
 import hu.okfonok.vaadin.security.Authentication;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -103,14 +104,20 @@ public class AdvertisementViewFrame extends CustomComponent {
 	private Component build() {
 		tabsheet = new TabSheet();
 		tabsheet.setWidth("800px");
-		tabsheet.setHeight("600px");
+		tabsheet.setHeight("715px");
 
 		tabsheet.addTab(buildData(), "Összefoglaló", FontAwesome.INFO);
 		tabsheet.addTab(new DirectoryCarousel(Config.getAdRoot(Authentication.getUser(), fg.getBean().getUuid())), "Képek", FontAwesome.PICTURE_O);
 		tabsheet.addTab(new AdvertisementViewMap(fg.getBean()), "Térkép", FontAwesome.MAP_MARKER);
 		tabsheet.addTab(new AdvertisementViewCalendar(fg.getBean()), "Naptár", FontAwesome.CALENDAR);
 		tabsheet.addTab(new MessageBox(Conversation.findOrCreate(Authentication.getUser(), fg.getBean().getUser(), fg.getBean())), "Üzenetek", FontAwesome.COMMENT);
-		tabsheet.addTab(new OfferFrame(fg.getBean()), "Ajánlat", FontAwesome.GAVEL);
+		if (fg.getBean().hasOfferByUser(Authentication.getUser())) {
+			Tab offerTab = tabsheet.addTab(new RemoveOfferFrame(fg.getBean().getOfferByUser(Authentication.getUser())), "Ajánlat", FontAwesome.GAVEL);
+			offerTab.setStyleName("hasoffer");
+		}
+		else {
+			tabsheet.addTab(new PlaceOfferFrame(fg.getBean()), "Ajánlat", FontAwesome.GAVEL);
+		}
 
 		return tabsheet;
 	}
@@ -164,6 +171,11 @@ public class AdvertisementViewFrame extends CustomComponent {
 		hl.addComponent(new OfferButton());
 		hl.addComponent(new BookmarkButton());
 		return hl;
+	}
+
+
+	public void showWindow() {
+		new DialogWithCloseEvent(this).showWindow();
 	}
 
 }

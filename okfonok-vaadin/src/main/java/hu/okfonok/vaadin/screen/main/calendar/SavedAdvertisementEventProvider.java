@@ -42,7 +42,7 @@ public class SavedAdvertisementEventProvider extends BasicEventProvider {
 
 		@Override
 		void onClick() {
-			new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+			new AdvertisementViewFrame(ad).showWindow();
 		}
 
 	}

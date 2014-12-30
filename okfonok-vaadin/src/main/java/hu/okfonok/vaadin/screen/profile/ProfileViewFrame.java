@@ -26,10 +26,13 @@ public class ProfileViewFrame extends CustomComponent {
 
 
 	public ProfileViewFrame(User user) {
+		assert user != null;
+		setCaption("Felhasználó profilja");
 		fg = new OFFieldGroup<>(user);
 		fg.setReadOnly(true);
 		setHeight("600px");
 		profileImageFrame = new ProfileImageFrame(user);
+		profileImageFrame.setReadOnly(true);
 		profileImageFrame.setWidth("400px");
 		profileImageFrame.setHeight("400px");
 		scoreFrame = new ScoreFrame(user);
@@ -61,6 +64,7 @@ public class ProfileViewFrame extends CustomComponent {
 		fl.setWidth("400px");
 		fl.setHeight("100%");
 		nameField = new TextField("Név");
+		nameField.setNullRepresentation("");
 		phoneNumberField = new TextField("Telefonszám");
 		phoneNumberField.setNullRepresentation("");
 		emailField = new TextField("E-mail cím");

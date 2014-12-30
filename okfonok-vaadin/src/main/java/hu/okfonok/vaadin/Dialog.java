@@ -3,18 +3,12 @@ package hu.okfonok.vaadin;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutAction.ModifierKey;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Layout.SpacingHandler;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.SpacingHandler;
 
 
 public class Dialog extends Window {
-	//TODO törlés
-	public void setCaption(String caption) {
-		super.setCaption(caption);
-	}
-
 
 	public Dialog(Component content) {
 		this();
@@ -46,6 +40,7 @@ public class Dialog extends Window {
 	public void showWindow() {
 		UI.getCurrent().addWindow(this);
 	}
+
 
 	public void closeWindow() {
 		UI.getCurrent().removeWindow(this);

@@ -8,6 +8,7 @@ import hu.okfonok.common.Settlement;
 import hu.okfonok.common.ValueSet;
 import hu.okfonok.vaadin.OFFieldGroup;
 import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.component.calendar.IntervalEvent;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.util.List;
@@ -183,7 +184,7 @@ public class AdvertisementCreationFrame extends CustomComponent {
 			public void rangeSelect(RangeSelectEvent event) {
 				DateInterval interval = new DateInterval(event.getStart(), event.getEnd());
 				fg.getBean().getPreferredIntervals().add(interval);
-				calendar.addEvent(new PreferredIntervalEvent(interval));
+				calendar.addEvent(new IntervalEvent(interval));
 			}
 		});
 
@@ -191,7 +192,7 @@ public class AdvertisementCreationFrame extends CustomComponent {
 
 			@Override
 			public void eventClick(EventClick event) {
-				PreferredIntervalEvent interval = (PreferredIntervalEvent) event.getCalendarEvent();
+				IntervalEvent interval = (IntervalEvent) event.getCalendarEvent();
 				fg.getBean().getPreferredIntervals().remove(interval.getDateInterval());
 			}
 		});

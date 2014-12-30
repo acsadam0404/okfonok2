@@ -2,12 +2,17 @@ package hu.okfonok.user
 
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
+import hu.okfonok.Config
 import hu.okfonok.ad.Advertisement
 import hu.okfonok.common.Address
+
+import java.nio.file.Files
+import java.nio.file.Path
 
 import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.FetchType
+import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
@@ -62,7 +67,7 @@ class User extends BaseEntity{
 	}
 
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Advertisement> savedAds
 
 	@Embedded
@@ -87,13 +92,38 @@ class User extends BaseEntity{
 		profile
 	}
 
+
+	Path getProfileImageLargePath() {
+		Config.getUserRoot(this).resolve("profile_large")
+	}
+
+	Path getProfileImageSmallPath() {
+		Config.getUserRoot(this).resolve("profile_small")
+	}
+
+
+	Path getProfileImageOriginalPath() {
+		Config.getUserRoot(this).resolve("profile_original")
+	}
+
 	@Transactional(readOnly = true)
 	static User get(String username) {
 		repo.findByUsername(username)
 	}
 
 	User save() {
-		repo.save(this)
+		User user = repo.save(this)
+		if (!Files.exists(Config.getUserRoot(this))) {
+			createUserFiles()
+		}
+		user
+	}
+
+	private def createUserFiles() {
+		Files.createDirectories(Config.getUserRoot(this))
+		Files.copy(Config.getAppRoot().resolve("profile_original"), getProfileImageOriginalPath())
+		Files.copy(Config.getAppRoot().resolve("profile_large"), getProfileImageLargePath())
+		Files.copy(Config.getAppRoot().resolve("profile_small"), getProfileImageSmallPath())
 	}
 
 	@Override
@@ -161,4 +191,5 @@ class User extends BaseEntity{
 		}
 		value
 	}
+
 }

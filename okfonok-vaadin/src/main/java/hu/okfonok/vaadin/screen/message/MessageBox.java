@@ -1,5 +1,7 @@
 package hu.okfonok.vaadin.screen.message;
 
+import org.apache.commons.lang3.StringUtils;
+
 import hu.okfonok.message.Conversation;
 import hu.okfonok.message.Message;
 import hu.okfonok.message.events.MessageSentEvent;
@@ -37,14 +39,18 @@ public class MessageBox extends CustomComponent {
 		public SendButton() {
 			setCaption("Küldés");
 			setIcon(FontAwesome.SEND);
+			setHeight("100%");
 			addClickListener(new Button.ClickListener() {
 
 				@Override
 				public void buttonClick(ClickEvent event) {
 					String text = messageField.getValue();
-					conversation = Conversation.sendMessage(Authentication.getUser(), conversation.getOtherUser(Authentication.getUser()), conversation.getAdvertisement(), text);
-					/* TODO ez is bus rétegbe való */
-					UIEventBus.post(new MessageSentEvent(conversation));
+					if (StringUtils.isNotBlank(text)) {
+						conversation = Conversation.sendMessage(Authentication.getUser(), conversation.getOtherUser(Authentication.getUser()), conversation.getAdvertisement(), text);
+						/* TODO ez is bus rétegbe való */
+						UIEventBus.post(new MessageSentEvent(conversation));
+						messageField.setValue(null);
+					}
 				}
 			});
 		}
@@ -74,6 +80,8 @@ public class MessageBox extends CustomComponent {
 		l.addComponent(messagesPanel);
 		messageField = new TextArea();
 		messageField.setImmediate(true);
+		messageField.setNullRepresentation("");
+		messageField.setInputPrompt("Ide írd az üzeneted");
 		messageField.setSizeFull();
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setSizeFull();

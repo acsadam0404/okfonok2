@@ -1,66 +1,31 @@
 package hu.okfonok.vaadin.screen.profile;
 
-import hu.okfonok.Config;
-import hu.okfonok.ImageResizer;
 import hu.okfonok.user.User;
-import hu.okfonok.vaadin.MimeType;
-import hu.okfonok.vaadin.security.Authentication;
+import hu.okfonok.user.events.ProfileImageUpdatedEvent;
+import hu.okfonok.vaadin.UIEventBus;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.server.FileResource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.wcs.wcslib.vaadin.widget.multifileupload.ui.MultiFileUpload;
-import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
-import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadStateWindow;
 
 
 public class ProfileImageFrame extends CustomComponent {
 	private User user;
-	private Path profileRoot = Config.getUserRoot(Authentication.getUser()).resolve("profile");
+
 	/**
 	 * ezen van rajta az upload gomb és a profilkép
 	 */
 	private VerticalLayout imageHolder;
 
 
-	/*TODO külön kellene az upload, mert ezt a classt használja a megtekintés is 
-	 */
-	private class ProfileImageUpload extends MultiFileUpload {
-		private ProfileImageUpload() {
-			super(new UploadFinishedHandler() {
-
-				@Override
-				public void handleFile(InputStream input, String fileName, String mimeType, long length) {
-					try {
-						Files.deleteIfExists(profileRoot);
-						if (!Files.exists(profileRoot.getParent())) {
-							Files.createDirectories(profileRoot.getParent());
-						}
-						Files.copy(input, profileRoot);
-						new ImageResizer(profileRoot, 100, 100).resizeAndSave();
-						refresh();
-					}
-					catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}, new UploadStateWindow());
-
-			setAcceptedMimeTypes(MimeType.getImageTypes());
-		}
-	}
-
-
 	public ProfileImageFrame(User user) {
+		assert user != null;
 		this.user = user;
+		UIEventBus.register(this);
 		setCompositionRoot(build());
 		refresh();
 	}
@@ -79,27 +44,30 @@ public class ProfileImageFrame extends CustomComponent {
 	}
 
 
-	private void refresh() {
-		imageHolder.removeAllComponents();
-		if (!Files.exists(profileRoot)) {
-			createDefaultProfileImage();
+	@Subscribe
+	public void handleProfileImageUpdatedEvent(ProfileImageUpdatedEvent event) {
+		if (event.getUser().equals(user)) {
+			refresh();
 		}
-		Image profileImage = new Image(null, new FileResource(profileRoot.toFile()));
-		imageHolder.addComponent(profileImage);
-		imageHolder.addComponent(new ProfileImageUpload());
 	}
 
 
 	/**
-	 * "profile" néven kell létrehoznunk a user fő könyvtárában
+	 * beállíthatjuk readonlyra, ekkor nem jelenik meg a feltöltés
 	 */
-	private void createDefaultProfileImage() {
-		try {
-			Files.createDirectories(profileRoot.getParent());
-			Files.copy(Config.getAppRoot().resolve("defaultprofileimage"), profileRoot);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		super.setReadOnly(readOnly);
+		refresh();
+	}
+
+
+	private void refresh() {
+		imageHolder.removeAllComponents();
+		Image profileImage = new Image(null, new FileResource(user.getProfileImageLargePath().toFile()));
+		imageHolder.addComponent(profileImage);
+		if (!isReadOnly()) {
+			imageHolder.addComponent(new ProfileImageUpload(user));
 		}
 	}
 

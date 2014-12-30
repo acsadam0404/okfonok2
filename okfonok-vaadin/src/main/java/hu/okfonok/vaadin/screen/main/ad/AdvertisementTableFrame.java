@@ -5,8 +5,10 @@ import hu.okfonok.ad.events.AdvertisementCreatedEvent;
 import hu.okfonok.ad.events.AdvertisementSaveEvent;
 import hu.okfonok.common.Address;
 import hu.okfonok.common.Distance;
+import hu.okfonok.offer.events.OfferCreatedEvent;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.Dialog;
+import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 import hu.okfonok.vaadin.security.Authentication;
@@ -208,7 +210,7 @@ public class AdvertisementTableFrame extends CustomComponent {
 					public void buttonClick(ClickEvent event) {
 						Advertisement ad = (Advertisement) itemId;
 						if (ad != null) {
-							new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+							new AdvertisementViewFrame(ad).showWindow();
 						}
 					}
 				});

@@ -1,4 +1,4 @@
-package hu.okfonok.vaadin.screen.main.ad.view;
+package hu.okfonok.offer.events;
 
 import hu.okfonok.offer.Offer;
 

@@ -47,15 +47,19 @@ public class ImageResizer {
 	 * @return sikeres volt-e az akció
 	 */
 	public boolean resizeAndSave() {
+		return resizeAndSave(path);
+	}
+
+
+	public boolean resizeAndSave(Path whereToSave) {
 		try {
 			BufferedImage image = resize();
-			ImageIO.write(image, "png", path.toFile());
+			ImageIO.write(image, "png", whereToSave.toFile());
 			return true;
 		}
 		catch (Exception e) {
 			return false;
 		}
-
 	}
 
 }

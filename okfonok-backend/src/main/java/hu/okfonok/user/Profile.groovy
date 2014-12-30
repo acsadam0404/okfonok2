@@ -1,7 +1,11 @@
 package hu.okfonok.user
 
+import hu.okfonok.Config
+
+import java.nio.file.Path
+
 import javax.persistence.Embeddable
-import javax.persistence.Embedded
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
 
@@ -71,4 +75,5 @@ class Profile {
 	String toString() {
 		getName()
 	}
+
 }

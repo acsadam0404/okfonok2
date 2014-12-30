@@ -1,0 +1,10 @@
+@mixin advertisement-view-offer {
+
+	.v-calendar-event-accepted-offer-interval {
+		background-color: red;
+	}
+	
+	.v-tabsheet-tabitemcell-hasoffer {
+		background-color: green;
+	}
+}

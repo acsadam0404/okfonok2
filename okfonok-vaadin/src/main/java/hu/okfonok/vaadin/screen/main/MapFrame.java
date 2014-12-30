@@ -7,6 +7,7 @@ import hu.okfonok.offer.Offer;
 import hu.okfonok.user.ServiceLocator;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.Dialog;
+import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 
@@ -77,7 +78,7 @@ public class MapFrame extends CustomComponent {
 
 		@Override
 		public void markerClicked(GoogleMapMarker clickedMarker) {
-			new Dialog(new AdvertisementViewFrame(ad)).showWindow();
+			new AdvertisementViewFrame(ad).showWindow();
 		}
 	}
 	

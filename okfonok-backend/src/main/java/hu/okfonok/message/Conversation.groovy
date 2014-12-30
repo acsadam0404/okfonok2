@@ -16,6 +16,7 @@ import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -100,6 +101,11 @@ class Conversation extends BaseEntity {
 
 	@Transactional
 	static Conversation sendMessage(User sender, User recipient, Advertisement ad, String text) {
+		assert StringUtils.isNotBlank(text)
+		assert sender != null
+		assert recipient != null
+		assert ad != null
+
 		Conversation conv = findOrCreate(sender, recipient, ad)
 		Message msg = new Message(conv, text, sender, recipient)
 		msg.save()

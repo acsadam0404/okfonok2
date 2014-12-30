@@ -29,9 +29,26 @@ import com.paypal.core.rest.PayPalRESTException;
 public class PaypalServiceImpl implements PaypalService {
 
 	private String accessToken;
+	@Value("${clientSecret}")
+	private String clientID;
+	@Value("${clientID}")
+	private String clientSecret;
 
 
-	public PaypalServiceImpl(@Value("${clientSecret}") String clientID, @Value("${clientID}") String clientSecret) throws PayPalRESTException {
+	public PaypalServiceImpl() throws PayPalRESTException {
+//TODO ez még nincs kész
+		//		init();
+	}
+
+
+	public PaypalServiceImpl(String clientID, String clientSecret) throws PayPalRESTException {
+		this.clientID = clientID;
+		this.clientSecret = clientSecret;
+		init();
+	}
+
+
+	private void init() throws PayPalRESTException {
 		Payment.initConfig(getClass().getResourceAsStream("/sdk_config.properties"));
 		accessToken = new OAuthTokenCredential(clientID, clientSecret).getAccessToken();
 	}

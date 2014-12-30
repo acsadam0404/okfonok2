@@ -51,13 +51,17 @@ class Offer extends BaseEntity{
 	@NotNull
 	boolean accepted
 
-	public Offer() {
+	/**
+	 * csak JPA-nak
+	 */
+	protected Offer() {
 	}
 
-	public Offer(User user, Advertisement advertisement, BigDecimal amount) {
+	public Offer(User user, Advertisement advertisement, BigDecimal amount, Set<DateInterval> intervals) {
 		this.user = user
 		this.advertisement = advertisement
 		this.amount = amount
+		this.intervals = intervals
 	}
 
 	public void save() {
@@ -87,10 +91,25 @@ class Offer extends BaseEntity{
 		if (advertisement.acceptedOffer) {
 			accepted = false
 			save()
-			/* TODO publish AcceptOfferEvent */
+			/* TODO publish RejectOfferEvent */
 		}
 		else {
 			throw new RuntimeException("A non-accepted offer is rejected. It shouldn't be possible to call this method.")
 		}
+	}
+
+	/**
+	 * csak nem elfogadott ajánlatot lehet törölni
+	 * @return
+	 */
+	boolean delete() {
+		if (!accepted) {
+			advertisement.offers.remove(this)
+			advertisement.save()
+			repo.delete(id)
+			/* TODO publish OfferDeletedEvent */
+			return true
+		}
+		return false
 	}
 }

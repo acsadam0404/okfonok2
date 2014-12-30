@@ -1,5 +1,8 @@
 package hu.okfonok.vaadin.screen.main.ad.myads;
 
+import java.nio.file.Path;
+
+import hu.okfonok.Config;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.message.Conversation;
 import hu.okfonok.offer.Offer;
@@ -12,25 +15,31 @@ import hu.okfonok.vaadin.security.Authentication;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.MouseEvents;
+import com.vaadin.server.FileResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
+
 
 public class OfferTableFrame extends CustomComponent {
 	private static final String IMAGE = "image";
 	private Table table;
 	private Advertisement ad;
 
+
 	public OfferTableFrame() {
 		UIEventBus.register(this);
 		table = buildTable();
 		setCompositionRoot(table);
 	}
+
 
 	private Table buildTable() {
 		Table table = new Table();
@@ -46,13 +55,18 @@ public class OfferTableFrame extends CustomComponent {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				final Offer offer = (Offer) itemId;
-				return new Button("KÉP", new Button.ClickListener() {
+				Path profileImagePath = offer.getUser().getProfileImageSmallPath();
+				Image e = new Image(profileImagePath.toString(), new FileResource(profileImagePath.toFile()));
+				e.addClickListener(new MouseEvents.ClickListener() {
 
 					@Override
-					public void buttonClick(ClickEvent event) {
+					public void click(MouseEvents.ClickEvent event) {
 						new Dialog(new ProfileViewFrame(offer.getUser())).showWindow();
 					}
+
 				});
+
+				return e;
 			}
 		});
 		table.addContainerProperty("actions", Component.class, null);
@@ -62,7 +76,7 @@ public class OfferTableFrame extends CustomComponent {
 			public Object generateCell(final Table source, final Object itemId, Object columnId) {
 				final Offer offer = (Offer) itemId;
 				VerticalLayout l = new VerticalLayout();
-				Button acceptButton = new Button("Elfogadom", new ClickListener() {
+				Button acceptButton = new Button("Elfogadom", new Button.ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
@@ -77,7 +91,7 @@ public class OfferTableFrame extends CustomComponent {
 						l.addComponent(acceptButton);
 					}
 					else {
-						l.addComponent(new Button("Mégse fogadom el", new ClickListener() {
+						l.addComponent(new Button("Mégse fogadom el", new Button.ClickListener() {
 
 							@Override
 							public void buttonClick(ClickEvent event) {
@@ -93,7 +107,7 @@ public class OfferTableFrame extends CustomComponent {
 					l.addComponent(acceptButton);
 				}
 
-				l.addComponent(new Button("Üzenetet küldök", new ClickListener() {
+				l.addComponent(new Button("Üzenetet küldök", new Button.ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
@@ -113,7 +127,7 @@ public class OfferTableFrame extends CustomComponent {
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				final Offer offer = (Offer) itemId;
 				VerticalLayout l = new VerticalLayout();
-				l.addComponent(new Button("Naptár", new ClickListener() {
+				l.addComponent(new Button("Naptár", new Button.ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {

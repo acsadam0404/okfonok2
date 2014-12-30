@@ -64,7 +64,11 @@ class Advertisement extends BaseEntity{
 	String remuneration
 
 	@NotNull
-	String uuid
+	private String uuid
+
+	String getUuid() {
+		uuid
+	}
 
 	@ManyToOne
 	@NotNull
@@ -148,5 +152,23 @@ class Advertisement extends BaseEntity{
 
 	static List<Advertisement> findByUserExcluded(User user) {
 		repo.findByUserNot(user)
+	}
+
+	/**
+	 * adott felhasználó adott-e már ajánlatot a hirdetésre
+	 * @param user
+	 * @return
+	 */
+	boolean hasOfferByUser(User user) {
+		getOfferByUser(user) != null
+	}
+
+	/**
+	 * TODO Optional?
+	 * @param user
+	 * @return null ha nincs ilyen offer
+	 */
+	Offer getOfferByUser(User user) {
+		offers.find { it.user == user }
 	}
 }

@@ -22,7 +22,6 @@ public class Config implements ApplicationContextAware {
 	@Value("${supportEmail}")
 	private String supportEmail;
 
-
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		instance = applicationContext.getBean(Config.class);

@@ -1,6 +1,7 @@
 @import "../valo/valo";
 @import "common";
 @import "landing";
+@import "advertisement-view-offer";
 
 // Main layout padding
 $view-padding: round($v-unit-size / 1.5) !default;
@@ -14,4 +15,6 @@ $valo-background-color: #414B56;
   @include valo;
   @include common;
   @include landing;
+  
+  @include advertisement-view-offer;
 }
