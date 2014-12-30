@@ -9,7 +9,6 @@ import javax.persistence.Table
 
 @Entity
 @Table(name= "settlement")
-@EqualsAndHashCode
 class Settlement extends BaseEntity {
 	private static SettlementRepo settlementRepo
 
@@ -19,21 +18,23 @@ class Settlement extends BaseEntity {
 		}
 		settlementRepo
 	}
-	
-	Settlement() {
-		
+
+	/**
+	 * csak jpa miatt
+	 */
+	protected Settlement() {
 	}
-	
+
 	Settlement(int zipcode, String settlement) {
 		this.zipcode = zipcode
 		this.settlement = settlement
 	}
 
-	private Integer zipcode
+	private int zipcode
 
 	private String settlement
 
-	Integer getZipcode() {
+	int getZipcode() {
 		zipcode
 	}
 
@@ -45,12 +46,34 @@ class Settlement extends BaseEntity {
 	String toString() {
 		zipcode + " - " + settlement
 	}
-	
+
 	static Settlement findByZipcode(int zipcode) {
 		repo.findByZipcode(zipcode)
 	}
 
 	static List<Settlement> findAll() {
 		repo.findAll()
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + zipcode;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this.is(obj))
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Settlement other = (Settlement) obj;
+		if (zipcode != other.zipcode)
+			return false;
+		return true;
 	}
 }

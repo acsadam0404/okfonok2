@@ -15,6 +15,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
@@ -34,7 +35,7 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 
 
 		public ModifyButton(Advertisement ad) {
-			super("Módosítom");
+			setIcon(FontAwesome.EDIT);
 			this.ad = ad;
 			addClickListener(this);
 		}
@@ -51,8 +52,8 @@ public class OwnAdvertisementTableFrame extends CustomComponent {
 
 
 		public ShareButton(Advertisement ad) {
-			super("Megosztom");
 			this.ad = ad;
+			setIcon(FontAwesome.SHARE);
 			addClickListener(this);
 		}
 

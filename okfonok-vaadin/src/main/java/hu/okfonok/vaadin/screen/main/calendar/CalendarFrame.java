@@ -1,7 +1,9 @@
 package hu.okfonok.vaadin.screen.main.calendar;
 
-import hu.okfonok.vaadin.component.calendar.EventProvidersCollection;
+import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.screen.main.events.MainTabChangeEvent;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
@@ -14,6 +16,7 @@ public class CalendarFrame extends CustomComponent {
 
 
 	public CalendarFrame() {
+		UIEventBus.register(this);
 		setWidth("500px");
 		setHeight("250px");
 		calendar = build();
@@ -26,7 +29,7 @@ public class CalendarFrame extends CustomComponent {
 	private Calendar build() {
 		calendar = new Calendar();
 		calendar.setWeeklyCaptionFormat("MM.dd");
-		calendar.setEventProvider(new EventProvidersCollection(new AcceptedOfferEventProvider(), new SavedAdvertisementEventProvider()));
+		calendar.setEventProvider(new SavedAdvertisementEventProvider());
 		calendar.setHandler(new EventClickHandler() {
 			@Override
 			public void eventClick(EventClick event) {
@@ -40,4 +43,15 @@ public class CalendarFrame extends CustomComponent {
 		return calendar;
 	}
 
+
+	@Subscribe
+	public void handleMainTabChangeEvent(MainTabChangeEvent event) {
+		if (MainTabChangeEvent.TabId.ADS == event.getTabId()) {
+			calendar.setEventProvider(new SavedAdvertisementEventProvider());
+		}
+		else {
+			calendar.setEventProvider(new AcceptedOfferEventProvider());
+		}
+		calendar.markAsDirty();
+	}
 }

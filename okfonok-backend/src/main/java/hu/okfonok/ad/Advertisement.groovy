@@ -2,6 +2,7 @@ package hu.okfonok.ad;
 
 import groovy.transform.EqualsAndHashCode
 import hu.okfonok.BaseEntity
+import hu.okfonok.Config
 import hu.okfonok.common.Address
 import hu.okfonok.common.DateInterval
 import hu.okfonok.offer.Offer
@@ -9,7 +10,8 @@ import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
 import java.math.RoundingMode
-import java.util.Collection;
+import java.nio.file.Path
+import java.nio.file.Paths
 
 import javax.persistence.ElementCollection
 import javax.persistence.Embedded
@@ -134,7 +136,7 @@ class Advertisement extends BaseEntity{
 
 	static List<Offer> findAcceptedOffers(User user, Date startDate, Date endDate) {
 		def ads = findByUser(user).findAll{ it.acceptedOffer }
-		ads.collect { it.acceptedOffer}
+		ads.collect { it.acceptedOffer }
 		//TODO startDate, endDate -től függjön
 	}
 
@@ -170,5 +172,13 @@ class Advertisement extends BaseEntity{
 	 */
 	Offer getOfferByUser(User user) {
 		offers.find { it.user == user }
+	}
+
+	Path getImagePath() {
+		Config.getAdRoot(user, uuid)
+	}
+
+	boolean hasImage() {
+		getImagePath().toFile().listFiles().length > 0
 	}
 }

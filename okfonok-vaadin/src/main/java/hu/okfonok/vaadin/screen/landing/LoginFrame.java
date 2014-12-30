@@ -33,10 +33,8 @@ public class LoginFrame extends CustomComponent {
 
 
 	private Component buildLoginForm() {
-		final VerticalLayout loginPanel = new VerticalLayout();
-		loginPanel.setSizeUndefined();
+		VerticalLayout loginPanel = new VerticalLayout();
 		loginPanel.setSpacing(true);
-		Responsive.makeResponsive(loginPanel);
 		loginPanel.addStyleName("login-panel");
 
 		loginPanel.addComponent(buildFields());
@@ -45,18 +43,20 @@ public class LoginFrame extends CustomComponent {
 
 	private Component buildFields() {
 		VerticalLayout fields = new VerticalLayout();
+		fields.setWidth("300px");
 		fields.setSpacing(true);
-		fields.addStyleName("fields");
 
 		final TextField username = new TextField("Felhasználónév");
 		username.setIcon(FontAwesome.USER);
 		username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		username.focus();
 		username.setValue("acsadam0404@gmail.com");
+		username.setSizeFull();
 
 		final PasswordField password = new PasswordField("Jelszó");
 		password.setIcon(FontAwesome.LOCK);
 		password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		password.setSizeFull();
 
 		CheckBox rememberMe = new CheckBox("Jegyezz meg", true);
 

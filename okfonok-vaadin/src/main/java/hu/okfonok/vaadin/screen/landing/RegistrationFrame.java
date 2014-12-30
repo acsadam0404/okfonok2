@@ -1,5 +1,6 @@
 package hu.okfonok.vaadin.screen.landing;
 
+import hu.okfonok.common.Settlement;
 import hu.okfonok.user.User;
 import hu.okfonok.vaadin.OFFieldGroup;
 import by.kod.numberfield.NumberField;
@@ -7,13 +8,16 @@ import by.kod.numberfield.NumberField;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -28,8 +32,8 @@ public class RegistrationFrame extends CustomComponent {
 	private TextField emailField;
 	@PropertyId("password")
 	private PasswordField passwordField;
-	@PropertyId("address.zipcode")
-	private NumberField zipcodeField;
+	@PropertyId("address")
+	private ComboBox settlementField;
 
 	private CheckBox readTermsField;
 
@@ -84,19 +88,24 @@ public class RegistrationFrame extends CustomComponent {
 		passwordField.setNullRepresentation("");
 		passwordField.setIcon(FontAwesome.KEY);
 		passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-		zipcodeField = new NumberField();
-		zipcodeField.setInputPrompt("Irányítószám");
-		zipcodeField.setNullRepresentation("");
-		zipcodeField.setIcon(FontAwesome.ARROW_CIRCLE_LEFT);
-		zipcodeField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		settlementField = new ComboBox(null, Settlement.findAll());
+		settlementField.setInputPrompt("Település");
+		settlementField.setIcon(FontAwesome.ARROW_CIRCLE_LEFT);
+		settlementField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		settlementField.setFilteringMode(FilteringMode.CONTAINS);
 
 		readTermsField = new CheckBox("Elolvastam és elfogadom az Adatkezelést és a Felhasználási feltételeket");
 
-		l.addComponents(nameField, emailField, passwordField, zipcodeField, regButton, readTermsField, facebookRegButton);
-		fg.bind(zipcodeField, "address.zipcode");
+		l.addComponents(nameField, emailField, passwordField, settlementField, regButton, readTermsField, facebookRegButton);
+		fg.bind(settlementField, "address.settlement");
 		fg.bind(nameField, "profile.name");
 		fg.bind(emailField, "profile.email");
-		fg.bindMemberFields(this);
+		
+		for (Field f : fg.getFields()) {
+			f.setWidth("100%");
+		}
+		/* XXX miért kell ezt külön besetelni? (nem működik egyébként), vaadin bug? */
+		passwordField.setWidth("100%");
 		return l;
 	}
 }

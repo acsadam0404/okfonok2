@@ -17,6 +17,7 @@ import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
@@ -25,6 +26,7 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.VerticalLayout;
 
 
@@ -127,13 +129,16 @@ public class OfferTableFrame extends CustomComponent {
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				final Offer offer = (Offer) itemId;
 				VerticalLayout l = new VerticalLayout();
-				l.addComponent(new Button("Naptár", new Button.ClickListener() {
+				Button calendarButton = new Button(null, new Button.ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
 						new Dialog(new OfferCalendar(offer)).showWindow();
 					}
-				}));
+				});
+				calendarButton.setIcon(FontAwesome.CALENDAR);
+				calendarButton.setStyleName(ValoTheme.BUTTON_HUGE);
+				l.addComponent(calendarButton);
 				return l;
 			}
 		});

@@ -47,6 +47,7 @@ public class HelpFrame extends CustomComponent {
 	});
 
 	public HelpFrame() {
+		setCaption("Segítség kérése/visszajelzés küldése");
 		Help help = new Help();
 		help.setUser(Authentication.getUser());
 		fg = new OFFieldGroup<>(help);

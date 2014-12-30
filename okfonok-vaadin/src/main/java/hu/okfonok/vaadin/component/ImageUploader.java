@@ -29,28 +29,29 @@ public class ImageUploader extends CustomComponent {
 
 			@Override
 			public void handleFile(InputStream input, String fileName, String mimeType, long length) {
+				Path filePath = path.resolve(fileName);
 
 				try {
 					if (!Files.exists(path)) {
 						Files.createDirectories(path);
 					}
-					Files.copy(input, path.resolve(fileName));
-					new ImageResizer(path.resolve(fileName), targetWidth, targetHeight).resizeAndSave();
+					Files.copy(input, filePath);
+					new ImageResizer(filePath, targetWidth, targetHeight).resizeAndSave();
 					for (FileUploadListener fileUploadListener : fileUploadListeners) {
-						fileUploadListener.success(fileName);
+						fileUploadListener.success(filePath);
 					}
 				}
 				catch (FileAlreadyExistsException faee) {
 					faee.printStackTrace();
 					for (FileUploadListener fileUploadListener : fileUploadListeners) {
-						fileUploadListener.failure(fileName, FileUploadListener.Reason.AlreadyExists);
+						fileUploadListener.failure(filePath, FileUploadListener.Reason.AlreadyExists);
 					}
 
 				}
 				catch (Exception ioEx) {
 					ioEx.printStackTrace();
 					for (FileUploadListener fileUploadListener : fileUploadListeners) {
-						fileUploadListener.failure(fileName, FileUploadListener.Reason.General);
+						fileUploadListener.failure(filePath, FileUploadListener.Reason.General);
 					}
 				}
 			}
@@ -99,10 +100,10 @@ public class ImageUploader extends CustomComponent {
 		}
 
 
-		public void success(String fileName);
+		public void success(Path filePath);
 
 
-		public void failure(String fileName, Reason alreadyexists);
+		public void failure(Path filePath, Reason alreadyexists);
 	}
 
 }

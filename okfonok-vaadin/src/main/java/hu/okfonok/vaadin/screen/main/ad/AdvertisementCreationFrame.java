@@ -1,5 +1,6 @@
 package hu.okfonok.vaadin.screen.main.ad;
 
+import hu.okfonok.ImageResizer;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.JobCategory;
 import hu.okfonok.ad.events.AdvertisementCreatedEvent;
@@ -8,9 +9,13 @@ import hu.okfonok.common.Settlement;
 import hu.okfonok.common.ValueSet;
 import hu.okfonok.vaadin.OFFieldGroup;
 import hu.okfonok.vaadin.UIEventBus;
+import hu.okfonok.vaadin.component.CarouselWithUploadFrame;
+import hu.okfonok.vaadin.component.ImageUploader.FileUploadListener;
 import hu.okfonok.vaadin.component.calendar.IntervalEvent;
 import hu.okfonok.vaadin.security.Authentication;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import by.kod.numberfield.NumberField;
@@ -22,7 +27,6 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.CheckBox;
@@ -167,7 +171,24 @@ public class AdvertisementCreationFrame extends CustomComponent {
 		calendar.setWidth("600px");
 		calendar.setHeight("600px");
 		ts.addTab(calendar, "Naptár");
-		CarouselWithUploadFrame carouselFrame = new CarouselWithUploadFrame(fg.getBean());
+		CarouselWithUploadFrame carouselFrame = new CarouselWithUploadFrame(fg.getBean().getImagePath());
+		carouselFrame.addFileUploadListener(new FileUploadListener() {
+
+			@Override
+			public void success(Path filePath) {
+				Path listIconPath = filePath.getParent().resolve(".listicon");
+				if (!Files.exists(listIconPath)) {
+					new ImageResizer(filePath, 50, 50).resizeAndSave(listIconPath);
+				}
+			}
+
+
+			@Override
+			public void failure(Path filePath, Reason alreadyexists) {
+
+			}
+
+		});
 		carouselFrame.setWidth("600px");
 		carouselFrame.setHeight("600px");
 		ts.addTab(carouselFrame, "Képek");

@@ -1,30 +1,31 @@
 package hu.okfonok.vaadin.screen.main.ad;
 
+import hu.okfonok.Config;
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.events.AdvertisementCreatedEvent;
 import hu.okfonok.ad.events.AdvertisementSaveEvent;
 import hu.okfonok.common.Address;
 import hu.okfonok.common.Distance;
-import hu.okfonok.offer.events.OfferCreatedEvent;
 import hu.okfonok.user.User;
-import hu.okfonok.vaadin.Dialog;
-import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
 import hu.okfonok.vaadin.security.Authentication;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.MouseEvents;
+import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.Table.ColumnGenerator;
@@ -103,7 +104,6 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 		public BookmarkButton(Advertisement ad) {
 			this.ad = ad;
-			setCaption("Elmentem");
 			setIcon(FontAwesome.STAR);
 			addClickListener(this);
 		}
@@ -123,7 +123,6 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 		public DeleteButton(Advertisement ad) {
 			this.ad = ad;
-			setCaption("Törlöm");
 			setIcon(FontAwesome.ERASER);
 			addClickListener(this);
 		}
@@ -143,7 +142,6 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 		public ShareButton(Advertisement ad) {
 			this.ad = ad;
-			setCaption("Megosztom");
 			setIcon(FontAwesome.SHARE);
 			addClickListener(this);
 		}
@@ -203,17 +201,27 @@ public class AdvertisementTableFrame extends CustomComponent {
 
 			@Override
 			public Object generateCell(final Table source, final Object itemId, Object columnId) {
+				final Advertisement ad = (Advertisement) itemId;
 				//TODO ne legyen neve, hanem csak ikonja: az ad képei közül az első. Ha nincs kép kell egy defaultot használni. 
-				return new Button("Megtekint", new ClickListener() {
+				Image viewButton = new Image(UUID.randomUUID().toString());
+				viewButton.addClickListener(new MouseEvents.ClickListener() {
 
 					@Override
-					public void buttonClick(ClickEvent event) {
-						Advertisement ad = (Advertisement) itemId;
+					public void click(com.vaadin.event.MouseEvents.ClickEvent event) {
 						if (ad != null) {
 							new AdvertisementViewFrame(ad).showWindow();
 						}
 					}
 				});
+				if (ad.hasImage()) {
+					/* TODO dokumentálni hogy mi ez a listicon (ez a AdvertisemeentCreationFrameben jön létre) */
+					viewButton.setSource(new FileResource(ad.getImagePath().resolve(".listicon").toFile()));
+				}
+				else {
+					//TODO vagy kiszervezni látható helyre vagy dokumentálni h kell ez a kép
+					viewButton.setSource(new FileResource(Config.getAppRoot().resolve("defaultadimg").toFile()));
+				}
+				return viewButton;
 			}
 		});
 	}

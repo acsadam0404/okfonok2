@@ -32,6 +32,11 @@ public class DirectoryCarousel extends HorizontalCarousel {
 
 		@Override
 		public boolean accept(Path entry) throws IOException {
+			/* rejtett fájlokat . jelöli */
+			if (entry.toFile().getName().startsWith(".")) {
+				return false;
+			}
+			/* csak képeket mutatunk */
 			String mimeType = Files.probeContentType(entry);
 			if (MimeType.getImageTypes().contains(mimeType)) {
 				return true;
@@ -54,6 +59,9 @@ public class DirectoryCarousel extends HorizontalCarousel {
 	public void refresh() {
 		removeAllComponents();
 		if (!Files.exists(root)) {
+			setArrowKeysMode(ArrowKeysMode.DISABLED);
+			setButtonsVisible(false);
+
 			Label label = new Label("Nincs megjeleníthető kép");
 			label.setSizeUndefined();
 			label.setStyleName(ValoTheme.LABEL_HUGE);

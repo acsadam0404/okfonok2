@@ -57,6 +57,7 @@ public class OFFieldGroup<T> extends BeanFieldGroup<T> {
 	}
 
 
+
 	/**
 	 * Eredeti funkció megtartva, de úgy, hogy minden nem valid fieldnek adjon egy stílust.
 	 * Ehhez az kell, hogy minden fieldet végigvalidáljon, ne csak az első invalidig menjen
@@ -64,7 +65,6 @@ public class OFFieldGroup<T> extends BeanFieldGroup<T> {
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
-
 		for (Field field : getFields()) {
 			try {
 				field.validate();

@@ -13,7 +13,6 @@ import hu.okfonok.vaadin.component.DirectoryCarousel;
 import hu.okfonok.vaadin.screen.message.MessageBox;
 import hu.okfonok.vaadin.security.Authentication;
 
-import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -28,6 +27,7 @@ import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 
 public class AdvertisementViewFrame extends CustomComponent {
@@ -105,6 +105,7 @@ public class AdvertisementViewFrame extends CustomComponent {
 		tabsheet = new TabSheet();
 		tabsheet.setWidth("800px");
 		tabsheet.setHeight("715px");
+		tabsheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
 
 		tabsheet.addTab(buildData(), "Összefoglaló", FontAwesome.INFO);
 		tabsheet.addTab(new DirectoryCarousel(Config.getAdRoot(Authentication.getUser(), fg.getBean().getUuid())), "Képek", FontAwesome.PICTURE_O);

@@ -15,11 +15,12 @@ import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-import org.w3c.dom.events.UIEvent;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "offer")
 @EqualsAndHashCode(includes = ["amount", "advertisement", "user"])
+@Transactional
 class Offer extends BaseEntity{
 	public static final String AMOUNT = "amount"
 	public static final String USER = "user"
@@ -65,8 +66,8 @@ class Offer extends BaseEntity{
 	}
 
 	public void save() {
-		advertisement.offers << this
 		repo.save(this)
+		advertisement.offers << this
 		advertisement.save()
 	}
 

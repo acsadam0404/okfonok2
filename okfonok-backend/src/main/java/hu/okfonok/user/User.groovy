@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 @Entity
 @Table(name = "user")
 @EqualsAndHashCode(includes = ["username"])
+@Transactional
 class User extends BaseEntity{
 	private static UserRepo userRepo
 
@@ -138,14 +139,12 @@ class User extends BaseEntity{
 		Collections.unmodifiableCollection(savedAds)
 	}
 
-	@Transactional
 	void unsaveAdvertisement(Advertisement ad) {
 		//TODO AdvertisementSaveEvent publish
 		savedAds.remove(ad)
 		save()
 	}
 
-	@Transactional
 	void saveAdvertisement(Advertisement ad) {
 		//TODO AdvertisementSaveEvent publish
 		savedAds.add(ad)

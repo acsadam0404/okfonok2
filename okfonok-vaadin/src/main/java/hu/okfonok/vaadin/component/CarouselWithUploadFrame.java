@@ -1,16 +1,10 @@
-package hu.okfonok.vaadin.screen.main.ad;
+package hu.okfonok.vaadin.component;
 
-import hu.okfonok.Config;
-import hu.okfonok.ad.Advertisement;
-import hu.okfonok.vaadin.component.DirectoryCarousel;
-import hu.okfonok.vaadin.component.ImageUploader;
 import hu.okfonok.vaadin.component.ImageUploader.FileUploadListener;
-import hu.okfonok.vaadin.security.Authentication;
 
 import java.nio.file.Path;
 
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.VerticalLayout;
 
@@ -18,13 +12,18 @@ import com.vaadin.ui.VerticalLayout;
 public class CarouselWithUploadFrame extends CustomComponent {
 	private Path imagePath;
 	private DirectoryCarousel carousel;
+	private ImageUploader upload;
 
 
-	public CarouselWithUploadFrame(Advertisement ad) {
-		assert ad != null;
-		imagePath = Config.getAdRoot(Authentication.getUser(), ad.getUuid());
+	public void addFileUploadListener(FileUploadListener fileUploadListener) {
+		upload.addFileUploadListener(fileUploadListener);
+	}
 
-		Component upload = buildUpload();
+
+	public CarouselWithUploadFrame(Path imagePath) {
+		this.imagePath = imagePath;
+
+		upload = buildUpload();
 		VerticalLayout l = new VerticalLayout();
 		l.setSizeFull();
 		carousel = new DirectoryCarousel(imagePath);
@@ -37,19 +36,19 @@ public class CarouselWithUploadFrame extends CustomComponent {
 	}
 
 
-	private Component buildUpload() {
+	private ImageUploader buildUpload() {
 		ImageUploader multiFileUpload = new ImageUploader(imagePath);
 		multiFileUpload.setUploadButtonCaptions("Feltöltés", "Feltöltés");
 		multiFileUpload.addFileUploadListener(new FileUploadListener() {
 
 			@Override
-			public void success(String fileName) {
+			public void success(Path filePath) {
 				carousel.refresh();
 			}
 
 
 			@Override
-			public void failure(String fileName, Reason alreadyexists) {
+			public void failure(Path filePath, Reason alreadyexists) {
 
 			}
 

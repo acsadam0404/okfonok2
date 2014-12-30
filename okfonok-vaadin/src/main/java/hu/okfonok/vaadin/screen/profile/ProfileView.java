@@ -29,8 +29,10 @@ public class ProfileView extends AbstractView {
 	public void enter(ViewChangeEvent event) {
 		User user = Authentication.getUser();
 		HorizontalLayout l = new HorizontalLayout();
+		l.setSizeFull();
 		l.setSpacing(true);
-		l.addComponent(new UserDataFrame(user));
+		UserDataFrame userDataFrame = new UserDataFrame(user);
+		l.addComponent(userDataFrame);
 		l.addComponent(new ProfileImageFrame(user));
 		setCompositionRoot(l);
 	}

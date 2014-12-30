@@ -17,6 +17,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -104,13 +106,13 @@ public class UserDataFrame extends CustomComponent {
 		introductionField = new TextArea("Magamról");
 		introductionField.setNullRepresentation("");
 		
-		emailField = new TextField();
+		emailField = new TextField("E-mail cím");
 		emailField.setIcon(FontAwesome.ENVELOPE);
 		emailField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		emailField.setNullRepresentation("");
 		emailField.setInputPrompt("E-mail cím");
 		
-		phoneNumberField = new TextField();
+		phoneNumberField = new TextField("Telefonszám");
 		phoneNumberField.setIcon(FontAwesome.PHONE);
 		phoneNumberField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		phoneNumberField.setNullRepresentation("");
@@ -147,6 +149,7 @@ public class UserDataFrame extends CustomComponent {
 		fg.bind(phoneNumberField, "profile.phoneNumber");
 		fg.bind(idCardField, "profile.idCard");
 		fg.bind(addressCardField, "profile.addressCard");
+
 
 		Panel panel = new Panel(l);
 		panel.setCaption("Alapadatok");
