@@ -23,6 +23,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:config.properties</value>
+				<value>classpath:sdk_config.properties</value>
 				<value>classpath:META-INF/database.properties</value>
 			</list>
 		</property>
