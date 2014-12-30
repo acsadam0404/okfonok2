@@ -5,3 +5,4 @@
 /.project
 /src/main/webapp/VAADIN/gwt-unitCache
 /src/main/webapp/VAADIN/widgetsets
+/src/main/webapp/VAADIN/themes/main/styles.css
