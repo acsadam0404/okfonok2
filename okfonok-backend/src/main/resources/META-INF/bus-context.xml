@@ -63,8 +63,8 @@
 
 	<beans profile="dev">
 		<jdbc:embedded-database id="dataSource" type="H2">
-<!-- 			<jdbc:script location="classpath:/data.sql" encoding="utf-8" /> -->
-			<jdbc:script location="classpath:/dump.sql" encoding="utf-8" />
+			<jdbc:script location="classpath:/data.sql" encoding="utf-8" />
+<!-- 			<jdbc:script location="classpath:/dump.sql" encoding="utf-8" /> -->
 		</jdbc:embedded-database>
 
 		<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">

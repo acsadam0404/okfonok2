@@ -5,6 +5,8 @@ import hu.okfonok.BaseEntity
 import hu.okfonok.Config
 import hu.okfonok.ad.Advertisement
 import hu.okfonok.common.Address
+import hu.okfonok.user.account.Account
+import hu.okfonok.user.notification.Notification
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -14,6 +16,7 @@ import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
+import javax.persistence.OneToOne;
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
@@ -75,8 +78,14 @@ class User extends BaseEntity{
 	private Profile profile
 
 	@OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
-	Set<Rating> ratings
+	Set<Rating> ratings = [] as Set
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Notification> notifications = [] as Set
+
+	@OneToOne
+	private Account account = new Account()
+	
 	double getRating() {
 		double rating = 0
 		if (ratings) {
@@ -91,6 +100,14 @@ class User extends BaseEntity{
 			profile = new Profile()
 		}
 		profile
+	}
+	
+	
+	Account getAccount() {
+		if (!account) {
+			account = new Account()
+		}
+		account
 	}
 
 
@@ -112,8 +129,12 @@ class User extends BaseEntity{
 		repo.findByUsername(username)
 	}
 
+	@Transactional
 	User save() {
+		Account account = new Account(this)
+		this.account = account
 		User user = repo.save(this)
+		account.save()
 		if (!Files.exists(Config.getUserRoot(this))) {
 			createUserFiles()
 		}
@@ -189,6 +210,16 @@ class User extends BaseEntity{
 			value = rating.value
 		}
 		value
+	}
+
+	Set<Notification> getUnreadNotifications() {
+		notifications.findAll() { !it.read }
+	}
+
+	void notify(Notification notification) {
+		notification.save()
+		notifications << notification
+		save()
 	}
 
 }

@@ -1,26 +1,20 @@
-package hu.okfonok.vaadin.screen.main;
+package hu.okfonok.vaadin.screen.main.map;
 
 import hu.okfonok.ad.Advertisement;
 import hu.okfonok.ad.events.AdvertisementCreatedEvent;
 import hu.okfonok.common.GeocodingService;
-import hu.okfonok.offer.Offer;
 import hu.okfonok.user.ServiceLocator;
 import hu.okfonok.user.User;
-import hu.okfonok.vaadin.Dialog;
-import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.UIEventBus;
-import hu.okfonok.vaadin.screen.main.ad.view.AdvertisementViewFrame;
+import hu.okfonok.vaadin.security.Authentication;
 
 import java.util.HashSet;
-import java.util.List;
 
 import com.google.code.geocoder.model.LatLng;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.tapio.googlemaps.GoogleMap;
 import com.vaadin.tapio.googlemaps.client.GoogleMapControl;
 import com.vaadin.tapio.googlemaps.client.LatLon;
-import com.vaadin.tapio.googlemaps.client.events.MarkerClickListener;
-import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.CustomComponent;
 
 
@@ -48,7 +42,7 @@ public class MapFrame extends CustomComponent {
 	private void center() {
 		if (user.getAddress() != null) {
 			LatLng userAddressCentered = geocodingService.toLatLng(user.getAddress());
-			map.setCenter(toLatLon(userAddressCentered));
+			map.setCenter(MapUtils.toLatLon(userAddressCentered));
 		}
 		else {
 			LatLon budapestCentered = new LatLon(47.4812134,19.130303);
@@ -56,9 +50,8 @@ public class MapFrame extends CustomComponent {
 		}
 	}
 
-	private void addAdvertisementMarkers() {
-		map.clearMarkers();
-		List<Advertisement> ads = Advertisement.findAll();
+	private void addAllAdvertisementMarkers() {
+		Iterable<Advertisement> ads = Advertisement.findAll();
 		for (Advertisement ad : ads) {
 			AdvertisementMarker marker = new AdvertisementMarker(ad);
 			map.addMarker(marker);
@@ -66,19 +59,21 @@ public class MapFrame extends CustomComponent {
 		}
 	}
 	
-	private static class AdvertisementMarker extends GoogleMapMarker implements MarkerClickListener {
-		private static GeocodingService geocodingService = ServiceLocator.getBean(GeocodingService.class);
-		private Advertisement ad;
-		
-
-		public AdvertisementMarker(Advertisement ad) {
-			super(ad.getCategory().getName(), toLatLon(geocodingService.toLatLng(ad.getAddress())), false);
-			this.ad = ad;
+	private void addSavedAdvertisementMarkers() {
+		Iterable<Advertisement> ads = Authentication.getUser().getSavedAds();
+		for (Advertisement ad : ads) {
+			SavedAdvertisementMarker marker = new SavedAdvertisementMarker(ad);
+			map.addMarker(marker);
+			map.addMarkerClickListener(marker);
 		}
-
-		@Override
-		public void markerClicked(GoogleMapMarker clickedMarker) {
-			new AdvertisementViewFrame(ad).showWindow();
+	}
+	
+	private void addOwnAdvertisementMarkers() {
+		Iterable<Advertisement> ads = Advertisement.findByUser(Authentication.getUser());
+		for (Advertisement ad : ads) {
+			OwnAdvertisementMarker marker = new OwnAdvertisementMarker(ad);
+			map.addMarker(marker);
+			map.addMarkerClickListener(marker);
 		}
 	}
 	
@@ -88,15 +83,10 @@ public class MapFrame extends CustomComponent {
 	}
 	
 	public void refresh() {
-		addAdvertisementMarkers();
+		map.clearMarkers();
+		addAllAdvertisementMarkers();
+		addSavedAdvertisementMarkers();
+		addOwnAdvertisementMarkers();
 	}
-	
-	/* XXX totál nem itt a helye */
-	public static LatLon toLatLon(LatLng latlng) {
-		if (latlng == null) {
-			LatLng defaultLatlon = ServiceLocator.getBean(GeocodingService.class).getDefaultLatLon();
-			return new LatLon(defaultLatlon.getLat().doubleValue(), defaultLatlon.getLng().doubleValue());
-		}
-		return new LatLon(latlng.getLat().doubleValue(), latlng.getLng().doubleValue());
-	}
+
 }

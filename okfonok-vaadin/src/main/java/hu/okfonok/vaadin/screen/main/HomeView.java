@@ -4,6 +4,7 @@ import hu.okfonok.user.User;
 import hu.okfonok.vaadin.AbstractView;
 import hu.okfonok.vaadin.screen.WelcomeNotification;
 import hu.okfonok.vaadin.screen.main.calendar.CalendarFrame;
+import hu.okfonok.vaadin.screen.main.map.MapFrame;
 import hu.okfonok.vaadin.screen.profile.ProfileImageFrame;
 import hu.okfonok.vaadin.screen.profile.UserDataFrame;
 import hu.okfonok.vaadin.security.Authentication;
@@ -46,7 +47,7 @@ public class HomeView extends AbstractView {
 		HorizontalLayout dl = new HorizontalLayout();
 		dl.setSpacing(true);
 		dl.setSizeUndefined();
-//		dl.addComponent(new MapFrame(Authentication.getUser()));
+		dl.addComponent(new MapFrame(Authentication.getUser()));
 		dl.addComponent(new CalendarFrame());
 		root.addComponent(dl);
 		root.addComponent(new TablesFrame());

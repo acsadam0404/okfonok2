@@ -21,7 +21,8 @@ class Skill extends BaseEntity{
 		skillRepo
 	}
 	
-	Skill() {
+	/** csak JPA miatt */
+	protected Skill() {
 		
 	}
 	
