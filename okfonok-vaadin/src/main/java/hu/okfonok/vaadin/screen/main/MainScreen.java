@@ -19,7 +19,7 @@ public class MainScreen extends CustomComponent {
 
 		VerticalLayout content = new VerticalLayout();
 		
-		main.addComponent(new Menu());
+		main.addComponent(new Header());
 		main.addComponent(content);
 		main.setExpandRatio(content, 1f);
 		main.addComponent(new Footer());

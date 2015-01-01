@@ -1,7 +1,7 @@
 package hu.okfonok.message
 
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.PackageScope;
+import groovy.transform.PackageScope
 import hu.okfonok.BaseEntity
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * TODO legyen immutable
@@ -70,7 +70,7 @@ class Message extends BaseEntity{
 	User recipient
 
 	@Transactional
-	Message save() {
+	@PackageScope Message save() {
 		repo.save(this)
 	}
 }

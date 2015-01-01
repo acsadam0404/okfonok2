@@ -10,19 +10,23 @@ import hu.okfonok.vaadin.screen.HelpCreatedEvent;
 import hu.okfonok.vaadin.screen.HelpFrame;
 import hu.okfonok.vaadin.screen.SelfRatingDialog;
 import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreationFrame;
+import hu.okfonok.vaadin.screen.menu.BalanceFrame;
+import hu.okfonok.vaadin.screen.menu.MessageFrame;
+import hu.okfonok.vaadin.screen.menu.NotificationFrame;
 import hu.okfonok.vaadin.screen.message.MessageView;
 import hu.okfonok.vaadin.screen.profile.ProfileView;
 import hu.okfonok.vaadin.screen.profile.ProfileViewFrame;
 import hu.okfonok.vaadin.security.Authentication;
 
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 
 
-public class Menu extends CustomComponent {
-	public Menu() {
+public class Header extends CustomComponent {
+	public Header() {
 		MenuBar menubar = new MenuBar();
 		menubar.addItem("export sql", new Command() {
 
@@ -85,6 +89,12 @@ public class Menu extends CustomComponent {
 				new SelfRatingDialog().showWindow();
 			}
 		});
-		setCompositionRoot(menubar);
+		
+		HorizontalLayout l = new HorizontalLayout();
+		l.addComponent(menubar);
+		l.addComponent(new BalanceFrame());
+		l.addComponent(new NotificationFrame());
+		l.addComponent(new MessageFrame());
+		setCompositionRoot(l);
 	}
 }

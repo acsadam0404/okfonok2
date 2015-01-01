@@ -24,6 +24,7 @@ public class LandingScreen extends CustomComponent {
 			}
 
 		});
+		loginPopup.setHideOnMouseOut(false);
 		landing.addComponent(loginPopup, "login");
 
 		PopupView registrationPopup = new PopupView(new Content() {
@@ -41,6 +42,7 @@ public class LandingScreen extends CustomComponent {
 
 		});
 		landing.addComponent(registrationPopup, "registration");
+		registrationPopup.setHideOnMouseOut(false);
 		setCompositionRoot(landing);
 	}
 }
