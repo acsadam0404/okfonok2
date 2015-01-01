@@ -10,8 +10,8 @@ import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
 import java.math.RoundingMode
+import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import javax.persistence.ElementCollection
 import javax.persistence.Embedded
@@ -98,8 +98,13 @@ class Advertisement extends BaseEntity{
 		category.mainCategory
 	}
 
+	/**
+	 * elmenti db-be az entitást és létrehozza a mappaszerkezetet
+	 * @return
+	 */
 	Advertisement save() {
 		dateCreated = new Date()
+		Files.createDirectories(Config.getAdRoot(user, uuid))
 		repo.save(this)
 	}
 
@@ -179,6 +184,10 @@ class Advertisement extends BaseEntity{
 	}
 
 	boolean hasImage() {
-		getImagePath().toFile().listFiles().length > 0
+		def files = getImagePath().toFile().listFiles()
+		if (files == null) {
+			throw new RuntimeException("Nem található mappa:" + getImagePath())
+		}
+		files.length > 0
 	}
 }

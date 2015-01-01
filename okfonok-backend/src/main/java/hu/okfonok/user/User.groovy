@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional
 @EqualsAndHashCode(includes = ["username"])
 @Transactional
 class User extends BaseEntity{
+	public static final String PASSWORD = "password"
+
 	private static UserRepo userRepo
 
 	private static UserRepo getRepo() {
@@ -83,8 +85,8 @@ class User extends BaseEntity{
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Notification> notifications = [] as Set
 
-	@OneToOne
-	private Account account = new Account()
+	@OneToOne(optional = false)
+	Account account
 	
 	double getRating() {
 		double rating = 0
@@ -100,14 +102,6 @@ class User extends BaseEntity{
 			profile = new Profile()
 		}
 		profile
-	}
-	
-	
-	Account getAccount() {
-		if (!account) {
-			account = new Account()
-		}
-		account
 	}
 
 
@@ -131,9 +125,11 @@ class User extends BaseEntity{
 
 	@Transactional
 	User save() {
-		Account account = new Account(this)
+		Account account = new Account()
+		account.save()
 		this.account = account
 		User user = repo.save(this)
+		account.setUser(this)
 		account.save()
 		if (!Files.exists(Config.getUserRoot(this))) {
 			createUserFiles()

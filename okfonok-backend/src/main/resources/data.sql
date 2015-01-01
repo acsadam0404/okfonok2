@@ -346,7 +346,6 @@ insert into settlement (id, zipcode, settlement) values (15, 2027,'Dömös');
 insert into settlement (id, zipcode, settlement) values (16, 2028,'Pilismarót');
 insert into settlement (id, zipcode, settlement) values (17, 2030,'Érd');
 insert into settlement (id, zipcode, settlement) values (18, 2035,'Érd');
-insert into user (id, username, password, firstlogin, active, settlement_id, other) values (1, 'aacs', 'aacs', 1, 1, 1, 'Szabadság út 15');
 
 insert into valueset (id, name) values (1, 'remuneration');
 insert into valueset (id, name) values (2, 'help_category');

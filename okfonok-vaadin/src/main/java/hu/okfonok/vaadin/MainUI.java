@@ -13,6 +13,7 @@ import java.util.Locale;
 import org.springframework.context.annotation.Scope;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
@@ -24,6 +25,7 @@ import com.vaadin.ui.Window;
 @org.springframework.stereotype.Component("MainUI")
 @Scope("prototype")
 @Widgetset("hu.okfonok.vaadin.AppWidgetSet")
+@Push
 public class MainUI extends UI {
 	private final UIEventBus eventbus = new UIEventBus();
 
@@ -87,5 +89,4 @@ public class MainUI extends UI {
 	public static UIEventBus getEventbus() {
 		return ((MainUI) getCurrent()).eventbus;
 	}
-
 }

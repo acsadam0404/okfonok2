@@ -32,7 +32,7 @@ public class Header extends CustomComponent {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				ServiceLocator.getBean(ExportH2DBService.class).export("/home/aacs/temp/sqldump");
+				ServiceLocator.getBean(ExportH2DBService.class).export("h:/tmp/sqldump.sql");
 			}
 
 		});

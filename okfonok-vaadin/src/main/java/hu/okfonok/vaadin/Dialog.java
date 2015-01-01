@@ -7,14 +7,12 @@ import com.vaadin.ui.Layout.SpacingHandler;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
-
 public class Dialog extends Window {
 
 	public Dialog(Component content) {
 		this();
 		setContent(content);
 	}
-
 
 	public Dialog() {
 		setModal(true);
@@ -24,7 +22,6 @@ public class Dialog extends Window {
 		setCloseShortcut(KeyCode.X, ModifierKey.ALT, ModifierKey.CTRL);
 		setSizeUndefined();
 	}
-
 
 	public void setContent(Component content) {
 		super.setContent(content);
@@ -36,11 +33,9 @@ public class Dialog extends Window {
 		}
 	}
 
-
 	public void showWindow() {
 		UI.getCurrent().addWindow(this);
 	}
-
 
 	public void closeWindow() {
 		UI.getCurrent().removeWindow(this);

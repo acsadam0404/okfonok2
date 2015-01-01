@@ -3,6 +3,8 @@ package hu.okfonok.message
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 import hu.okfonok.BaseEntity
+import hu.okfonok.GlobalEventBus;
+import hu.okfonok.message.events.MessageSentEvent
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
@@ -72,5 +74,6 @@ class Message extends BaseEntity{
 	@Transactional
 	@PackageScope Message save() {
 		repo.save(this)
+		GlobalEventBus.post(new MessageSentEvent(conversation))
 	}
 }

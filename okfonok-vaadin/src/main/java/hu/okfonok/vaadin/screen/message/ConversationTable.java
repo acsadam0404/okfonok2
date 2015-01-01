@@ -26,8 +26,6 @@ import com.vaadin.ui.VerticalLayout;
 public class ConversationTable extends CustomComponent {
 	private static final String AD_DESCRIPTION = Conversation.ADVERTISEMENT + "." + Advertisement.DESCRIPTION;
 	private static final String ACTIONS = "actions";
-	//TODO töröl
-	private static final String MESSAGECOUNT = "messagecount";
 	private Table table;
 
 

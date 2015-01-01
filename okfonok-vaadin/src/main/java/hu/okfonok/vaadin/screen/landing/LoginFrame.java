@@ -50,7 +50,6 @@ public class LoginFrame extends CustomComponent {
 		username.setIcon(FontAwesome.USER);
 		username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 		username.focus();
-		username.setValue("acsadam0404@gmail.com");
 		username.setSizeFull();
 
 		final PasswordField password = new PasswordField("Jelszó");

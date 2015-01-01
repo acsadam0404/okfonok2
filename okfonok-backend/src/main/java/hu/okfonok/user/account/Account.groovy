@@ -1,12 +1,12 @@
 package hu.okfonok.user.account
 
-import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 import hu.okfonok.BaseEntity
 import hu.okfonok.user.ServiceLocator
 import hu.okfonok.user.User
 
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import javax.persistence.Table
@@ -35,18 +35,13 @@ final class Account extends BaseEntity{
 
 
 	@OneToOne(mappedBy = "account")
-	private final User user
+	User user
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<Transaction> transactions = [] as Set
 
-	/* csak JPA-nak */
 	protected Account() {
 		
-	}
-	
-	public Account(User user) {
-		this.user = user
 	}
 	
 	/**

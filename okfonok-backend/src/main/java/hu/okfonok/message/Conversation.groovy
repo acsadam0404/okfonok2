@@ -95,7 +95,11 @@ class Conversation extends BaseEntity {
 	@Transactional
 	Conversation save() {
 		Conversation conv = repo.save(this)
-		messages.each { it.save() }
+		messages.each { 
+			if (!it.persistent) {
+				it.save() 
+			}
+		}
 		conv
 	}
 

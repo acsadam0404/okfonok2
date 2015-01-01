@@ -100,12 +100,11 @@ public class RegistrationFrame extends CustomComponent {
 		fg.bind(settlementField, "address.settlement");
 		fg.bind(nameField, "profile.name");
 		fg.bind(emailField, "profile.email");
+		fg.bind(passwordField, User.PASSWORD);
 		
 		for (Field f : fg.getFields()) {
 			f.setWidth("100%");
 		}
-		/* XXX miért kell ezt külön besetelni? (nem működik egyébként), vaadin bug? */
-		passwordField.setWidth("100%");
 		return l;
 	}
 }

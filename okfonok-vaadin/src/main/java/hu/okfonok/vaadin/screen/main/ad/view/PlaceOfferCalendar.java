@@ -86,6 +86,7 @@ public final class PlaceOfferCalendar extends CustomComponent implements Calenda
 		else {
 			for (DateInterval di : intervals) {
 				IntervalEvent pie = new IntervalEvent(di);
+				pie.setStyleName("accepted-offer-interval");
 				events.add(pie);
 			}
 		}
@@ -106,10 +107,7 @@ public final class PlaceOfferCalendar extends CustomComponent implements Calenda
 			public void rangeSelect(RangeSelectEvent event) {
 				DateInterval di = new DateInterval(event.getStart(), event.getEnd());
 				intervals.add(di);
-
-				IntervalEvent ie = new IntervalEvent(di);
-				ie.setStyleName("accepted-offer-interval");
-				calendar.addEvent(ie);
+				
 			}
 		});
 		calendar.setHandler(new EventClickHandler() {

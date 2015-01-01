@@ -3,13 +3,16 @@ package hu.okfonok.message.events
 import hu.okfonok.message.Conversation
 
 class MessageSentEvent {
-	private Conversation conversation
+	final Conversation conversation
 
 	MessageSentEvent(Conversation conversation) {
 		this.conversation = conversation
 	}
 
-	Conversation getConversation() {
-		conversation
+	public String getUsername1() {
+		return conversation.getUser1().getUsername();
+	}
+	public String getUsername2() {
+		return conversation.getUser2().getUsername();
 	}
 }

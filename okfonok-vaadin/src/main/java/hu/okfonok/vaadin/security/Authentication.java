@@ -5,11 +5,9 @@ import hu.okfonok.vaadin.UIEventBus;
 
 import com.vaadin.server.VaadinSession;
 
-
 public final class Authentication {
-
-	private Authentication() {}
-
+	private Authentication() {
+	}
 
 	public static void login(String username, String password) {
 		User user = User.get(username);
@@ -27,21 +25,17 @@ public final class Authentication {
 		}
 	}
 
-
 	public static boolean isAuthenticated() {
 		return getUsernameFromSession() != null;
 	}
-
 
 	private static String getUsernameFromSession() {
 		return (String) VaadinSession.getCurrent().getAttribute("username");
 	}
 
-
 	public static User getUser() {
 		return User.get(getUsernameFromSession());
 	}
-
 
 	public static void logout() {
 		User user = getUser();

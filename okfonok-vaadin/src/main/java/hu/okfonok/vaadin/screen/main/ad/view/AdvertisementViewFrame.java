@@ -10,6 +10,8 @@ import hu.okfonok.vaadin.DialogWithCloseEvent;
 import hu.okfonok.vaadin.OFFieldGroup;
 import hu.okfonok.vaadin.UIEventBus;
 import hu.okfonok.vaadin.component.DirectoryCarousel;
+import hu.okfonok.vaadin.component.LazyTabSheet;
+import hu.okfonok.vaadin.component.LazyTabSheet.LazyTab;
 import hu.okfonok.vaadin.screen.message.MessageBox;
 import hu.okfonok.vaadin.security.Authentication;
 
@@ -102,13 +104,23 @@ public class AdvertisementViewFrame extends CustomComponent {
 
 
 	private Component build() {
-		tabsheet = new TabSheet();
+		tabsheet = new LazyTabSheet();
 		tabsheet.setWidth("800px");
 		tabsheet.setHeight("715px");
 		tabsheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
 
 		tabsheet.addTab(buildData(), "Összefoglaló", FontAwesome.INFO);
-		tabsheet.addTab(new DirectoryCarousel(Config.getAdRoot(Authentication.getUser(), fg.getBean().getUuid())), "Képek", FontAwesome.PICTURE_O);
+		
+		//TODO lehetne mindegyik lazy
+		tabsheet.addTab(new LazyTab() {
+
+			@Override
+			public Component build() {
+				return new DirectoryCarousel(Config.getAdRoot(Authentication.getUser(), fg.getBean().getUuid()));
+			}
+			
+		}, "Képek", FontAwesome.PICTURE_O);
+		
 		tabsheet.addTab(new AdvertisementViewMap(fg.getBean()), "Térkép", FontAwesome.MAP_MARKER);
 		tabsheet.addTab(new AdvertisementViewCalendar(fg.getBean()), "Naptár", FontAwesome.CALENDAR);
 		tabsheet.addTab(new MessageBox(Conversation.findOrCreate(Authentication.getUser(), fg.getBean().getUser(), fg.getBean())), "Üzenetek", FontAwesome.COMMENT);

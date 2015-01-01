@@ -12,11 +12,13 @@ public class TransactionTest {
 	public void test() {
 		User user = new User();
 		user.setUsername("user1");
-		Account debitor = new Account(user);
+		Account debitor = new Account();
+		debitor.setUser(user);
 		debitor.setRepo(new AccountRepoMock());
 		User user2 = new User();
 		user2.setUsername("user2");
-		Account creditor = new Account(user2);
+		Account creditor = new Account();
+		creditor.setUser(user2);
 		creditor.setRepo(new AccountRepoMock());
 		BigDecimal amount = new BigDecimal(10);
 

@@ -18,6 +18,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
@@ -113,11 +114,7 @@ public class OfferTableFrame extends CustomComponent {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
-						Dialog dialog = new Dialog(new MessageBox(Conversation.findOrCreate(Authentication.getUser(), offer.getUser(), ad)));
-						dialog.setWidth("60%");
-						dialog.setHeight("60%");
-						dialog.setCaption("Üzenet küldése");
-						dialog.showWindow();
+						new MessageBox(Conversation.findOrCreate(Authentication.getUser(), offer.getUser(), ad)).showWindow();
 					}
 				}));
 				return l;
