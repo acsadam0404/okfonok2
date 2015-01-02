@@ -10,10 +10,10 @@ import hu.okfonok.vaadin.screen.HelpCreatedEvent;
 import hu.okfonok.vaadin.screen.HelpFrame;
 import hu.okfonok.vaadin.screen.SelfRatingDialog;
 import hu.okfonok.vaadin.screen.main.ad.AdvertisementCreationFrame;
+import hu.okfonok.vaadin.screen.main.ad.view.TaskPerformed;
 import hu.okfonok.vaadin.screen.menu.BalanceFrame;
 import hu.okfonok.vaadin.screen.menu.MessageFrame;
 import hu.okfonok.vaadin.screen.menu.NotificationFrame;
-import hu.okfonok.vaadin.screen.message.MessageView;
 import hu.okfonok.vaadin.screen.profile.ProfileView;
 import hu.okfonok.vaadin.screen.profile.ProfileViewFrame;
 import hu.okfonok.vaadin.security.Authentication;
@@ -47,7 +47,7 @@ public class Header extends CustomComponent {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				MainUI.getCurrent().getNavigator().navigateTo(MessageView.NAME);
+				new Dialog(new TaskPerformed()).showWindow();
 			}
 		});
 		menubar.addItem("Hirdetés feladása", new Command() {

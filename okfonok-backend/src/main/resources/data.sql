@@ -1,4 +1,4 @@
-   create table Advertisement_preferredIntervals (
+    create table Advertisement_preferredIntervals (
         Advertisement_id bigint not null,
         preferredIntervals binary(255)
     );
@@ -6,6 +6,26 @@
     create table Offer_intervals (
         Offer_id bigint not null,
         intervals binary(255)
+    );
+
+    create table User_accuracyRatings (
+        User_id bigint not null,
+        accuracyRatings double
+    );
+
+    create table User_mainRatings (
+        User_id bigint not null,
+        mainRatings double
+    );
+
+    create table User_qualityRatings (
+        User_id bigint not null,
+        qualityRatings double
+    );
+
+    create table User_reliabilityRatings (
+        User_id bigint not null,
+        reliabilityRatings double
     );
 
     create table account (
@@ -133,9 +153,10 @@
         phoneNumber varchar(255),
         registrationDate timestamp,
         username varchar(255) not null,
-        account_id bigint,
+        account_id bigint not null,
         settlement_id bigint,
-        primary key (id)
+        primary key (id),
+        unique (account_id)
     );
 
     create table user_Notification (
@@ -179,6 +200,26 @@
         add constraint FKDD743E0B9480803E 
         foreign key (Offer_id) 
         references offer;
+
+    alter table User_accuracyRatings 
+        add constraint FK8BC886E964DDF1F3 
+        foreign key (User_id) 
+        references user;
+
+    alter table User_mainRatings 
+        add constraint FK76A5182964DDF1F3 
+        foreign key (User_id) 
+        references user;
+
+    alter table User_qualityRatings 
+        add constraint FKBD7CE74B64DDF1F3 
+        foreign key (User_id) 
+        references user;
+
+    alter table User_reliabilityRatings 
+        add constraint FKD5A5E9B064DDF1F3 
+        foreign key (User_id) 
+        references user;
 
     alter table account_transaction 
         add constraint FK7E69DFCC9CACB220 
@@ -319,7 +360,6 @@
          sequence_name varchar(255),
          sequence_next_hi_value integer 
     ) ;
-        
         insert into skill(id, name, question) values (1, 'skill1', 'question1');
         insert into skill(id, name, question) values (2, 'skill2', 'question2');
         insert into skill(id, name, question) values (3, 'skill3', 'question3');

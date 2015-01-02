@@ -117,7 +117,7 @@ class User extends BaseEntity{
 	Path getProfileImageOriginalPath() {
 		Config.getUserRoot(this).resolve("profile_original")
 	}
-
+	
 	@Transactional(readOnly = true)
 	static User get(String username) {
 		repo.findByUsername(username)

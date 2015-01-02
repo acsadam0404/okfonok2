@@ -107,6 +107,7 @@ public final class PlaceOfferCalendar extends CustomComponent implements Calenda
 			public void rangeSelect(RangeSelectEvent event) {
 				DateInterval di = new DateInterval(event.getStart(), event.getEnd());
 				intervals.add(di);
+				calendar.markAsDirty();
 				
 			}
 		});
